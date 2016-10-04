@@ -1,0 +1,9 @@
+require_relative 'test_helper'
+
+attr_set = TurboCassandra::AttributeSet.new
+attributes = read_attributes_from_file
+attributes.each do |a|
+  attribute_set_code = a['attribute_set'].gsub(' ','').underscore
+  attribute_code =  a['code']
+  execute(@cluster, attr_set.update_attribute_list(attribute_set_code, attribute_code))
+end
