@@ -33,18 +33,35 @@ module TurboCassandra
         return  prepare_names(properties), prepare_values(properties), prepare_args(properties)
     end
 
-    def create_cql names, values
+    def create_insert_cql names, values
        "INSERT INTO attributes  (#{names})  VALUES (#{values})"
     end
+
+    def create_select_where_cql
+      "SELECT * from  attributes  WHERE code=?"
+    end
+
+    def select_all_cql
+      "SELECT * from  attributes "
+    end
+
     def insert attr_properties
         names, values, args = prepare_attributes attr_properties
-        cql = create_cql(names, values)
+        cql = create_insert_cql(names, values)
         execute(cql, args)
     end
+    def find code
+        execute(create_select_where_cql(), [code])
+    end
+
+    def all
+        execute(select_all_cql, [])
+    end
+
     def execute cql, args
       session = TurboCluster.get_session
       statement = session.prepare(cql)
-      session.execute(statement, arguments: args, consistency: :any)
+      session.execute(statement, arguments: args, consistency: :one)
     end
 
   end
