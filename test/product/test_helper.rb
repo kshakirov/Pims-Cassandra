@@ -3,19 +3,9 @@ require 'logger'
 require 'cassandra'
 require 'active_support'
 require 'active_support/all'
-require_relative '../../lib/tools/Model/product'
-class MyCluster
-  def initialize
-    cluster =Cassandra.cluster(hosts: ['10.1.3.15', '10.1.3.16', '10.1.3.17'])
-    keyspace = 'trash1'
-    @session = cluster.connect(keyspace)
-  end
-
-  def execute cql, args
-    insert = @session.prepare(cql)
-    @session.execute(insert, arguments: args, consistency: :any)
-  end
-end
+require_relative '../../lib/tools/Model/product/product'
+require_relative '../../lib/tools/Model/product/product_batch'
+require_relative '../../lib/tools/Model/turbo_cluster'
 
 def read_product_from_file
   YAML.load_file('../all_products.yml')
