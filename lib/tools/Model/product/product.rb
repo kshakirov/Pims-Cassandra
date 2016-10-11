@@ -34,6 +34,22 @@ module TurboCassandra
       "UPDATE attribute_sets   SET attributes = [ '#{attribute_code}' ] + attributes WHERE code = '#{attribute_set_code}'"
     end
 
+    def each &block
+      result = start_iteration
+      loop do
+        result.each do |row|
+          yield row
+        end
+        break if result.last_page?
+        result = result.next_page
+      end
+    end
+
+    def  start_iteration
+      session = TurboCluster.get_session
+      session.execute("SELECT * FROM products", page_size: 5)
+    end
+
     def execute cql, args
       session = TurboCluster.get_session
       statement = session.prepare(cql)
