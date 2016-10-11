@@ -8,6 +8,8 @@ cql = %Q(CREATE TABLE  customers
             email text,
             password text,
             group_id text,
+            prefix text,
+            suffix text,
             default_billing_address map <text,text>,
             default_shipping_address map <text,text>))
 execute cql
