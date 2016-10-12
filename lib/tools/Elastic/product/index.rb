@@ -3,6 +3,7 @@ module TurboCassandra
     def initialize
       @client = Elasticsearch::Client.new(host: '10.1.3.16', log: true)
       @client.transport.reload_connections!
+      @product_mapper = EsProductMapping.new
     end
 
     def create name
@@ -15,8 +16,12 @@ module TurboCassandra
         @client.indices.delete  index: name
       end
     end
-    def put_mapping mapping
+    def put_mapping name, type
+      @client.indices.put_mapping index: name, type: type, body: @product_mapper.create
+    end
 
+    def put_critical_mapping name, type, attrs
+      @client.indices.put_mapping index: name, type: type, body: @product_mapper.create_criticals(attrs)
     end
   end
 end
