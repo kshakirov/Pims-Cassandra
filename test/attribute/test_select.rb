@@ -1,5 +1,5 @@
 require_relative 'test_helper.rb'
 attribute = TurboCassandra::Attribute.new
-p attribute.find "slpltPrborediatol"
+attr =  attribute.find "manufacturer"
+p attr
 
-p  attribute.all
