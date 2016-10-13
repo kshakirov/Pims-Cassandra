@@ -33,3 +33,11 @@ get '/frontend/menu/currency' do
   settings.menuBackEnd.get_currencies
 end
 
+get '/frontend/menu/product/featured' do
+  settings.menuBackEnd.get_featured_product
+end
+
+get '/frontend/menu/product/new' do
+  settings.menuBackEnd.get_new_product
+end
+

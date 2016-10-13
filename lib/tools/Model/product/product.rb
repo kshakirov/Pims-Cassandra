@@ -19,6 +19,10 @@ module TurboCassandra
             "VALUES (#{values})"
     end
 
+    def create_select_where_cql sku
+      "SELECT * FROM  products  WHERE sku=#{sku}"
+    end
+
     def prepare_attributes product_hash
        return prepare_names(product_hash),
            prepare_values(product_hash), prepare_args(product_hash)
@@ -45,9 +49,18 @@ module TurboCassandra
       end
     end
 
+    def find sku
+      execute_row(create_select_where_cql(sku))
+    end
+
     def  start_iteration
       session = TurboCluster.get_session
       session.execute("SELECT * FROM products", page_size: 5)
+    end
+
+    def  execute_row cql
+      session = TurboCluster.get_session
+      session.execute(cql)
     end
 
     def execute cql, args

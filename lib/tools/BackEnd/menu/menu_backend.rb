@@ -3,6 +3,9 @@ module TurboCassandra
     def initialize
       @attribute = Attribute.new
       @currency = Currency.new
+      @featured = FeaturedProduct.new
+      @new = NewProduct.new
+      @transformer = FeaturedTransformer.new
     end
 
     def normalize_list list
@@ -53,5 +56,14 @@ module TurboCassandra
     def get_currencies
       create_currency_response(@currency.all).to_json
     end
+
+    def get_featured_product
+      @transformer.get_featured_products(@featured.all).to_json
+    end
+
+    def get_new_product
+      @transformer.get_featured_products(@new.all).to_json
+    end
+
   end
 end
