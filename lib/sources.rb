@@ -1,5 +1,7 @@
 require_relative 'tools/BackEnd/menu/menu_backend'
 require_relative 'tools/BackEnd/menu/featured_transformer'
+require_relative 'tools/BackEnd/menu/catalog_manager'
+require_relative 'tools/BackEnd/menu/headers_constants'
 require_relative 'tools/Model/turbo_cluster'
 require_relative 'tools/Model/attribute'
 require_relative 'tools/Model/product/product'

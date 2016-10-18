@@ -6,6 +6,7 @@ module TurboCassandra
       @featured = FeaturedProduct.new
       @new = NewProduct.new
       @transformer = FeaturedTransformer.new
+      @catalog_manager = CatalogManager.new
     end
 
     def normalize_list list
@@ -63,6 +64,18 @@ module TurboCassandra
 
     def get_new_product
       @transformer.get_featured_products(@new.all).to_json
+    end
+
+    def get_headers
+      @catalog_manager.get_headers
+    end
+
+    def get_filters
+      @catalog_manager.get_filters
+    end
+
+    def get_sorters
+      @catalog_manager.get_sorters
     end
 
   end

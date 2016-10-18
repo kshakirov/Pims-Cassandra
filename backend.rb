@@ -41,3 +41,15 @@ get '/frontend/menu/product/new' do
   settings.menuBackEnd.get_new_product
 end
 
+get '/frontend/menu/standard/filter' do
+  settings.menuBackEnd.get_filters
+end
+
+get '/frontend/menu/standard/header' do
+  settings.menuBackEnd.get_headers
+end
+
+get '/frontend/menu/standard/sorter' do
+  settings.menuBackEnd.get_sorters
+end
+

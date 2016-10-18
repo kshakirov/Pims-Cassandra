@@ -1,7 +1,7 @@
 module TurboCassandra
   class ProductBatch
     def remove_keys product_hash
-      keys = %w( where_used service_kits bill_of_materials group_price interchanges application_detail action)
+      keys = %w( where_used service_kits bill_of_materials group_price application_detail action)
       keys.each { |k| product_hash.delete(k) }
     end
 
@@ -27,6 +27,16 @@ module TurboCassandra
 
     def remove_product_null_values product_hash
       product_hash.select{|k,v| not v.nil?}
+    end
+
+    def _prepare_interchanges interchanges
+      interchanges.split(',').map{|i| i.to_i}
+    end
+
+    def prepare_interchanges product_hash
+        unless product_hash['interchanges'].nil?
+          product_hash['interchanges'] = _prepare_interchanges(product_hash['interchanges'])
+        end
     end
 
     def _parse_critical_attributes product_hash

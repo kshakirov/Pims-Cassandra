@@ -4,6 +4,7 @@ module TurboCassandra
       @client = Elasticsearch::Client.new(host: '10.1.3.16', log: true)
       @client.transport.reload_connections!
       @product_mapper = EsProductMapping.new
+      @product_transformer = EsProductTransformer.new
     end
 
     def create name
@@ -23,5 +24,11 @@ module TurboCassandra
     def put_critical_mapping name, type, attrs
       @client.indices.put_mapping index: name, type: type, body: @product_mapper.create_criticals(attrs)
     end
+
+    def add_product product
+      document = @product_transformer.run product
+      @client.index  index: 'magento_product', type: 'product',  id: product['sku'],  body: document
+    end
+
   end
 end
