@@ -7,6 +7,8 @@ require_relative '../../../lib/tools/Elastic/product/index'
 require_relative '../../../lib/tools/Elastic/product/mapping'
 require_relative '../../../lib/tools/Elastic/product/product_transformer'
 require_relative '../../../lib/tools/Elastic/product/ti_interchange'
+require_relative '../../../lib/tools/Elastic/product/oe_ref_url'
+require_relative '../../../lib/tools/Elastic/product/utils'
 require 'minitest/autorun'
 require 'minitest/pride'
 

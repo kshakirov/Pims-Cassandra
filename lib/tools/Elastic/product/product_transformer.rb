@@ -2,6 +2,7 @@ module TurboCassandra
   class EsProductTransformer
     def initialize
       @ti_part_manager = TiInterchange.new
+      @oe_ref_url_manager = TurboCassandra::OeRefUrl.new
     end
 
     def _create_turbo_model product
@@ -41,9 +42,14 @@ module TurboCassandra
       end
     end
 
+    def add_oe_ref_url scheleton, product
+      scheleton["oe_ref_urls"] = @oe_ref_url_manager.get_oe_ref_url(product)
+    end
+
     def run product
       scheleton = _create_scheleton product
       add_ti_part(scheleton, product)
+      add_oe_ref_url(scheleton, product)
       _set_catalog_visibility(scheleton, product)
       scheleton
     end
