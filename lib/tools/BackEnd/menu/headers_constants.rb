@@ -29,6 +29,28 @@ module TurboCassandra
     ]
   end
 
+
+
+  def  self.initialize_critical_sorters
+    [
+        {
+            "name": "TI PART",
+            "code": "ti_part.ti_part_number",
+            "type": "string"
+        },
+        {
+            "name": "OE REF",
+            "code": "oe_ref_urls.part_number",
+            "type": "string"
+        },
+        {
+            "name": "PRICE",
+            "code": "price.5",
+            "type": "int"
+        }
+    ]
+  end
+
   def self.initialize_sorters
     [
         {

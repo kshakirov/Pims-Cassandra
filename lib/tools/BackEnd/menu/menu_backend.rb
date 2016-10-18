@@ -7,6 +7,7 @@ module TurboCassandra
       @new = NewProduct.new
       @transformer = FeaturedTransformer.new
       @catalog_manager = CatalogManager.new
+      @critical_catalog_manager = CriticalCatalogManager.new
     end
 
     def normalize_list list
@@ -78,5 +79,14 @@ module TurboCassandra
       @catalog_manager.get_sorters
     end
 
+    def get_critical_headers part_type_id
+        @critical_catalog_manager.get_headers(part_type_id).to_json
+    end
+    def get_critical_filters part_type_id
+      @critical_catalog_manager.get_filters(part_type_id).to_json
+    end
+    def get_critical_sorters part_type_id
+      @critical_catalog_manager.get_sorters(part_type_id).to_json
+    end
   end
 end

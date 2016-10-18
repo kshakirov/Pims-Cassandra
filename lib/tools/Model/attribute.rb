@@ -45,6 +45,10 @@ module TurboCassandra
       "SELECT * from  attributes "
     end
 
+    def create_select_where_by_set_cql
+      "SELECT * from  attributes  WHERE attribute_set=?"
+    end
+
     def insert attr_properties
         names, values, args = prepare_attributes attr_properties
         cql = create_insert_cql(names, values)
@@ -52,6 +56,10 @@ module TurboCassandra
     end
     def find code
         execute(create_select_where_cql(), [code])
+    end
+
+    def find_by_set_name name
+      execute(create_select_where_by_set_cql,[name])
     end
 
     def all

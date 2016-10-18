@@ -53,3 +53,15 @@ get '/frontend/menu/standard/sorter' do
   settings.menuBackEnd.get_sorters
 end
 
+get '/frontend/menu/critical/filter' do
+  settings.menuBackEnd.get_critical_filters(params[:part_type])
+end
+
+get '/frontend/menu/critical/header' do
+  settings.menuBackEnd.get_critical_headers(params[:part_type])
+end
+
+get '/frontend/menu/critical/sorter' do
+  settings.menuBackEnd.get_critical_sorters(params[:part_type])
+end
+
