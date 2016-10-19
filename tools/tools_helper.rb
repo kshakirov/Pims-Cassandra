@@ -1,4 +1,5 @@
 require_relative '../lib/tools/Model/attribute'
+require_relative '../lib/tools/Model/turbo_cluster'
 require 'json'
 require 'cassandra'
 require 'active_support'
@@ -13,4 +14,11 @@ def execute cql, keyspace='trash1'
   rescue Cassandra::Errors::AlreadyExistsError => e
     p ['already exists', e.keyspace, e.table]
   end
+end
+
+
+def execute_lazy cql, args
+  session = TurboCassandra::TurboCluster.get_session
+  statement = session.prepare(cql)
+  session.execute(statement, arguments: args, consistency: :one)
 end

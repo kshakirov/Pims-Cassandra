@@ -26,14 +26,19 @@ module TurboCassandra
       attrs.select{|a|  a['parent_id'].nil? and a['type']=='decimal'}
     end
 
+
+    def sub_decimal_4_price type
+      type == 'decimal' ? 'price' : type
+    end
+
     def create_response attrs
       attrs.map{|a|
           {
             code:  a['code'],
-            type: a['type'],
+            type: sub_decimal_4_price(a['type']),
             name: a['label'],
             scale: a['scale'],
-            units: a['units'],
+            units: a['unit'],
             seq_num:  a['seq_num']
           }
       }.sort{|a,b| a[:seq_num] <=> b[:seq_num]}

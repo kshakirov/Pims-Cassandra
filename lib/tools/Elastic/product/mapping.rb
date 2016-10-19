@@ -12,7 +12,8 @@ module TurboCassandra
       attr = @body[:product][:properties]
       attr[name.to_sym] = {}
       attr[name.to_sym][:properties] = {
-          code: {type: 'integer'}, name: {type: 'string', index: 'not_analyzed'}
+          code: {type: 'integer'},
+          name: {type: 'string', index: "not_analyzed"}
       }
     end
 
