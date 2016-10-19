@@ -35,10 +35,15 @@ module TurboCassandra
     end
 
     public
+
     def get_ti_interchange interchanges
       unless interchanges.nil?
       _get_ti_interchange interchanges
       end
+    end
+
+    def get_ti_itself product
+       prepare_response product
     end
   end
 end

@@ -31,6 +31,22 @@ module TurboCassandra
 
 
 
+  def  self.initialize_critical_headers
+    [
+        {
+            "name": "TI PART",
+            "code": "ti_part",
+            "type": "string"
+        },
+        {
+            "name": "OE REF",
+            "code": "oe_ref_urls",
+            "type": "string"
+        }
+    ]
+  end
+
+
   def  self.initialize_critical_sorters
     [
         {
@@ -4185,66 +4201,7 @@ module TurboCassandra
             "code": "manufacturer",
             "type": "int",
             "options": [
-                {
-                    "name": "",
-                    "option_id": "",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Garrett",
-                    "option_id": "35",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Hitachi",
-                    "option_id": "43",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Holset",
-                    "option_id": "36",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "I.H.I.",
-                    "option_id": "38",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "KKK",
-                    "option_id": "39",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Komatsu",
-                    "option_id": "42",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Mitsubishi",
-                    "option_id": "37",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Rotomaster",
-                    "option_id": "47",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Schwitzer",
-                    "option_id": "40",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Toyota",
-                    "option_id": "41",
-                    "code": "manufacturer"
-                },
-                {
-                    "name": "Turbo International",
-                    "option_id": "44",
-                    "code": "manufacturer"
-                }
+
             ]
         },
         {
@@ -4252,201 +4209,7 @@ module TurboCassandra
             "code": "part_type",
             "type": "int",
             "options": [
-                {
-                    "name": "",
-                    "option_id": "",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Actuator",
-                    "option_id": "8407",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Backplate",
-                    "option_id": "8405",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Bolt Screw",
-                    "option_id": "8411",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Carbon Seal",
-                    "option_id": "8424",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Compressor Cover",
-                    "option_id": "8408",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Fitting",
-                    "option_id": "8412",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Heatshield",
-                    "option_id": "8406",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Journal Bearing Spacer",
-                    "option_id": "8413",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Nut",
-                    "option_id": "8414",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Pin",
-                    "option_id": "8415",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Plug",
-                    "option_id": "8409",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Retaining Ring",
-                    "option_id": "8416",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Seal Plate",
-                    "option_id": "8417",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Spring",
-                    "option_id": "8418",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Thrust Bearing",
-                    "option_id": "8419",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Thrust Collar",
-                    "option_id": "8420",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Thrust Spacer",
-                    "option_id": "8421",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Thrust Washer",
-                    "option_id": "8422",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Turbine Housing",
-                    "option_id": "8410",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Washer",
-                    "option_id": "8423",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Backplate \/ Sealplate",
-                    "option_id": "70",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Bearing Housing",
-                    "option_id": "69",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Bearing Spacer",
-                    "option_id": "6613",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Cartridge",
-                    "option_id": "6609",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Clamp",
-                    "option_id": "88",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Compressor Wheel",
-                    "option_id": "68",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Gasket",
-                    "option_id": "6612",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Heatshield \/ Shroud",
-                    "option_id": "71",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Journal Bearing",
-                    "option_id": "6614",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Kit",
-                    "option_id": "6611",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Miscellaneous Minor Components",
-                    "option_id": "85",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Nozzle Ring",
-                    "option_id": "72",
-                    "code": "part_type"
-                },
-                {
-                    "name": "O Ring",
-                    "option_id": "87",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Oil Deflector",
-                    "option_id": "89",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Piston Ring",
-                    "option_id": "6615",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Thrust Parts",
-                    "option_id": "86",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Turbine Wheel",
-                    "option_id": "67",
-                    "code": "part_type"
-                },
-                {
-                    "name": "Turbo",
-                    "option_id": "6610",
-                    "code": "part_type"
-                }
+
             ]
         }
     ]

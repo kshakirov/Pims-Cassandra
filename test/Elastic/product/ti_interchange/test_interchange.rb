@@ -11,5 +11,13 @@ class TestInterchange < Minitest::Test
    ti_interchange =  @oe_ref_url.get_ti_interchange(p.first['interchanges'])
     refute_nil ti_interchange
   end
+
+  def test_ti_manufactured
+    p = @product.find 46711
+    refute_nil p.first
+    ti_interchange =  @oe_ref_url.get_ti_itself(p.first)
+    p ti_interchange
+
+  end
 end
 

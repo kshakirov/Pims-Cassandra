@@ -40,8 +40,10 @@ module TurboCassandra
     end
 
     def add_ti_part scheleton , product
-      unless is_ti_manufacturer? product
+      if not is_ti_manufacturer? product
         scheleton[:ti_part] = @ti_part_manager.get_ti_interchange(product['interchanges'])
+      else
+        scheleton[:ti_part] = @ti_part_manager.get_ti_itself(product)
       end
     end
 

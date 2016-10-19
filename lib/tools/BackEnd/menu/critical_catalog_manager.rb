@@ -46,7 +46,7 @@ module TurboCassandra
 
     public
     def initialize
-      @headers = TurboCassandra::initialize_headers
+      @headers = TurboCassandra::initialize_critical_headers
       @sorters = TurboCassandra::initialize_critical_sorters
       @filters = TurboCassandra::initialize_filters
       @attribute = Attribute.new
@@ -57,7 +57,7 @@ module TurboCassandra
     def get_headers part_type_id
       part_type_name = @part_types[part_type_id.to_i]
       attrs = get_attributes_by_part_name(part_type_name)
-      @sorters +  create_response(attrs)
+      @headers +  create_response(attrs)
     end
 
     def get_filters part_type_id
