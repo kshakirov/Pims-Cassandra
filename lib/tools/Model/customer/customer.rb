@@ -21,6 +21,10 @@ module TurboCassandra
             "VALUES (#{values})"
     end
 
+    def create_select_where_email_cql
+      "SELECT  * FROM customers  WHERE email=?"
+    end
+
     def insert hash
       names, values, args = prepare_attributes(hash)
       execute(create_insert_cql(names,values), args)
@@ -29,9 +33,12 @@ module TurboCassandra
     def find id
     end
 
+    def find_by_email email
+      c = execute(create_select_where_email_cql, [email])
+      c.first
+    end
+
     def execute cql, args
-      p cql
-      p args
       session = TurboCluster.get_session
       statement = session.prepare(cql)
       session.execute(statement, arguments: args, consistency: :one)
