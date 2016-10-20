@@ -59,7 +59,7 @@ module TurboCassandra
     end
 
     def find_by_set_name name
-      execute(create_select_where_by_set_cql,[name])
+      execute(create_select_where_by_set_cql,[name]).map{|a| a}
     end
 
     def all

@@ -10,6 +10,7 @@ set :port, 4700
 
 configure do
   set :menuBackEnd,  TurboCassandra::MenuBackEnd.new
+  set :productBackEnd,  TurboCassandra::ProductBackEnd.new
 end
 
 before do
@@ -63,5 +64,10 @@ end
 
 get '/frontend/menu/critical/sorter' do
   settings.menuBackEnd.get_critical_sorters(params[:part_type])
+end
+
+post '/frontend/product' do
+  request_payload = JSON.parse request.body.read
+  settings.productBackEnd.get_product(request_payload['sku'])
 end
 
