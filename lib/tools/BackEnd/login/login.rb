@@ -29,7 +29,15 @@ module TurboCassandra
 
     public
     def validate_password password, customer_email
-      validate_hashes(password, get_customer_hashed_pass(customer_email))
+      if validate_hashes(password, get_customer_hashed_pass(customer_email))
+        {
+            result: 'success'
+        }.to_json
+      else
+        {
+            result: 'failed'
+        }.to_json
+      end
     end
   end
 end

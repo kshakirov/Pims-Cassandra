@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'json'
 require 'cassandra'
+require 'digest'
 require_relative 'lib/sources'
 
 
@@ -11,6 +12,7 @@ set :port, 4700
 configure do
   set :menuBackEnd,  TurboCassandra::MenuBackEnd.new
   set :productBackEnd,  TurboCassandra::ProductBackEnd.new
+  set :loginBackEnd,  TurboCassandra::Login.new
 end
 
 before do
@@ -69,5 +71,11 @@ end
 post '/frontend/product' do
   request_payload = JSON.parse request.body.read
   settings.productBackEnd.get_product(request_payload['sku'])
+end
+
+
+post '/frontend/customer/login' do
+  request_payload = JSON.parse request.body.read
+  settings.loginBackEnd.validate_password(request_payload['password'], request_payload['customer_email'])
 end
 
