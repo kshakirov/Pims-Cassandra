@@ -4,34 +4,35 @@ require 'cassandra'
 require 'digest'
 require 'jwt'
 require 'yaml'
+require 'logger'
+require 'action_mailer'
 require_relative 'lib/sources'
-
-
+require_relative 'mailer'
 
 
 
 class Public < Sinatra::Base
 
-
-  def initialize
-    super
-
-    @accounts = {
-        tomdelonge: 10000,
-        markhoppus: 50000,
-        travisbarker: 1000000000
-    }
-  end
-
   set :bind, '0.0.0.0'
   set :port, 4700
-
 
   configure do
     set :menuBackEnd, TurboCassandra::MenuBackEnd.new
     set :productBackEnd, TurboCassandra::ProductBackEnd.new
     set :loginBackEnd, TurboCassandra::Login.new
   end
+
+  ActionMailer::Base.smtp_settings = {
+      :address => "smtp.office365.com",
+      :port => '587',
+      :authentication => :login,
+      :enable_starttls_auto => true,
+      :user_name => 'kyrylo.shakirov@zorallabs.com',
+       :password => '',
+  }
+  ActionMailer::Base.view_paths = 'views/'
+
+
 
   before do
     content_type :json
@@ -60,6 +61,10 @@ class Public < Sinatra::Base
 
   get '/frontend/menu/product/new' do
     settings.menuBackEnd.get_new_product
+  end
+
+  get '/frontend/menu/manufacturer/filter' do
+    settings.menuBackEnd.get_manufacturer_filters
   end
 
   get '/frontend/menu/standard/filter' do
@@ -95,6 +100,12 @@ class Public < Sinatra::Base
   post '/frontend/customer/login' do
     request_payload = JSON.parse request.body.read
     settings.loginBackEnd.validate_password(request_payload['password'], request_payload['customer_email'])
+  end
+
+  post '/frontend/customer/contact_us' do
+    request_payload = JSON.parse request.body.read
+    email = Mailer.notification request_payload
+    email.deliver
   end
 
 end
