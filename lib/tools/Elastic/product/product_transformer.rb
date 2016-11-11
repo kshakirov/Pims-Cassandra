@@ -6,6 +6,9 @@ module TurboCassandra
       @criticas_manager = TurboCassandra::CriticalDimension.new
       @manufacturer_manager = TurboCassandra::Manufacturer.new
       @part_type_manager = TurboCassandra::PartType.new
+      @visibility_manager = TurboCassandra::Visibility.new
+      @price_manager = TurboCassandra::PriceManager.new
+
     end
 
     def _create_turbo_model product
@@ -35,8 +38,8 @@ module TurboCassandra
       }
     end
 
-    def _set_catalog_visibility scheleton,  product
-      scheleton["visible_in_catalog"] = true
+    def set_catalog_visibility scheleton, product
+      scheleton["visible_in_catalog"] = @visibility_manager.get_visibility(product)
     end
 
     def add_ti_part scheleton , product
@@ -66,6 +69,13 @@ module TurboCassandra
       scheleton["part_type"] = @part_type_manager.get_part_type(product)
     end
 
+    def add_price scheleton, product
+      price = @price_manager.get_price(product)
+      unless price.nil?
+        scheleton['price'] = price
+      end
+    end
+
     def run product
       scheleton = _create_scheleton product
       add_ti_part(scheleton, product)
@@ -73,7 +83,8 @@ module TurboCassandra
       add_critical_attributes(scheleton, product)
       add_manufacturer(scheleton, product)
       add_part_type(scheleton, product)
-      _set_catalog_visibility(scheleton, product)
+      set_catalog_visibility(scheleton, product)
+      add_price(scheleton, product)
       scheleton
     end
   end
