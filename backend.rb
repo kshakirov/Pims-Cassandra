@@ -6,6 +6,11 @@ require 'jwt'
 require 'yaml'
 require 'logger'
 require 'action_mailer'
+require 'active_support'
+require 'active_support/all'
+
+require 'prawn'
+require 'prawn/table'
 require_relative 'lib/sources'
 require_relative 'mailer'
 
@@ -20,6 +25,7 @@ class Public < Sinatra::Base
     set :menuBackEnd, TurboCassandra::MenuBackEnd.new
     set :productBackEnd, TurboCassandra::ProductBackEnd.new
     set :loginBackEnd, TurboCassandra::Login.new
+    set :orderBackEnd, TurboCassandra::OrderBackEnd.new
   end
 
   ActionMailer::Base.smtp_settings = {
@@ -42,13 +48,13 @@ class Public < Sinatra::Base
     settings.menuBackEnd.get_manufacturers
   end
 
-  get '/frontend/menu/critical' do
-    settings.menuBackEnd.get_parts
-  end
-
 
   get '/frontend/menu/part' do
     settings.menuBackEnd.get_parts
+  end
+
+  get '/frontend/menu/critical' do
+    settings.menuBackEnd.get_critical_parts
   end
 
   get '/frontend/menu/currency' do
@@ -72,7 +78,7 @@ class Public < Sinatra::Base
   end
 
   get '/frontend/menu/standard/header' do
-    settings.menuBackEnd.get_headers
+    settings.menuBackEnd.get_headers(params[:part_type])
   end
 
   get '/frontend/menu/standard/sorter' do
@@ -106,6 +112,12 @@ class Public < Sinatra::Base
     request_payload = JSON.parse request.body.read
     email = Mailer.notification request_payload
     email.deliver
+  end
+
+  get '/frontend/order/:id/print' do
+    content_type 'application/pdf'
+    settings.orderBackEnd.print(params[:id].to_i)
+
   end
 
 end

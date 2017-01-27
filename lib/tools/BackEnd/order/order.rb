@@ -1,5 +1,6 @@
 module TurboCassandra
   class OrderBackEnd
+    include TurboCassandra::OrderPrint
     public
     def initialize
       @order = Order.new
@@ -8,9 +9,16 @@ module TurboCassandra
     end
 
     private
-    def _get_order id
+
+    def _get_order_by_customer_id id
       order = @order.find_by_customer_id(id)
       order.map { |o| o }
+    end
+
+
+    def _get_order_by_id id
+      order = @order.find_by_id(id)
+      order.first
     end
 
     def get_customer_data customer_id
@@ -20,7 +28,9 @@ module TurboCassandra
           customer_id: customer_id,
           data: {
               billing_address: customer_data['default_billing_address'],
-              shipping_address: customer_data['default_shipping_address']
+              shipping_address: customer_data['default_shipping_address'],
+              email: customer_data['email']
+
           }
       }
     end
@@ -63,7 +73,7 @@ module TurboCassandra
     public
 
     def get_order_by_customer_id id
-      _get_order(id).to_json
+      _get_order_by_customer_id(id).to_json
     end
 
     def create_order customer_id
@@ -76,6 +86,26 @@ module TurboCassandra
         order_data['customer_id'] = customer_id
         @order.insert order_data
         @cart.purge(customer_id)
+        order_data
+    end
+
+    def get_order order_id
+      order = _get_order_by_id (order_id)
+      order.to_json
+    end
+
+    def find order_id
+      order = _get_order_by_id (order_id)
+      order.to_json
+    end
+
+    def all customer_id
+        get_order_by_customer_id(customer_id)
+    end
+
+    def print order_id
+      order = _get_order_by_id (order_id)
+      print_order(order)
     end
   end
 end
