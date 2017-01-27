@@ -38,6 +38,12 @@ namespace :db do
       ruby "tools/schema/product/update_products_2.rb"
     end
   end
+  namespace :setup do
+      task :visitor_log do
+        ruby "tools/schema/visitor_log/create_visitor_log.rb"
+        ruby "tools/schema/visitor_log/create_customer_log.rb"
+      end
+  end
 end
 
 

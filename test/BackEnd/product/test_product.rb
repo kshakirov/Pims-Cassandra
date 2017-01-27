@@ -13,9 +13,15 @@ class TestProduct < Minitest::Test
 
   def test_ti_manufactured
 
-    pr = @order_model.get_product 44652
+    pr = @product_model.get_product 44652
     pr = JSON.parse pr
     p pr
   end
+
+  def test_get_products
+    prs = @product_model.get_products [44652,6228]
+    p prs
+  end
+
 end
 
