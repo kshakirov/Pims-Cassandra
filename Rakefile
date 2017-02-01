@@ -67,12 +67,16 @@ namespace :db do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"
       ruby "tools/fixtures/attribute_set/update_1.rb"
+      ruby "tools/fixtures/attribute_set/update_2.rb"
       ruby "tools/fixtures/customer/populate.rb"
       ruby "tools/fixtures/group_price/populate.rb"
       ruby "tools/fixtures/order/populate.rb"
       ruby "tools/fixtures/product/populate.rb"
       ruby "tools/fixtures/currency/populate.rb"
       ruby "tools/fixtures/featured_new_product/populate.rb"
+    end
+    task :attribute_set do
+      ruby "tools/fixtures/attribute_set/update_2.rb"
     end
   end
 end
