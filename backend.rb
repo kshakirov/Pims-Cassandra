@@ -147,4 +147,8 @@ class Public < Sinatra::Base
     }.to_json
   end
 
+  after do
+    response.body = JSON.dump(response.body)
+  end
+
 end

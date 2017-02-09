@@ -8,7 +8,7 @@ module TurboCassandra
     end
 
     def get_customer_info id
-      @customer.find(id).to_json
+      @customer.find(id)
     end
 
     def update data
@@ -30,12 +30,15 @@ module TurboCassandra
           name: get_name(customer),
           cart: get_cart_items_number(customer),
           wishlist: 3
-      }.to_json
+      }
     end
 
     def get_list
-      customers = @customer.find_all
-      customers.to_json
+      @customer.find_all
+    end
+
+    def get_by_email email
+      @customer.find_by_email(email)
     end
 
     private

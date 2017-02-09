@@ -49,15 +49,15 @@ module TurboCassandra
     public
 
     def get_parts
-      _get_parts.to_json
+      _get_parts
     end
 
     def get_critical_parts
-        _get_critical_parts( _get_parts, @attribute_set.find_all).to_json
+        _get_critical_parts( _get_parts, @attribute_set.find_all)
     end
 
     def get_manufacturers
-      [_get_manufacturers, _get_parts].to_json
+      [_get_manufacturers, _get_parts]
     end
 
     def create_currency_response currencies
@@ -69,15 +69,15 @@ module TurboCassandra
     end
 
     def get_currencies
-      create_currency_response(@currency.all).to_json
+      create_currency_response(@currency.all)
     end
 
     def get_featured_product
-      @transformer.get_featured_products(@featured.all).to_json
+      @transformer.get_featured_products(@featured.all)
     end
 
     def get_new_product
-      @transformer.get_featured_products(@new.all).to_json
+      @transformer.get_featured_products(@new.all)
     end
 
     def get_headers part_type
@@ -97,13 +97,13 @@ module TurboCassandra
     end
 
     def get_critical_headers part_type_id
-        @critical_catalog_manager.get_headers(part_type_id).to_json
+        @critical_catalog_manager.get_headers(part_type_id)
     end
     def get_critical_filters part_type_id
-      @critical_catalog_manager.get_filters(part_type_id).to_json
+      @critical_catalog_manager.get_filters(part_type_id)
     end
     def get_critical_sorters part_type_id
-      @critical_catalog_manager.get_sorters(part_type_id).to_json
+      @critical_catalog_manager.get_sorters(part_type_id)
     end
   end
 end

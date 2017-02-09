@@ -7,7 +7,7 @@ module TurboCassandra
     private
     public
     def get_attributes_list
-        @attribute.find_all.to_json
+        @attribute.find_all
     end
   end
   end

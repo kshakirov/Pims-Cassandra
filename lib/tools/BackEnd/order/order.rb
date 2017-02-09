@@ -73,11 +73,11 @@ module TurboCassandra
     public
 
     def get_order_by_customer_id id
-      _get_order_by_customer_id(id).to_json
+      _get_order_by_customer_id(id)
     end
 
     def create_order customer_id
-      _create_order(customer_id).to_json
+      _create_order(customer_id)
     end
 
     def save customer_id, order_data
@@ -90,13 +90,12 @@ module TurboCassandra
     end
 
     def get_order order_id
-      order = _get_order_by_id (order_id)
-      order.to_json
+       _get_order_by_id (order_id)
+
     end
 
     def find order_id
-      order = _get_order_by_id (order_id)
-      order.to_json
+       _get_order_by_id (order_id)
     end
 
     def all customer_id

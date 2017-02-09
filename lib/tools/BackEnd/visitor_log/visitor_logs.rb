@@ -43,7 +43,7 @@ module TurboCassandra
     def last5_customer id
       skus = @customer_logs.last({ :key  => 'customer_id', :value => id }).map{|cl| cl['product']}
       unless skus.nil?
-        @product_backend.get_products(skus).map{|p| {sku: p['sku'], name:  "#{p['part_type']} - #{p['part_number']}"  }}.to_json
+        @product_backend.get_products(skus).map{|p| {sku: p['sku'], name:  "#{p['part_type']} - #{p['part_number']}"  }}
       end
     end
 

@@ -11,7 +11,6 @@ class TestComparedProducts < Minitest::Test
   end
   def test_find
     products = @compared_product_model.find_by_customer(1, "W")
-    products = JSON.parse products
     assert_equal(products.size, 2)
   end
 
@@ -24,7 +23,6 @@ class TestComparedProducts < Minitest::Test
     result  = @compared_product_model.update({product: 66750, customer_id: 1})
     result  = @compared_product_model.update({product: 64690, customer_id: 1})
     products = @compared_product_model.find_by_customer(1, "W")
-    products = JSON.parse products
     assert_equal(products.size, 2)
   end
 

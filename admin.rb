@@ -13,7 +13,6 @@ class Admin < Sinatra::Base
   end
 
 
-
   before do
     content_type :json
   end
@@ -50,5 +49,14 @@ class Admin < Sinatra::Base
     request_payload = JSON.parse request.body.read
     settings.attributeSetBackEnd.update_critical_property(request_payload)
   end
+
+  put '/customer/password/' do
+
+  end
+
+  after do
+    response.body = JSON.dump(response.body)
+  end
+
 
 end

@@ -28,7 +28,7 @@ module TurboCassandra
               prices:  get_price(p['sku'], customer_group),
               critical: p['critical']
           }
-          }.to_json
+          }
         end
     end
 

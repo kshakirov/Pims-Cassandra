@@ -7,12 +7,11 @@ module TurboCassandra
     private
     public
     def get_attribute_sets_list
-      @attribute_set.find_all.to_json
+      @attribute_set.find_all
     end
 
     def get_attribute_set name, value
-      @attribute_set.find_by(name, value
-      ).to_json
+      @attribute_set.find_by(name, value)
     end
 
     def update_critical_property set

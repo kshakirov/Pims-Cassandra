@@ -90,7 +90,7 @@ module TurboCassandra
 
     public
     def get_product sku
-      _get_product(sku).to_json
+      _get_product(sku)
     end
 
     def get_products skus

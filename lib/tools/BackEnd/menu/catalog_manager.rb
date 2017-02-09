@@ -68,24 +68,24 @@ module TurboCassandra
       #TODO hardcoded turbo part tipe id needs correct way
       unless part_type=='catalog' or part_type == "1"
         last = @headers.size - 3
-        return @headers[0.. last].to_json
+        return @headers[0.. last]
       end
-        @headers.to_json
+        @headers
     end
     def get_filters
       @filters[0]['options'] = build_turbo_type_filter
       @filters[1]['options'] = build_manufacturer_filter
       @filters[2]['options'] = build_part_type_filter
-      @filters.to_json
+      @filters
     end
 
     def get_sorters
-      @sorters.to_json
+      @sorters
     end
 
     def get_manufacturer_filters
       @filters[0]['options'] = build_turbo_type_filter
-      [@filters[0]].to_json
+      [@filters[0]]
     end
 
   end

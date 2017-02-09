@@ -61,19 +61,8 @@ class Customer < Sinatra::Base
     content_type :json
   end
 
-  get '/test' do
-    scopes, customer = request.env.values_at :scopes, :customer
-    customer_name = customer
-
-    if scopes.include?('view_prices')
-      {money: customer_name}.to_json
-    else
-      halt 403
-    end
-  end
   get '/account' do
-    scopes, customer = request.env.values_at :scopes, :customer
-
+      scopes, customer = request.env.values_at :scopes, :customer
     if scopes.include?('view_prices')
       settings.customerBackEnd.get_customer_info customer['id']
     else
@@ -83,7 +72,6 @@ class Customer < Sinatra::Base
 
   get '/order' do
     scopes, customer = request.env.values_at :scopes, :customer
-
     if scopes.include?('view_prices')
       settings.orderBackEnd.get_order_by_customer_id(customer['id'])
     else
@@ -100,7 +88,7 @@ class Customer < Sinatra::Base
                                 product: sku
                             })
     price = settings.groupPriceBackEnd.get_price(sku, customer.first['group'])
-    {price: price}.to_json
+    {price: price}
 
   end
 
@@ -137,13 +125,13 @@ class Customer < Sinatra::Base
     customer_id = customer.first['id']
     request_payload = JSON.parse request.body.read
     order_data = settings.orderBackEnd.save(customer_id, request_payload)
-    customer = JSON.parse(settings.customerBackEnd.get_customer_info customer_id)
+    customer = settings.customerBackEnd.get_customer_info customer_id
     email = Mailer.place_order customer, order_data
     begin
     email.deliver
-    {order_id: order_data['order_id'], mailed: true}.to_json
+    {order_id: order_data['order_id'], mailed: true}
     rescue
-      {order_id: order_data['order_id'], mailed: false}.to_json
+      {order_id: order_data['order_id'], mailed: false}
     end
   end
 
@@ -188,6 +176,10 @@ class Customer < Sinatra::Base
   delete '/compared_product/:id' do
     customer = request.env.values_at(:customer).first
     settings.comparedProductsBackEnd.delete( customer['id'], params['id'].to_i)
+  end
+
+  after do
+    response.body = JSON.dump(response.body)
   end
 
 end
