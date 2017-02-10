@@ -10,6 +10,7 @@ class Admin < Sinatra::Base
     set :orderBackEnd, TurboCassandra::OrderBackEnd.new
     set :attributeBackEnd, TurboCassandra::AttributeBackEnd.new
     set :attributeSetBackEnd, TurboCassandra::AttributeSetBackEnd.new
+    set :adminBackEnd, TurboCassandra::AdminBackEnd.new
   end
 
 
@@ -50,8 +51,9 @@ class Admin < Sinatra::Base
     settings.attributeSetBackEnd.update_critical_property(request_payload)
   end
 
-  put '/customer/password/' do
-
+  put '/customer/password/reset/' do
+    request_payload = JSON.parse request.body.read
+    settings.adminBackEnd.reset_password(request_payload['email'])
   end
 
   after do

@@ -63,6 +63,11 @@ namespace :db do
     task :product do
       ruby "tools/fixtures/product/populate.rb"
     end
+
+    task :customer do
+      ruby "tools/fixtures/customer/populate.rb"
+    end
+
     task :all do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"

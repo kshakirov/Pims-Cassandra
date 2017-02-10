@@ -1,13 +1,15 @@
 require_relative "../test_helper"
-class TestCustomer < Minitest::Test
+class TestAdmin < Minitest::Test
 
   def setup
     @admin_backend = TurboCassandra::AdminBackEnd.new
   end
 
-  def test_get_customer_by_email
-    @admin_backend.change_password_by_email("kshakirov@zoral.com.ua")
-    p test
+  def test_change_forgotten_password
+    new_password = @admin_backend.reset_password("kshakirov@zoral.com.ua")
+    refute_nil new_password
+    assert new_password[:result]
+    assert new_password[:password].size >= 10
   end
 
 end
