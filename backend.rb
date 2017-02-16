@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra/config_file'
 require "sinatra/cookies"
 require 'json'
 require 'cassandra'
@@ -6,6 +7,7 @@ require 'digest'
 require 'jwt'
 require 'yaml'
 require 'logger'
+require "march_hare"
 require 'action_mailer'
 require 'active_support'
 require 'active_support/all'
@@ -17,10 +19,16 @@ require_relative 'mailer'
 
 
 class Public < Sinatra::Base
+  register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-
+  #set :environments, %w{development test production staging}
+  config_file 'config/config.yaml'
+  set :rabbit_queue,
+      TurboCassandra::Controller::RabbitQueue.
+          new(self.send(ENV['TURBO_MODE'])['queue_host'])
   set :bind, '0.0.0.0'
   set :port, 4700
+
 
   configure do
     set :menuBackEnd, TurboCassandra::MenuBackEnd.new
@@ -28,7 +36,9 @@ class Public < Sinatra::Base
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderBackEnd, TurboCassandra::OrderBackEnd.new
     set :logBackEnd, TurboCassandra::VisitorLogBackEnd.new
+    set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
     set :md5, Digest::MD5.new
+    set :admin_email, "kyrylo.shakirov@zorallabs.com"
   end
 
   ActionMailer::Base.smtp_settings = {
@@ -145,6 +155,11 @@ class Public < Sinatra::Base
     {
         visitor_id: SecureRandom.uuid
     }.to_json
+  end
+
+  post '/frontend/customer/password/reset/' do
+      settings.messageLogController.add_password_reset_msg(request.body.read,
+                                                    settings.admin_email)
   end
 
   after do
