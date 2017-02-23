@@ -4,7 +4,7 @@ module TurboCassandra
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new
-        @cart = Cart.new
+        @cart = TurboCassandra::API::Cart.new
         @login_manager = Login.new
       end
 
@@ -12,7 +12,7 @@ module TurboCassandra
         @customer.find_by_customer_id id
       end
 
-      def update_accout data
+      def update_account data
         @customer.update(data)
       end
 
@@ -21,7 +21,7 @@ module TurboCassandra
         if validated
           data['password'] = @login_manager.hash_password(data['password_new'])
           data.delete 'password_new'
-          update_accout(data)
+          update_account(data)
         end
         validated
       end
@@ -49,7 +49,7 @@ module TurboCassandra
       end
 
       def get_cart_items_number customer
-        cart = @cart.find_by_customer_id(customer['id'])
+        cart = @cart.find(customer['id'])
         unless cart.nil?
           cart['items'].keys.size
         end
