@@ -1,13 +1,13 @@
 module TurboCassandra
   class ElasticIndex
     include TurboCassandra::TurboTools
-    def initialize host= '10.1.3.16'
-      @client = Elasticsearch::Client.new(host: host , log: true)
+    def initialize elastic_host, tcas_host
+      @client = Elasticsearch::Client.new(host: elastic_host , log: true)
       @client.transport.reload_connections!
       @product_mapper = TurboCassandra::EsProductMapping.new
       @application_transformer = TurboCassandra::EsApplicationTransformer.new
       @application_mapper = TurboCassandra::EsApplicationMapping.new
-      @product_transformer = TurboCassandra::EsProductTransformer.new
+      @product_transformer = TurboCassandra::EsProductTransformer.new(tcas_host)
     end
 
     def create name

@@ -1,7 +1,7 @@
 require_relative '../tools_helper'
 require_relative 'tcas_client'
 
-tcas_client = TcasClient.new get_tcas_host
+tcas_client = TcasClient.new(get_tcas_host)
 product = TurboCassandra::Model::Product.new
 product_batch = TurboCassandra::API::Batch::Product.new
 product_hashes = read_product_from_file

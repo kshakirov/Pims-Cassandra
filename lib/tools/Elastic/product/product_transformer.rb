@@ -1,7 +1,7 @@
 module TurboCassandra
   class EsProductTransformer
     include TurboCassandra::TurboTools
-    def initialize
+    def initialize tcas_host
       @ti_part_manager = TiInterchange.new
       @oe_ref_url_manager = TurboCassandra::OeRefUrl.new
       @criticas_manager = TurboCassandra::CriticalDimension.new
@@ -10,7 +10,7 @@ module TurboCassandra
       @visibility_manager = TurboCassandra::Visibility.new
       @price_manager = TurboCassandra::PriceManager.new
       @application_manager = TurboCassandra::ApplicationManager.new
-      @chra_manager = TurboCassandra::TiChraManager.new
+      @chra_manager = TurboCassandra::TiChraManager.new(tcas_host)
     end
 
     def _create_turbo_model product
