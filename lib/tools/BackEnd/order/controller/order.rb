@@ -102,8 +102,12 @@ module TurboCassandra
         _get_order_by_id (order_id)
       end
 
-      def all customer_id
+      def find_all_by_customer customer_id
         get_order_by_customer_id(customer_id)
+      end
+
+      def all
+        @order.all
       end
 
       def print order_id

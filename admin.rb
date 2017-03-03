@@ -29,7 +29,7 @@ class Admin < Sinatra::Base
   end
 
   get '/customer/:id/order/' do
-    settings.orderController.all(params[:id].to_i)
+    settings.orderController.find_all_by_customer(params[:id].to_i)
   end
 
   get '/customer/order/:id' do
@@ -67,6 +67,15 @@ class Admin < Sinatra::Base
     settings.messageLogController.add_password_sent_msg(request.body.read,
                                                    settings.admin_email)
   end
+
+  get '/order/' do
+    settings.orderController.all
+  end
+
+  get '/order/:id' do
+
+  end
+
 
   after do
     response.body = JSON.dump(response.body)
