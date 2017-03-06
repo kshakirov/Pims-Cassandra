@@ -16,6 +16,18 @@ module TurboCassandra
       def all
         @order_model.find_all
       end
+      def all_shipments values = []
+        shipments = @order_model.find_all_shipments
+        unless values.empty?
+          shipments.map{|s|
+
+          }
+        end
+        shipments
+      end
+      def find_shipment_by_order_id order_id, id
+          @order_model.find_shipment_by_order_id(order_id, id)
+      end
     end
   end
 end

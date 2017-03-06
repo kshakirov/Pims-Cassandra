@@ -10,6 +10,7 @@ namespace :db do
     end
     task :order do
       ruby "tools/schema/order/update_orders_1.rb"
+      ruby "tools/schema/order/update_orders_2.rb"
     end
     task :attribute_set do
       ruby "tools/schema/attribute_set/update_attribute_sets_1.rb"
@@ -42,6 +43,9 @@ namespace :db do
       ruby "tools/schema/group_price/create_group_price.rb"
       ruby "tools/schema/order/create_orders.rb"
       ruby "tools/schema/order/add_customer_index.rb"
+      ruby "tools/schema/order/create_order_products.rb"
+      ruby "tools/schema/order/create_product_orders.rb"
+      ruby "tools/schema/order/create_shipments.rb"
     end
     task :visitor_log do
       ruby "tools/schema/visitor_log/create_visitor_log.rb"
@@ -58,6 +62,11 @@ namespace :db do
       ruby "tools/schema/order/create_order_products.rb"
       ruby "tools/schema/order/create_product_orders.rb"
     end
+
+    task :shipment do
+      ruby "tools/schema/order/create_shipments.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:visitor_log'].execute
@@ -78,6 +87,11 @@ namespace :db do
     task :order do
       ruby "tools/fixtures/order/populate.rb"
     end
+
+    task :shipment do
+      ruby "tools/fixtures/order/shipments_populate.rb"
+    end
+
     task :all do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"
@@ -86,6 +100,7 @@ namespace :db do
       ruby "tools/fixtures/customer/populate.rb"
       ruby "tools/fixtures/group_price/populate.rb"
       ruby "tools/fixtures/order/populate.rb"
+      ruby "tools/fixtures/order/shipments_populate.rb"
       ruby "tools/fixtures/product/populate.rb"
       ruby "tools/fixtures/currency/populate.rb"
       ruby "tools/fixtures/featured_new_product/populate.rb"
