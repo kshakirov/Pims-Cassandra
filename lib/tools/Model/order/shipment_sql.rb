@@ -12,6 +12,10 @@ module TurboCassandra
         "SELECT #{names} FROM shipments where order_id = ? and id = ?"
       end
 
+      def shipment_select_where_id_cql names="*"
+        "SELECT #{names} FROM shipments where order_id = ?"
+      end
+
     end
   end
 end

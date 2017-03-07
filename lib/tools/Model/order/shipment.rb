@@ -19,6 +19,15 @@ module TurboCassandra
           shipment.first
         end
       end
+
+      def find_shipment_only_by_order_id order_id
+        shipments = execute_query_inconsistent(shipment_select_where_id_cql,
+                                              [order_id])
+        unless shipments.nil?
+          shipments.map{|shipment| shipment}
+        end
+      end
+
     end
   end
 end

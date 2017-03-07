@@ -120,6 +120,11 @@ module TurboCassandra
         @order.find_shipment_by_order_id(order_id, id)
       end
 
+      def find_shipment_only_by_order_id params
+        order_id = params['order_id'].to_i
+        @order.find_shipment_only_by_order_id(order_id)
+      end
+
       def print order_id
         order = _get_order_by_id (order_id)
         print_order(order)
