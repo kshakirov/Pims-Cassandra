@@ -18,10 +18,6 @@ require_relative 'lib/sources'
 require_relative 'mailer'
 
 
-
-
-
-
 class Public < Sinatra::Base
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
@@ -138,7 +134,6 @@ class Public < Sinatra::Base
   end
 
 
-
   get '/frontend/product/viewed' do
     if cookies[:visitorid]
       settings.logBackEnd.last5_visitor(cookies[:visitorid].gsub('"', ''))
@@ -158,15 +153,14 @@ class Public < Sinatra::Base
   end
 
   post '/frontend/customer/password/reset/' do
-      settings.messageLogController.add_password_reset_msg(request.body.read,
-                                                    settings.admin_email)
+    settings.messageLogController.add_password_reset_msg(request.body.read,
+                                                         settings.admin_email)
   end
 
   post '/frontend/customer/new/' do
     settings.messageLogController.add_new_customer_msg(request.body.read,
-                                                         settings.admin_email)
+                                                       settings.admin_email)
   end
-
 
 
   after  do

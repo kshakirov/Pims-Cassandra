@@ -13,6 +13,7 @@ class Admin < Sinatra::Base
     set :adminController, TurboCassandra::Controller::Admin.new
     set :messageLogController,TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
     set :admin_email, "kyrylo.shakirov@zorallabs.com"
+    set :productController, TurboCassandra::Controller::Product.new
   end
 
 
@@ -84,8 +85,12 @@ class Admin < Sinatra::Base
     settings.orderController.find_shipment_only_by_order_id(params)
   end
 
-  get '/order/:id' do
+  post '/product/paginate/' do
+    settings.productController.paginate_products(request.body.read)
+  end
 
+  get '/product/:id' do
+    settings.productController.get_admin_product(params)
   end
 
 

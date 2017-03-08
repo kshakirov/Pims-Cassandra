@@ -13,6 +13,9 @@ module TurboCassandra
         def each &block
           @product_model.each &block
         end
+        def paginate paging_state, page_size
+            @product_model.paginate paging_state, page_size
+        end
 
     end
   end

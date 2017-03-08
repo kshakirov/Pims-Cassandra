@@ -39,6 +39,12 @@ module TurboCassandra
         statement = session.prepare(cql)
         session.execute(statement, arguments: args)
       end
+
+      def execute_paginate table='products', paging_state, page_size
+        session = TurboCluster.get_session
+        session.execute("SELECT * FROM #{table}", page_size: page_size, paging_state: paging_state )
+      end
+
     end
   end
 end

@@ -25,6 +25,13 @@ class TestProduct < Minitest::Test
   def test_controller_get_products
     products = @product_controller.get_products [1, 64958]
     refute_nil products
+    products.to_json
+  end
+
+  def test_controller_paginated
+    body = {'paging_state' => nil}
+    products = @product_controller.paginate_products  body.to_json
+    refute_nil products
   end
 
 end

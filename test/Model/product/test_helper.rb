@@ -4,6 +4,5 @@ require 'logger'
 require 'cassandra'
 require 'active_support'
 require 'active_support/all'
-require_relative '../../../lib/tools/Model/product/product'
-require_relative '../../../lib/tools/Model/turbo_cluster'
+require_relative '../../../lib/sources'
 ENV['TURBO_MODE'] = "test"

@@ -4,6 +4,7 @@ module TurboCassandra
       attr_accessor :product_api
       include TurboCassandra::Controller::CriticalDims
       include TurboCassandra::Controller::TiPart
+      include Pagination
       public
       def initialize
         @product_api = TurboCassandra::API::Product.new
@@ -47,6 +48,12 @@ module TurboCassandra
       def get_products skus
         _get_products(skus)
       end
+
+      def get_admin_product(params)
+        sku = params['id']
+        _get_product(sku)
+      end
+
     end
   end
 end
