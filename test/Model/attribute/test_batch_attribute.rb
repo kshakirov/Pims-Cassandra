@@ -3,9 +3,9 @@ require_relative 'test_helper'
 
 class TestAttributeBatch < Minitest::Test
   def setup
-    @attribute_batch = TurboCassandra::AttributeBatch.new
+    @attribute_batch = TurboCassandra::Model::AttributeBatch.new
     @attributes = read_attributes_from_file
-    @attribute = TurboCassandra::Attribute.new
+    @attribute = TurboCassandra::Model::Attribute.new
 
   end
   def test_adopt

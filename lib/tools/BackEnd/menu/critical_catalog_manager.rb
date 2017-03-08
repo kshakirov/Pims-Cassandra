@@ -49,7 +49,7 @@ module TurboCassandra
       @headers = TurboCassandra::initialize_critical_headers
       @sorters = TurboCassandra::initialize_critical_sorters
       @filters = TurboCassandra::initialize_filters
-      @attribute = Attribute.new
+      @attribute = TurboCassandra::API::Attribute.new
       @part_types = get_part_types
     end
 

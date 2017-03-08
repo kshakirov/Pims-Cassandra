@@ -8,7 +8,7 @@ module TurboCassandra
       public
       def initialize
         @product_api = TurboCassandra::API::Product.new
-        @attribute = Attribute.new
+        @attribute = TurboCassandra::API::Attribute.new
       end
 
       private

@@ -8,7 +8,7 @@ class Admin < Sinatra::Base
     set :product_controller, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
-    set :attributeBackEnd, TurboCassandra::AttributeBackEnd.new
+    set :attributeController, TurboCassandra::Controller::Attribute.new
     set :attributeSetBackEnd, TurboCassandra::AttributeSetBackEnd.new
     set :adminController, TurboCassandra::Controller::Admin.new
     set :messageLogController,TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
@@ -38,7 +38,11 @@ class Admin < Sinatra::Base
   end
 
   get '/attribute/' do
-    settings.attributeBackEnd.get_attributes_list
+    settings.attributeController.find_all
+  end
+
+  get '/attribute/:code' do
+    settings.attributeController.find_by_code(params)
   end
 
   get '/attribute_set/' do

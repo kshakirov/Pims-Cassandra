@@ -2,7 +2,7 @@ module TurboCassandra
   class PartType
     public
     def initialize
-      attribute = Attribute.new
+      attribute = TurboCassandra::API::Attribute.new
       @part_types = attribute.find('part').first['options']
     end
     private

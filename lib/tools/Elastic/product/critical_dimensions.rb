@@ -2,7 +2,7 @@ module TurboCassandra
   class CriticalDimension
     public
     def initialize
-      attribute = Attribute.new
+      attribute = TurboCassandra::API::Attribute.new
       @attributes = attribute.all
     end
 

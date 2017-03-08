@@ -2,7 +2,7 @@ module TurboCassandra
   class CatalogManager
     public
     def initialize
-      @attribute = Attribute.new
+      @attribute = TurboCassandra::API::Attribute.new
       @headers = TurboCassandra::initialize_headers
       @sorters = TurboCassandra::initialize_sorters
       @filters = TurboCassandra::initialize_filters

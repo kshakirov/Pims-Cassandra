@@ -1,7 +1,7 @@
 require_relative '../tools_helper.rb'
 
-attribute_batch = TurboCassandra::AttributeBatch.new
-attribute = TurboCassandra::Attribute.new
+attribute_batch = TurboCassandra::Model::AttributeBatch.new
+attribute = TurboCassandra::Model::Attribute.new
 attrs = read_attributes_from_file
 
 attrs.each do |attr|
