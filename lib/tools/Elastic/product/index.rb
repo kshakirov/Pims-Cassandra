@@ -2,7 +2,7 @@ module TurboCassandra
   class ElasticIndex
     include TurboCassandra::TurboTools
     def initialize elastic_host, tcas_host
-      @client = Elasticsearch::Client.new(host: elastic_host , log: true)
+      @client = Elasticsearch::Client.new(host: elastic_host , log: false)
       @client.transport.reload_connections!
       @product_mapper = TurboCassandra::EsProductMapping.new
       @application_transformer = TurboCassandra::EsApplicationTransformer.new
