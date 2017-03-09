@@ -5,9 +5,6 @@ module TurboCassandra
       def initialize
         @attribute = TurboCassandra::Model::Attribute.new
       end
-
-      private
-      public
       def find_all
         @attribute.find_all
       end
@@ -19,6 +16,9 @@ module TurboCassandra
       end
       def all
         @attribute.all
+      end
+      def find_by_codes codes
+        @attribute.find_by_codes codes
       end
     end
   end

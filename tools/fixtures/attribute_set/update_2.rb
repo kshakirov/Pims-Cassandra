@@ -1,5 +1,5 @@
 require_relative '../tools_helper'
-attr_set = TurboCassandra::AttributeSet.new
+attr_set = TurboCassandra::Model::AttributeSet.new
 sets = attr_set.find_all
 sets.each do |s|
   if s['attributes'] and s['attributes'].size > 0

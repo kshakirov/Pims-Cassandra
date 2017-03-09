@@ -12,7 +12,6 @@ class TestAttributeBatch < Minitest::Test
     result  = @attribute_batch.adopt_hash @attributes[0]
     refute_nil result
     names, values, args = @attribute.insert result
-   # assert_equal args.size, names.size
   end
 
 

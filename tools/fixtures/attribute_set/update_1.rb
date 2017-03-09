@@ -1,6 +1,6 @@
 require_relative '../tools_helper'
 
-attr_set = TurboCassandra::AttributeSet.new
+attr_set = TurboCassandra::Model::AttributeSet.new
 attributes = read_attributes_from_file
 attributes.each do |a|
   attribute_set_code = a['attribute_set'].gsub(' ','').underscore

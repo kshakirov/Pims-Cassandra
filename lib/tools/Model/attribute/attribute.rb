@@ -13,6 +13,12 @@ module TurboCassandra
         execute(create_select_where_cql(), [code])
       end
 
+      def find_by_codes codes
+        values = prepare_values codes
+        res = execute(create_select_where_in_cql(values), codes)
+        res.map{|r| r}
+      end
+
       def find_by_set_name name
         execute(create_select_where_by_set_cql, [name]).map { |a| a }
       end

@@ -92,6 +92,16 @@ namespace :db do
       ruby "tools/fixtures/order/shipments_populate.rb"
     end
 
+    task :attribute do
+      ruby "tools/fixtures/attribute/populate.rb"
+    end
+
+    task :attribute_set do
+      ruby "tools/fixtures/attribute_set/populate.rb"
+      ruby "tools/fixtures/attribute_set/update_1.rb"
+      ruby "tools/fixtures/attribute_set/update_2.rb"
+    end
+
     task :all do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"

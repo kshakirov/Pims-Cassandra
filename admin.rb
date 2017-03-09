@@ -9,7 +9,7 @@ class Admin < Sinatra::Base
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
     set :attributeController, TurboCassandra::Controller::Attribute.new
-    set :attributeSetBackEnd, TurboCassandra::AttributeSetBackEnd.new
+    set :attributeSetController, TurboCassandra::Controller::AttributeSet.new
     set :adminController, TurboCassandra::Controller::Admin.new
     set :messageLogController,TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
     set :admin_email, "kyrylo.shakirov@zorallabs.com"
@@ -45,17 +45,21 @@ class Admin < Sinatra::Base
     settings.attributeController.find_by_code(params)
   end
 
+  post '/attribute/list/' do
+    settings.attributeController.find_by_codes(request.body.read)
+  end
+
   get '/attribute_set/' do
-    settings.attributeSetBackEnd.get_attribute_sets_list
+    settings.attributeSetController.get_attribute_sets_list
   end
 
   get '/attribute_set/:code' do
-    settings.attributeSetBackEnd.get_attribute_set('code', params[:code])
+    settings.attributeSetController.get_attribute_set('code', params[:code])
   end
 
   post '/attribute_set/' do
     request_payload = JSON.parse request.body.read
-    settings.attributeSetBackEnd.update_critical_property(request_payload)
+    settings.attributeSetController.update_critical_property(request_payload)
   end
 
   put '/customer/password/reset/' do

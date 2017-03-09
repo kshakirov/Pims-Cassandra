@@ -27,7 +27,11 @@ module TurboCassandra
       end
 
       def create_select_where_cql
-        "SELECT * from  attributes  WHERE code=?"
+        "SELECT * from  attributes  WHERE code = ?"
+      end
+
+      def create_select_where_in_cql values
+        "SELECT * from  attributes  WHERE code IN (#{values})"
       end
 
       def select_all_cql

@@ -2,7 +2,7 @@ module TurboCassandra
   class MenuBackEnd
     def initialize
       @attribute = TurboCassandra::API::Attribute.new
-      @attribute_set = AttributeSet.new
+      @attribute_set = TurboCassandra::API::AttributeSet.new
       @currency = Currency.new
       @featured = FeaturedProduct.new
       @new = NewProduct.new
