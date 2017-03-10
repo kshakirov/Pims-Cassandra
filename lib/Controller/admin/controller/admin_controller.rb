@@ -46,12 +46,14 @@ module TurboCassandra
         @login_manager = Login.new
       end
 
-      def reset_password email
-        _reset_password email
+      def reset_password body
+        params = JSON.parse body
+        _reset_password params['email']
       end
 
-      def create_new_customer email
-        _create_new_customer email
+      def create_new_customer body
+        params = JSON.parse body
+        _create_new_customer params['email']
       end
 
       def create_new_customer_by_admin body

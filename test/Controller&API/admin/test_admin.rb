@@ -12,7 +12,8 @@ class TestAdmin < Minitest::Test
   end
 
   def test_change_forgotten_password
-    new_password = @admin_controller.reset_password("kirill.shakirov4@gmail.com")
+    body = {'email' => "kirill.shakirov4@gmail.com"}
+    new_password = @admin_controller.reset_password body.to_json
     refute_nil new_password
     assert new_password[:result]
     assert new_password[:password].size >= 10

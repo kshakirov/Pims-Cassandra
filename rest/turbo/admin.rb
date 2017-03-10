@@ -64,13 +64,11 @@ class Admin < Sinatra::Base
   end
 
   put '/customer/password/reset/' do
-    request_payload = JSON.parse request.body.read
-    settings.adminController.reset_password(request_payload['email'])
+    settings.adminController.reset_password(request.body.read)
   end
 
   put '/customer/new/' do
-    request_payload = JSON.parse request.body.read
-    settings.adminController.create_new_customer(request_payload['email'])
+    settings.adminController.create_new_customer(request.body.read)
   end
 
   post '/customer/new/' do
