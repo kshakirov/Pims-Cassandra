@@ -67,6 +67,10 @@ class Admin < Sinatra::Base
     settings.adminController.reset_password(request.body.read)
   end
 
+  put '/customer/:id/order/new/' do
+    settings.adminController.create_order(params)
+  end
+
   put '/customer/new/' do
     settings.adminController.create_new_customer(request.body.read)
   end

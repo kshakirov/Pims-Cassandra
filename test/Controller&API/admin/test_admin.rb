@@ -37,5 +37,10 @@ class TestAdmin < Minitest::Test
     assert_equal(response['action'], 'new')
   end
 
+  def test_create_order
+    response = @admin_controller.create_order({'id' => 12 })
+    refute_nil response
+  end
+
 
 end

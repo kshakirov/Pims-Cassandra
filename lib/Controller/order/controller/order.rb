@@ -6,26 +6,26 @@ module TurboCassandra
       include AlsoBought
       public
       def initialize
-        @order = TurboCassandra::API::Order.new
-        @customer = TurboCassandra::API::Customer.new
-        @cart = TurboCassandra::API::Cart.new
+        @order_api = TurboCassandra::API::Order.new
+        @customer_api = TurboCassandra::API::Customer.new
+        @cart_api = TurboCassandra::API::Cart.new
       end
 
       private
 
       def _get_order_by_customer_id id
-        order = @order.find_by_customer_id(id)
+        order = @order_api.find_by_customer_id(id)
         order.map { |o| o }
       end
 
 
       def _get_order_by_id id
-        order = @order.find_by_id(id)
+        order = @order_api.find_by_id(id)
         order.first
       end
 
       def get_customer_data customer_id
-        customer_data = @customer.find_by_customer_id customer_id
+        customer_data = @customer_api.find_by_customer_id customer_id
         {
             order_id: 1,
             customer_id: customer_id,
@@ -55,7 +55,7 @@ module TurboCassandra
 
 
       def get_cart_data customer_id
-        @cart.find(customer_id)
+        @cart_api.find(customer_id)
       end
 
       def add_cart_info cart
@@ -84,12 +84,12 @@ module TurboCassandra
       end
 
       def save customer_id, order_data
-        next_id = @order.get_next_order_id
+        next_id = @order_api.get_next_order_id
         order_data['order_id'] = next_id + 1
         order_data['customer_id'] = customer_id
-        @order.insert order_data
-        @cart.empty_cart(customer_id)
-        @order.register_also_bought_products(order_data)
+        @order_api.insert order_data
+        @cart_api.empty_cart(customer_id)
+        @order_api.register_also_bought_products(order_data)
         order_data
       end
 
@@ -107,22 +107,22 @@ module TurboCassandra
       end
 
       def all
-        @order.all
+        @order_api.all
       end
 
       def all_shipments
-        @order.all_shipments
+        @order_api.all_shipments
       end
 
       def find_shipment_by_order_id params
         order_id = params['order_id'].to_i
         id = params['id'].to_i
-        @order.find_shipment_by_order_id(order_id, id)
+        @order_api.find_shipment_by_order_id(order_id, id)
       end
 
       def find_shipment_only_by_order_id params
         order_id = params['order_id'].to_i
-        @order.find_shipment_only_by_order_id(order_id)
+        @order_api.find_shipment_only_by_order_id(order_id)
       end
 
       def print order_id

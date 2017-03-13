@@ -124,6 +124,7 @@ module TurboCassandra
       def purge customer_id
         cart = find_by_customer_id(customer_id)
         execute(create_update_product_item_sql, [{}, cart['id']])
+        true
       end
 
       def count_items customer_id

@@ -1,13 +1,16 @@
 module TurboCassandra
   module Controller
     class Admin
-      include TurboCassandra::AdminCustomerAddress
+      attr_accessor :customer_api, :order_controller
+      include TurboCassandra::Controller::Utils
+      include AdminCustomerAddress
       include AdminCustomerPassword
       include AdminCustomerRespose
+      include AdminCustomerOrder
       private
 
       def get_customer_by_email email
-        @customer.find_by_email email
+        @customer_api.find_by_email email
       end
 
       def search_customer email
@@ -29,7 +32,7 @@ module TurboCassandra
 
       def create_base customer_data
         password = create_password(customer_data)
-        customer_data['cid'] = @customer.new(customer_data)
+        customer_data['cid'] = @customer_api.new(customer_data)
         respond_with_customer(customer_data, password)
       end
 
@@ -41,8 +44,10 @@ module TurboCassandra
 
       public
       def initialize
-        @customer = TurboCassandra::API::Customer.new
-        @cart = Cart.new
+        @customer_api = TurboCassandra::API::Customer.new
+        @order_controller = TurboCassandra::Controller::Order.new
+        @order_api = TurboCassandra::API::Order.new
+        @cart_api = TurboCassandra::API::Cart.new
         @login_manager = Login.new
       end
 
@@ -64,7 +69,7 @@ module TurboCassandra
       end
 
       def delete id
-        @customer.delete(id)
+        @customer_api.delete(id)
       end
     end
   end

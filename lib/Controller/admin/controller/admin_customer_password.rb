@@ -9,7 +9,7 @@ module TurboCassandra
 
       def respond_with_password customer
         new_password = create_password(customer)
-        @customer.update(customer)
+        @customer_api.update(customer)
         {
             "result": true,
             "password": new_password
