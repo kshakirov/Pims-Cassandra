@@ -43,6 +43,7 @@ namespace :db do
       Rake::Task['db:migrate:attribute_set'].execute
       Rake::Task['db:migrate:product'].execute
       Rake::Task['db:migrate:customer'].execute
+      Rake::Task['db:migrate:featured_product'].execute
     end
   end
   namespace :setup do
