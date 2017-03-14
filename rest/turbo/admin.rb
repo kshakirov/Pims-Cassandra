@@ -5,6 +5,7 @@ class Admin < Sinatra::Base
 
   configure do
     set :customerController, TurboCassandra::Controller::Customer.new
+    set :featuredProductController, TurboCassandra::Controller::FeaturedProduct.new
     set :product_controller, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
@@ -112,6 +113,22 @@ class Admin < Sinatra::Base
     settings.groupPriceController.get_prices(params)
   end
 
+  get '/featured_product/' do
+    settings.featuredProductController.get_admin_list
+  end
+
+  get '/featured_product/:id' do
+    settings.featuredProductController.add_product params
+  end
+
+  delete '/featured_product/:id' do
+    settings.featuredProductController.delete_product params
+  end
+
+  post '/featured_product/' do
+    settings.featuredProductController.update_featured_product(
+                                                               request.body.read)
+  end
 
   after do
     response.body = JSON.dump(response.body)

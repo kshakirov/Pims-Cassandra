@@ -23,7 +23,8 @@ module TurboCassandra
       end
 
       def where skus
-        execute_query(create_select_where_in_cql(prepare_values(skus)), skus)
+        products = execute_query(create_select_where_in_cql(prepare_values(skus)), skus)
+        products.map{|p| p}
       end
 
       def start_iteration

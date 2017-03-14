@@ -32,6 +32,10 @@ namespace :db do
       ruby "tools/schema/customer/add_email_index.rb"
     end
 
+    task :featured_product do
+      ruby "tools/schema/featured_product/update_featured_products.rb"
+    end
+
     task :all do
       Rake::Task['db:migrate:currency'].execute
       Rake::Task['db:migrate:attribute'].execute

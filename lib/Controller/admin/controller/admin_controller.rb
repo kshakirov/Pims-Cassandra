@@ -1,7 +1,7 @@
 module TurboCassandra
   module Controller
     class Admin
-      attr_accessor :customer_api, :order_controller
+      attr_accessor :customer_api, :order_controller, :order_api, :cart_api
       include TurboCassandra::Controller::Utils
       include AdminCustomerAddress
       include AdminCustomerPassword
@@ -48,6 +48,7 @@ module TurboCassandra
         @order_controller = TurboCassandra::Controller::Order.new
         @order_api = TurboCassandra::API::Order.new
         @cart_api = TurboCassandra::API::Cart.new
+        @featured_api = TurboCassandra::API::Cart.new
         @login_manager = Login.new
       end
 

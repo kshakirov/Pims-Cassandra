@@ -30,7 +30,7 @@ class Public < Sinatra::Base
 
 
   configure do
-    set :menuBackEnd, TurboCassandra::MenuBackEnd.new
+    set :menuController, TurboCassandra::Controller::Menu.new
     set :productController, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
@@ -56,56 +56,56 @@ class Public < Sinatra::Base
   end
 
   get '/frontend/menu/manufacturer' do
-    settings.menuBackEnd.get_manufacturers
+    settings.menuController.get_manufacturers
   end
 
 
   get '/frontend/menu/part' do
-    settings.menuBackEnd.get_parts
+    settings.menuController.get_parts
   end
 
   get '/frontend/menu/critical' do
-    settings.menuBackEnd.get_critical_parts
+    settings.menuController.get_critical_parts
   end
 
   get '/frontend/menu/currency' do
-    settings.menuBackEnd.get_currencies
+    settings.menuController.get_currencies
   end
 
   get '/frontend/menu/product/featured' do
-    settings.menuBackEnd.get_featured_product
+    settings.menuController.get_featured_product
   end
 
   get '/frontend/menu/product/new' do
-    settings.menuBackEnd.get_new_product
+    settings.menuController.get_new_product
   end
 
   get '/frontend/menu/manufacturer/filter' do
-    settings.menuBackEnd.get_manufacturer_filters
+    settings.menuController.get_manufacturer_filters
   end
 
   get '/frontend/menu/standard/filter' do
-    settings.menuBackEnd.get_filters
+    settings.menuController.get_filters
   end
 
   get '/frontend/menu/standard/header' do
-    settings.menuBackEnd.get_headers(params[:part_type])
+    settings.menuController.get_headers(params[:part_type])
   end
 
   get '/frontend/menu/standard/sorter' do
-    settings.menuBackEnd.get_sorters
+    settings.menuController.get_sorters
   end
 
   get '/frontend/menu/critical/filter' do
-    settings.menuBackEnd.get_critical_filters(params[:part_type])
+    settings.menuController.get_critical_filters(params[:part_type])
   end
 
   get '/frontend/menu/critical/header' do
-    settings.menuBackEnd.get_critical_headers(params[:part_type])
+    settings.menuController.get_critical_headers(params[:part_type])
   end
 
   get '/frontend/menu/critical/sorter' do
-    settings.menuBackEnd.get_critical_sorters(params[:part_type])
+    settings.menuController.get_critical_sorters(params[:part_type])
   end
 
   post '/frontend/product' do
