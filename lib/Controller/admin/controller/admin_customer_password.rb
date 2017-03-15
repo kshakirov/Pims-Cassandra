@@ -7,6 +7,10 @@ module TurboCassandra
         new_password
       end
 
+      def create_password_from password
+        @login_manager.hash_password(password)
+      end
+
       def respond_with_password customer
         new_password = create_password(customer)
         @customer_api.update(customer)
@@ -23,6 +27,13 @@ module TurboCassandra
         else
           respond_with_not_found
         end
+      end
+
+      def _change_password email, password
+        customer = search_customer(email)
+        customer['password'] = create_password_from(password)
+        @customer_api.update(customer)
+        true
       end
 
     end

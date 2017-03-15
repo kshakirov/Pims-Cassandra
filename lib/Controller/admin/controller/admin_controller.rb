@@ -57,6 +57,11 @@ module TurboCassandra
         _reset_password params['email']
       end
 
+      def change_password body
+        body = JSON.parse body
+        _change_password body['email'], body['password']
+      end
+
       def create_new_customer body
         params = JSON.parse body
         _create_new_customer params['email']

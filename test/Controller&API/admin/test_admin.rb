@@ -42,5 +42,11 @@ class TestAdmin < Minitest::Test
     refute_nil response
   end
 
+  def test_change_password
+    body = {'email' => "kirill.shakirov4@gmail.com", 'password' => 'test2'}
+    res  = @admin_controller.change_password body.to_json
+    assert res
+  end
+
 
 end
