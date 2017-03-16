@@ -32,13 +32,15 @@ module TurboCassandra
       end
 
 
-      def get_ti_part interchanges
-        tis = get_interchanged_products(interchanges)
-        tis = tis.select { |i| is_ti_product?(i) }
+      def get_ti_part_admin interchanges
+        unless interchanges.nil?
+          tis = get_interchanged_products(interchanges)
+          tis = tis.select { |i| is_ti_product?(i) }
+        end
       end
 
       def process_non_ti_part product, customer_group_id
-        ti_part = get_ti_part(product['interchanges'])
+        ti_part = get_ti_part_admin(product['interchanges'])
         if not ti_part.nil? and ti_part.first
           ti_part = ti_part.first
           price = @group_price_api.find_by_sku_group_id(ti_part['sku'], customer_group_id)
@@ -55,9 +57,9 @@ module TurboCassandra
       end
 
       def get_product_with_price sku, customer_group_id
-        product =  @product_api.find_by_sku(sku).first
+        product = @product_api.find_by_sku(sku).first
         price = @group_price_api.find_by_sku_group_id(sku, customer_group_id)
-        return  product, price
+        return product, price
       end
 
       def _get_admin_product_with_price sku, customer_group_id
