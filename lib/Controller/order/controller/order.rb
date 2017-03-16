@@ -4,6 +4,8 @@ module TurboCassandra
       attr_accessor :order
       include OrderPrint
       include AlsoBought
+      include OrderAdminCreate
+
       public
       def initialize
         @order_api = TurboCassandra::API::Order.new
@@ -45,10 +47,12 @@ module TurboCassandra
               name: value['ti_part'],
               part_type: value['part_type'],
               oem_part: value['oem_part'] || '',
-              qty_ordered: value['qty'].to_s,
-              qty_shipped: 0.to_s,
-              base_row_total: value['subtotal'].to_s,
-              base_price_incl_tax: value['unit_price'].to_s,
+              quantity: value['qty'].to_s,
+              row_total: value['subtotal'].to_s,
+              subtotal: value['subtotal'].to_s,
+              original_price: value['unit_price'].to_s,
+              price: value['unit_price'].to_s,
+              item_status: 'Ordered'
           }
         }
       end
@@ -129,6 +133,12 @@ module TurboCassandra
         order = _get_order_by_id (order_id)
         print_order(order)
       end
+
+      def  create_order_by_admin body
+          order_data = JSON.parse body
+        _create_order_by_admin order_data
+      end
+
     end
   end
 end

@@ -72,8 +72,8 @@ class Admin < Sinatra::Base
     settings.adminController.change_password(request.body.read)
   end
 
-  put '/customer/:id/order/new/' do
-    settings.adminController.create_order(params)
+  post '/customer/:id/order/new/' do
+    settings.orderController.create_order_by_admin(request.body.read)
   end
 
   put '/customer/new/' do
@@ -111,6 +111,10 @@ class Admin < Sinatra::Base
 
   get '/product/:id' do
     settings.productController.get_admin_product(params)
+  end
+
+  get '/customer/group/:customer_group_id/product/:id' do
+    settings.productController.get_admin_prouct_with_price(params)
   end
 
   get '/price/:id/group/' do

@@ -34,5 +34,17 @@ class TestProduct < Minitest::Test
     refute_nil products
   end
 
+  def test_admin_product_price
+    body = {'customer_group_id' => '2', 'id' => 64690 }
+    products = @product_controller.get_admin_prouct_with_price body
+    refute_nil products
+  end
+
+  def test_admin_product_non_ti
+    body = {'customer_group_id' => '2', 'id' => 840 }
+    products = @product_controller.get_admin_prouct_with_price body
+    refute_nil products
+  end
+
 end
 
