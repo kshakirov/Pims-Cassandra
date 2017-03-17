@@ -1,7 +1,7 @@
 module TurboCassandra
   module Controller
     class Order
-      attr_accessor :order
+      attr_accessor :order_api
       include OrderPrint
       include AlsoBought
       include OrderAdminCreate

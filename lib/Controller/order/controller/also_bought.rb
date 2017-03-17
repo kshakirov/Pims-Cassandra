@@ -11,7 +11,7 @@ module TurboCassandra
       end
 
       def _get_also_bought_products sku
-        products = @order.get_also_bought_products(sku)
+        products = @order_api.get_also_bought_products(sku)
         products.delete_if{|p| p['sku'] == sku}
         products.map do  |p|
           {
