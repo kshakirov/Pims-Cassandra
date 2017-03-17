@@ -32,6 +32,10 @@ module TurboCassandra
       def find_shipment_only_by_order_id order_id
         @order_model.find_shipment_only_by_order_id(order_id)
       end
+
+      def  get_also_bought_products sku
+        _get_also_bought_products sku
+      end
     end
   end
 end

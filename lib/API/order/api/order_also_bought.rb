@@ -49,7 +49,7 @@ module TurboCassandra
         register_order_product(order_data)
       end
 
-      def get_also_bought_products sku
+      def _get_also_bought_products sku
         orders = @order_model.find_orders_by_product sku
         order_ids = map_orders_from_products(orders)
         @order_model.find_products_by_order(order_ids)
