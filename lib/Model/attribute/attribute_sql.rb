@@ -25,6 +25,10 @@ module TurboCassandra
       def create_select_where_by_set_cql
         "SELECT * from  attributes  WHERE attribute_set=?"
       end
+
+      def create_update_option code, option
+        "Update  attributes SET options = ['#{option}']   WHERE code= '#{code}' "
+      end
     end
   end
 end

@@ -4,6 +4,7 @@ module TurboCassandra
       class Attribute
         include AttributeCreate
         include AttributeGet
+        include AttributeAddOption
         attr_accessor :attribute_api
         def initialize
           @attribute_api = TurboCassandra::API::Attribute.new
@@ -26,6 +27,12 @@ module TurboCassandra
         def get params
           attribute_code = params['attribute_code']
           _get(attribute_code)
+        end
+
+        def add_option  params, body
+            option = JSON.parse body
+            attribute_code = params['attribute_code']
+          _add_option(attribute_code, option)
         end
       end
     end

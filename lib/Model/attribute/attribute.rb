@@ -36,6 +36,9 @@ module TurboCassandra
         execute_query(create_delete_where_cql, [code])
         true
       end
+      def update_option  code, option
+            execute_query(create_update_option(code, option),[])
+      end
     end
   end
 end

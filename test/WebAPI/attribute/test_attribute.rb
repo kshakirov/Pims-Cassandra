@@ -33,10 +33,11 @@ class TestAttribute < Minitest::Test
     assert_equal 0, result
   end
 
-  def test_i_2_bool
-    result  = @attribute_web_api.bool_2_i true
-    assert_equal 1, result
-
+  def test_add_option
+    body =  IO.read('options.json')
+    params = {'attribute_code' => 'pimsOptions' }
+    @attribute_web_api.add_option params, body
   end
+
 
 end

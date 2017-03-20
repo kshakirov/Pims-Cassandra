@@ -8,7 +8,7 @@ namespace :db do
   end
 
   namespace :migrate do
-    task :currency do
+    task :currency_api do
       ruby "tools/schema/currency/update_currencies_1.rb"
       ruby "tools/schema/currency/update_currencies_2.rb"
     end
@@ -81,6 +81,10 @@ namespace :db do
       ruby "tools/schema/order/create_shipments.rb"
     end
 
+    task :currency_history do
+      ruby "tools/schema/currency/create_currency_history.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:visitor_log'].execute
@@ -88,6 +92,7 @@ namespace :db do
       Rake::Task['db:setup:message_log'].execute
       Rake::Task['db:setup:order_product'].execute
       Rake::Task['db:setup:shipment'].execute
+      Rake::Task['db:setup:currency_history'].execute
     end
   end
 

@@ -30,6 +30,10 @@ class WebAPI < Sinatra::Base
     settings.attributeWebAPI.create(request.body.read)
   end
 
+  post '/pims/products/attributes/:attribute_code/options' do
+    settings.attributeWebAPI.add_option(params, request.body.read)
+  end
+
   post '/integration/admin/token' do
     "testingToken333"
   end

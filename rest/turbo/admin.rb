@@ -5,6 +5,7 @@ class Admin < Sinatra::Base
 
   configure do
     set :customerController, TurboCassandra::Controller::Customer.new
+    set :currencyController, TurboCassandra::Controller::Currency.new
     set :featuredProductController, TurboCassandra::Controller::FeaturedProduct.new
     set :product_controller, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
@@ -136,6 +137,14 @@ class Admin < Sinatra::Base
   post '/featured_product/' do
     settings.featuredProductController.update_featured_product(
                                                                request.body.read)
+  end
+
+  get '/currency/current' do
+    settings.currencyController.all
+  end
+
+  post '/currency/current' do
+    settings.currencyController.update_all( request.body.read)
   end
 
   after do

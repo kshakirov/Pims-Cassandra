@@ -4,7 +4,7 @@ module TurboCassandra
       def initialize
         @attribute = TurboCassandra::API::Attribute.new
         @attribute_set = TurboCassandra::API::AttributeSet.new
-        @currency = Currency.new
+        @currency_api = TurboCassandra::API::Currency.new
         @new_product_api = TurboCassandra::API::NewProduct.new
         @featured_product_api = TurboCassandra::API::FeaturedProduct.new
         @catalog_manager = CatalogManager.new
@@ -70,7 +70,7 @@ module TurboCassandra
       end
 
       def get_currencies
-        create_currency_response(@currency.all)
+        create_currency_response(@currency_api.all)
       end
 
       def get_featured_product

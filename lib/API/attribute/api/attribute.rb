@@ -27,6 +27,9 @@ module TurboCassandra
       def delete code
           @attribute_model.delete code
       end
+      def update_attribute code, option
+        @attribute_model.update_option(code, option)
+      end
     end
   end
 end
