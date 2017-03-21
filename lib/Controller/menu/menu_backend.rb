@@ -3,7 +3,7 @@ module TurboCassandra
     class Menu
       def initialize
         @attribute = TurboCassandra::API::Attribute.new
-        @attribute_set = TurboCassandra::API::AttributeSet.new
+        @attribute_set_api = TurboCassandra::API::AttributeSet.new
         @currency_api = TurboCassandra::API::Currency.new
         @new_product_api = TurboCassandra::API::NewProduct.new
         @featured_product_api = TurboCassandra::API::FeaturedProduct.new
@@ -54,7 +54,7 @@ module TurboCassandra
       end
 
       def get_critical_parts
-        _get_critical_parts(_get_parts, @attribute_set.find_all)
+        _get_critical_parts(_get_parts, @attribute_set_api.find_all)
       end
 
       def get_manufacturers

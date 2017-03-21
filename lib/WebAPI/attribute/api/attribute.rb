@@ -34,6 +34,7 @@ module TurboCassandra
             attribute_code = params['attribute_code']
           _add_option(attribute_code, option)
         end
+
       end
     end
   end

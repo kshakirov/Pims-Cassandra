@@ -12,7 +12,6 @@ module TurboCassandra
 
       def get_attribute_set name, value
         attribute_set = @attribute_set.find_by(name, value)
-        attribute_set.first
       end
 
       def update_critical_property set

@@ -5,6 +5,7 @@ class WebAPI < Sinatra::Base
 
   configure do
     set :attributeWebAPI, TurboCassandra::WebAPI::Attribute::Attribute.new
+    set :attributeSetWebAPI, TurboCassandra::WebAPI::AttributeSet::AttributeSet.new
     set :attributeTypeWebAPI, TurboCassandra::WebAPI::AttributeType::AttributeType.new
 
   end
@@ -36,6 +37,27 @@ class WebAPI < Sinatra::Base
 
   post '/integration/admin/token' do
     "testingToken333"
+  end
+
+  post '/products/attribute-sets' do
+      settings.attributeSetWebAPI.create(request.body.read)
+  end
+
+
+  post '/products/attribute-sets/attributes' do
+    settings.attributeSetWebAPI.add_attribute(request.body.read)
+  end
+
+  delete '/products/attribute-sets/:attributeSetId' do
+    settings.attributeSetWebAPI.delete(params)
+  end
+
+  get '/products/attribute-sets/:attributeSetId' do
+    settings.attributeSetWebAPI.get(params)
+  end
+
+  get '/products/attribute-sets/list' do
+    settings.attributeSetWebAPI.list
   end
 
   after do

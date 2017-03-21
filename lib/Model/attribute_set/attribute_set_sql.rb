@@ -17,6 +17,10 @@ module TurboCassandra
         "SELECT * FROM  attribute_sets"
       end
 
+      def delete_by_code_cql
+        "DELETE  FROM  attribute_sets WHERE code=?"
+      end
+
       def select_by_cql name
         "SELECT * FROM  attribute_sets WHERE #{name} = ?"
       end
