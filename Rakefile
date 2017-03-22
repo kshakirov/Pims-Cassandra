@@ -55,6 +55,16 @@ namespace :db do
       ruby "tools/schema/order/create_orders.rb"
     end
 
+    task :pims_attribute do
+      ruby "tools/schema/attribute/create_attributes.rb"
+      ruby "tools/schema/attribute/add_attribute_set_index.rb"
+    end
+
+    task :pims_attribute_set do
+      ruby "tools/schema/attribute_set/create_attribute_sets.rb"
+      ruby "tools/schema/attribute_set/update_attribute_sets_1.rb"
+    end
+
     task :new_product do
       ruby "tools/schema/new_product/create_new_products.rb"
     end

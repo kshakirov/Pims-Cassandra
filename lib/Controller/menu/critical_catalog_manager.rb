@@ -3,8 +3,10 @@ module TurboCassandra
     private
     def get_part_types
       attr = @attribute.find 'part'
-      options = attr.first['options']
-      create_part_type_hash(options)
+      if attr.first
+        options = attr.first['options']
+        create_part_type_hash(options)
+      end
     end
 
     def normalize_list list
