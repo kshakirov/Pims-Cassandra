@@ -1,21 +1,23 @@
 class Admin < Sinatra::Base
 
   use JwtAuth
-  set :rabbit_queue,  TurboCassandra::Controller::RabbitQueue.new("localhost")
+  set :rabbit_queue, TurboCassandra::Controller::RabbitQueue.new("localhost")
 
   configure do
     set :customerController, TurboCassandra::Controller::Customer.new
     set :currencyController, TurboCassandra::Controller::Currency.new
     set :featuredProductController, TurboCassandra::Controller::FeaturedProduct.new
+    set :newProductController, TurboCassandra::Controller::NewProduct.new
     set :product_controller, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
     set :attributeController, TurboCassandra::Controller::Attribute.new
     set :attributeSetController, TurboCassandra::Controller::AttributeSet.new
     set :adminController, TurboCassandra::Controller::Admin.new
-    set :messageLogController,TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
+    set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
     set :admin_email, "kyrylo.shakirov@zorallabs.com"
     set :productController, TurboCassandra::Controller::Product.new
+    set :productCreatedAtController, TurboCassandra::Controller::ProductCreatedAt.new
     set :groupPriceController, TurboCassandra::Controller::GroupPrice.new
   end
 
@@ -87,7 +89,7 @@ class Admin < Sinatra::Base
 
   post '/message/' do
     settings.messageLogController.add_password_sent_msg(request.body.read,
-                                                   settings.admin_email)
+                                                        settings.admin_email)
   end
 
   get '/order/' do
@@ -107,7 +109,7 @@ class Admin < Sinatra::Base
   end
 
   post '/product/paginate/' do
-    settings.productController.paginate_products(request.body.read)
+    settings.productCreatedAtController.where(request.body.read)
   end
 
   get '/product/:id' do
@@ -126,8 +128,16 @@ class Admin < Sinatra::Base
     settings.featuredProductController.get_admin_list
   end
 
+  get '/new_product/' do
+    settings.newProductController.get_admin_list
+  end
+
   get '/featured_product/:id' do
     settings.featuredProductController.add_product params
+  end
+
+  get '/new_product/:id' do
+    settings.newProductController.add_product params
   end
 
   delete '/featured_product/:id' do
@@ -136,7 +146,16 @@ class Admin < Sinatra::Base
 
   post '/featured_product/' do
     settings.featuredProductController.update_featured_product(
-                                                               request.body.read)
+        request.body.read)
+  end
+
+  delete '/new_product/:id' do
+    settings.newProductController.delete_product params
+  end
+
+  post '/new_product/' do
+    settings.newProductController.update_new_product(
+        request.body.read)
   end
 
   get '/currency/current' do
@@ -144,7 +163,7 @@ class Admin < Sinatra::Base
   end
 
   post '/currency/current' do
-    settings.currencyController.update_all( request.body.read)
+    settings.currencyController.update_all(request.body.read)
   end
 
   after do

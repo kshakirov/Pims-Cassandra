@@ -3,7 +3,7 @@ module TurboCassandra
     include TurboTools
     public
     def initialize
-      @group_price = TurboCassandra::GroupPrice.new
+      @group_price = TurboCassandra::Model::GroupPrice.new
     end
 
     private

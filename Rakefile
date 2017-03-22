@@ -24,10 +24,6 @@ namespace :db do
     task :attribute_set do
       ruby "tools/schema/attribute_set/update_attribute_sets_1.rb"
     end
-    task :product do
-      ruby "tools/schema/product/add_interchange_column.rb"
-      ruby "tools/schema/product/update_products_2.rb"
-    end
     task :customer do
       ruby "tools/schema/customer/add_email_index.rb"
     end
@@ -41,7 +37,6 @@ namespace :db do
       Rake::Task['db:migrate:attribute'].execute
       Rake::Task['db:migrate:order'].execute
       Rake::Task['db:migrate:attribute_set'].execute
-      Rake::Task['db:migrate:product'].execute
       Rake::Task['db:migrate:customer'].execute
       Rake::Task['db:migrate:featured_product'].execute
     end
@@ -54,13 +49,24 @@ namespace :db do
       ruby "tools/schema/attribute_set/create_attribute_sets.rb"
       ruby "tools/schema/currency/create_currencies.rb"
       ruby "tools/schema/featured_product/create_featured_products.rb"
-      ruby "tools/schema/new_product/create_new_products.rb"
-      ruby "tools/schema/product/create_products.rb"
       ruby "tools/schema/customer/create_customers.rb"
       ruby "tools/schema/cart/create_carts.rb"
       ruby "tools/schema/group_price/create_group_price.rb"
       ruby "tools/schema/order/create_orders.rb"
     end
+
+    task :new_product do
+      ruby "tools/schema/new_product/create_new_products.rb"
+    end
+
+    task :product do
+      ruby "tools/schema/product/create_products.rb"
+    end
+
+    task :product_created_at do
+      ruby "tools/schema/product/product_created_at/create_product_created_at.rb"
+    end
+
     task :visitor_log do
       ruby "tools/schema/visitor_log/create_visitor_log.rb"
       ruby "tools/schema/visitor_log/create_customer_log.rb"
@@ -91,8 +97,10 @@ namespace :db do
       Rake::Task['db:setup:compared_products'].execute
       Rake::Task['db:setup:message_log'].execute
       Rake::Task['db:setup:order_product'].execute
+      Rake::Task['db:setup:product'].execute
       Rake::Task['db:setup:shipment'].execute
       Rake::Task['db:setup:currency_history'].execute
+      Rake::Task['db:setup:new_product'].execute
     end
   end
 

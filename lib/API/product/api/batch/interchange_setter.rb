@@ -2,6 +2,7 @@ module TurboCassandra
   module API
     module Batch
       module Interchange
+
         def _prepare_interchanges interchanges
           interchanges.map { |i| i['id'].to_i }
         end

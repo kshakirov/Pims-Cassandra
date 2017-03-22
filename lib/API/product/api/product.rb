@@ -16,6 +16,9 @@ module TurboCassandra
         def paginate paging_state, page_size
             @product_model.paginate paging_state, page_size
         end
+        def create product_hash
+          @product_model.insert product_hash
+        end
 
     end
   end

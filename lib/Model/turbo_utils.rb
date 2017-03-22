@@ -23,6 +23,10 @@ module TurboCassandra
             prepare_values(hash), prepare_args(hash)
       end
 
+      def prepare_ins list
+        list.map { |v| "'#{v.to_s}'" }.join(",")
+      end
+
       def prepare_attributes! attr_properties
         properties = remove_null_values(attr_properties)
         return prepare_names(properties), prepare_values(properties), prepare_args(properties)

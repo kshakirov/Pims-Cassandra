@@ -1,9 +1,34 @@
 module TurboCassandra
   module API
     class NewProduct
+
+      private
+      def sort products, new_ids
+        new_ids.map do |ni|
+          index = products.find_index{|p| p['sku'] == ni}
+          products[index]
+        end
+      end
+      public
       def initialize
-        @product_backend = TurboCassandra::Controller::Product.new
         @new_product_model = TurboCassandra::Model::NewProduct.new
+        @product_api = TurboCassandra::API::Product.new
+      end
+
+      def all
+        @new_product_model.all
+      end
+
+      def create product_data
+        @new_product_model.insert product_data
+      end
+
+      def delete sku
+        @new_product_model.delete sku
+      end
+
+      def update product
+        @new_product_model.update product
       end
 
       def _get_scheleton product
@@ -26,9 +51,12 @@ module TurboCassandra
 
       def get_new_products
         new_product_ids = @new_product_model.all
-        products = @product_backend.get_products(new_product_ids.map { |f| f['sku'] })
+        new_product_ids = new_product_ids.map { |n| n['sku'] }
+        products = @product_api.where_skus(new_product_ids)
+        products = sort(products, new_product_ids)
         _create_response(products)
       end
     end
+
   end
 end
