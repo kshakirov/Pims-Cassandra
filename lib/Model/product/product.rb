@@ -19,7 +19,10 @@ module TurboCassandra
       end
 
       def find sku
-        execute_query(create_select_where_cql, sku)
+        product = execute_query(create_select_where_cql, sku)
+        unless product.nil?
+          product.first
+        end
       end
 
       def where skus
@@ -46,8 +49,9 @@ module TurboCassandra
         }
       end
 
-
-
+      def delete sku
+          execute_query(create_delete_cql, [sku])
+      end
     end
   end
 end
