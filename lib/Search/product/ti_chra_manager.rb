@@ -1,21 +1,10 @@
 module TurboCassandra
 
-  class TiChraManager
-    def initialize  tcas_server
-        @tcas_server = "http://" +  tcas_server + "/attrsreader"
-    end
+  module TiChraManager
     private
+
     def has_ti_chra? product
       product['has_ti_chra']
-    end
-
-    def query_bom_service sku
-      response = RestClient.get(@tcas_server +  "/product/#{sku}/bom/")
-      begin
-        JSON.parse response.body
-      rescue
-        []
-      end
     end
 
     def _get_ti_chra product

@@ -1,23 +1,28 @@
 require_relative "../test_helper"
 class TestInterchange < Minitest::Test
   def setup
-    @product = TurboCassandra::Product.new
-    @oe_ref_url = TurboCassandra::TiInterchange.new
+    @product_api = TurboCassandra::API::Product.new
+    tcas_host = get_tcas_host
+    @product_transformer = TurboCassandra::EsProductTransformer.new(tcas_host)
   end
 
-  def test_non_ti_interchange
-    p = @product.find  42875
-    refute_nil p.first
-   ti_interchange =  @oe_ref_url.get_ti_interchange(p.first['interchanges'])
-    refute_nil ti_interchange
+  def test_external_manufacturer
+    product = @product_api.find_by_sku 44758
+    elastic_product = @product_transformer.run product
+    refute_nil elastic_product
+
   end
 
-  def test_ti_manufactured
-    p = @product.find 46711
-    refute_nil p.first
-    ti_interchange =  @oe_ref_url.get_ti_itself(p.first)
-    p ti_interchange
+  def test_external_manufacturer_yes
+    product = @product_api.find_by_sku 45070
+    elastic_product = @product_transformer.run product
+    refute_nil elastic_product
+  end
 
+  def test_external_manufacturer_no
+    product = @product_api.find_by_sku 30160
+    elastic_product = @product_transformer.run product
+    refute_nil elastic_product
   end
 end
 

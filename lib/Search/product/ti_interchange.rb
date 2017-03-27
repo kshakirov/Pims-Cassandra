@@ -1,16 +1,11 @@
 module TurboCassandra
-  class TiInterchange
-    public
-    def initialize
-      @product = TurboCassandra::API::Product.new
-    end
+  module TiInterchange
 
     private
-
     def prepare_response product
       {
-          ti_part: product['sku'],
-          ti_sku: product['sku'],
+          ti_part: product['id'] || product['sku'],
+          ti_sku: product['id'] || product['sku'],
           ti_url: "/#/part/sku",
           ti_part_number: product['part_number'],
           ti_part_number_clean: product['part_number'].gsub('-','').downcase
@@ -23,12 +18,12 @@ module TurboCassandra
       end
     end
 
-    def _get_ti_interchange intgerchanges
+    def _get_ti_interchange product
       response  = nil
-      intgerchanges.select do |sku|
-       product = @product.find_by_sku  sku
-       if is_ti_manufactured(product)
-          response = prepare_response(product)
+      interchanges = query_interchange_service product['sku']
+      interchanges.select do |interchange|
+       if is_ti_manufactured(interchange)
+          response = prepare_response(interchange)
        end
       end
       response
@@ -36,9 +31,9 @@ module TurboCassandra
 
     public
 
-    def get_ti_interchange interchanges
-      unless interchanges.nil?
-      _get_ti_interchange interchanges
+    def get_ti_interchange product
+      unless product.nil?
+      _get_ti_interchange product
       end
     end
 

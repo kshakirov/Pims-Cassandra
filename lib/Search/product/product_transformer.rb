@@ -1,16 +1,22 @@
 module TurboCassandra
   class EsProductTransformer
+    attr_accessor :product_api, :tcas_server
     include TurboCassandra::TurboTools
-    def initialize tcas_host
-      @ti_part_manager = TiInterchange.new
-      @oe_ref_url_manager = TurboCassandra::OeRefUrl.new
+    include TurboCassandra::NotExternalManufacturer
+    include TurboCassandra::Visibility
+    include TurboCassandra::OeRefUrl
+    include TurboCassandra::TcasService
+    include TurboCassandra::TiChraManager
+    include TurboCassandra::TiInterchange
+
+    def initialize tcas_server
+      @product_api = TurboCassandra::API::Product.new
       @criticas_manager = TurboCassandra::CriticalDimension.new
       @manufacturer_manager = TurboCassandra::Manufacturer.new
       @part_type_manager = TurboCassandra::PartType.new
-      @visibility_manager = TurboCassandra::Visibility.new
       @price_manager = TurboCassandra::PriceManager.new
       @application_manager = TurboCassandra::ApplicationManager.new
-      @chra_manager = TurboCassandra::TiChraManager.new(tcas_host)
+      @tcas_server = "http://" +  tcas_server + "/attrsreader"
     end
 
     def _create_turbo_model product
@@ -29,7 +35,7 @@ module TurboCassandra
       product['manufacturer'] == 'Turbo International'
     end
 
-    def _create_scheleton product
+    def _create_skeleton product
       {
           description: product['description'],
           name: product['name'],
@@ -40,82 +46,85 @@ module TurboCassandra
       }
     end
 
-    def set_catalog_visibility scheleton, product
-      scheleton["visible_in_catalog"] = @visibility_manager.get_visibility(product)
+    def set_catalog_visibility skeleton, product
+      skeleton["visible_in_catalog"] = get_visibility(product)
     end
 
-    def add_ti_part scheleton, product
+    def add_ti_part skeleton, product
       if not is_ti_manufacturer? product
-        scheleton[:ti_part] = @ti_part_manager.get_ti_interchange(product['interchanges'])
+        skeleton[:ti_part] = get_ti_interchange(product)
+        if is_not_external_manufacturer? product
+          add_hidden_part(product, skeleton)
+        end
       else
-        scheleton[:ti_part] = @ti_part_manager.get_ti_itself(product)
+        skeleton[:ti_part] = get_ti_itself(product)
       end
     end
 
-    def add_oe_ref_url scheleton, product
-      scheleton["oe_ref_urls"] = @oe_ref_url_manager.get_oe_ref_url(product)
+    def add_oe_ref_url skeleton, product
+      skeleton["oe_ref_urls"] = get_oe_ref_url(skeleton, product)
     end
 
-    def add_critical_attributes scheleton, product
+    def add_critical_attributes skeleton, product
       criticals = @criticas_manager.get_critical_dimensions product
       unless criticals.nil?
-        scheleton.merge!(criticals)
+        skeleton.merge!(criticals)
       end
     end
 
-    def add_manufacturer scheleton, product
-      scheleton["manufacturer"] = @manufacturer_manager.get_manufacturer(product)
+    def add_manufacturer skeleton, product
+      skeleton["manufacturer"] = @manufacturer_manager.get_manufacturer(product)
     end
 
-    def add_part_type scheleton, product
-      scheleton["part_type"] = @part_type_manager.get_part_type(product)
+    def add_part_type skeleton, product
+      skeleton["part_type"] = @part_type_manager.get_part_type(product)
     end
 
-    def add_price scheleton, product
+    def add_price skeleton, product
       price = @price_manager.get_price(product)
       unless price.nil?
-        scheleton['price'] = price
+        skeleton['price'] = price
       end
     end
 
-    def add_cartridge_price scheleton
-      price = @price_manager.get_cartridge_price(scheleton['ti_chra'])
+    def add_cartridge_price skeleton
+      price = @price_manager.get_cartridge_price(skeleton['ti_chra'])
       unless price.nil?
-        scheleton['price'] = price
+        skeleton['price'] = price
       end
     end
 
-    def set_application scheleton, product
-      scheleton['application'] = @application_manager.get_application(product)
+    def set_application skeleton, product
+      skeleton['application'] = @application_manager.get_application(product)
     end
 
-    def add_chras scheleton, product
-      scheleton['ti_chra']= @chra_manager.get_ti_chra(product)
-      scheleton['chra']= @chra_manager.get_foreign_chra(product)
+    def add_chras skeleton, product
+      skeleton['ti_chra']= get_ti_chra(product)
+      skeleton['chra']= get_foreign_chra(product)
     end
 
-    def add_na_chras scheleton, product
-      scheleton['ti_chra']= @chra_manager.get_na_chra(product)
-      scheleton['chra']= @chra_manager.get_na_chra(product)
+    def add_na_chras skeleton, product
+      skeleton['ti_chra']= get_na_chra(product)
+      skeleton['chra']= get_na_chra(product)
     end
 
     def run product
-      scheleton = _create_scheleton product
-      add_ti_part(scheleton, product)
-      add_oe_ref_url(scheleton, product)
-      add_critical_attributes(scheleton, product)
-      add_manufacturer(scheleton, product)
-      add_part_type(scheleton, product)
-      set_catalog_visibility(scheleton, product)
-      set_application(scheleton, product)
-      add_price(scheleton, product)
+      skeleton = _create_skeleton product
+      add_ti_part(skeleton, product)
+      add_oe_ref_url(skeleton, product)
+      add_critical_attributes(skeleton, product)
+      add_manufacturer(skeleton, product)
+      add_part_type(skeleton, product)
+      set_catalog_visibility(skeleton, product)
+      set_application(skeleton, product)
+      add_price(skeleton, product)
       if is_turbo? product
-          add_chras(scheleton, product)
-          add_cartridge_price(scheleton)
+          add_chras(skeleton, product)
+          add_cartridge_price(skeleton)
       else
-          add_na_chras(scheleton, product)
+          add_na_chras(skeleton, product)
       end
-      scheleton
+      skeleton
     end
   end
 end

@@ -1,22 +1,23 @@
 require_relative "../test_helper"
 class TestTiChra < Minitest::Test
   def setup
-    @product = TurboCassandra::Product.new
-    @chra_handler = TurboCassandra::TiChraManager.new
+    @product_api = TurboCassandra::API::Product.new
+    tcas_host = get_tcas_host
+    @product_transformer = TurboCassandra::EsProductTransformer.new(tcas_host)
   end
 
   def test_ti_chra
-    p = @product.find 68157
-    refute_nil p.first
-    ti_chra = @chra_handler.get_ti_chra p.first
-    refute_nil ti_chra
+    product = @product_api.find_by_sku 68157
+    refute_nil product
+    elastic_product = @product_transformer.get_ti_chra product
+    refute_nil elastic_product
   end
 
   def test_foreign_chra
-    p = @product.find 19191
-    refute_nil p.first
-    ti_chra = @chra_handler.get_foreign_chra p.first
-    refute_nil ti_chra
+    product = @product_api.find_by_sku 19191
+    refute_nil product
+    elastic_product = @product_transformer.get_foreign_chra product
+    refute_nil elastic_product
   end
 
 

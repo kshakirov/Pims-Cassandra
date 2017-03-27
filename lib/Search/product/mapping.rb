@@ -56,6 +56,13 @@ module TurboCassandra
       }
     end
 
+    def _create_not_external
+      @body[:product][:properties][:not_external_part_number] = {
+          type: 'string',
+          index: 'not_analyzed'
+      }
+    end
+
     def _create_critical_mapping critical_attributes
       critical_attributes.each do |attribute|
         type = attribute['options']['type'];
@@ -106,6 +113,7 @@ module TurboCassandra
       _create_standard_attr_mapping
       _create_oe_ref_attr_mapping
       _create_ti_part_mapping
+      _create_not_external
       @body
     end
 
