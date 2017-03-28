@@ -5,8 +5,8 @@ module TurboCassandra
       product['part_type'] == 'Turbo'
     end
 
-    def has_ti_chra? product
-      product['has_ti_chra']
+    def has_ti_chra_not_external? product
+      product['has_ti_chra'] and (not is_not_external_manufacturer?(product))
     end
 
     def is_ti_manufactured? product
@@ -35,7 +35,7 @@ module TurboCassandra
 
     def get_visibility product
       if is_turbo?(product)
-        has_ti_chra?(product)
+        has_ti_chra_not_external?(product)
       else
         check_other(product)
       end

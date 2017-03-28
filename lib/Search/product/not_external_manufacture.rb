@@ -8,7 +8,9 @@ module TurboCassandra
     end
 
     def add_hidden_part product, skeleton
-      skeleton[:not_external_part_number] = product['part_number']
+      if product['part_number'].class.name == 'String'
+        skeleton[:not_external_part_number] = product['part_number'].downcase
+      end
     end
   end
 end

@@ -2,33 +2,38 @@ require_relative "../test_helper"
 
 class TestVisibility < Minitest::Test
   def setup
-    @product = TurboCassandra::Product.new
-    @visibility_manager = TurboCassandra::Visibility.new
+    @product_api = TurboCassandra::API::Product.new
+    tcas_host = get_tcas_host
+    @product_transformer = TurboCassandra::EsProductTransformer.new(tcas_host)
   end
 
   def test_not_turbo
-    # with ti interchangeinterchange and  notti manufactured
-    p = @product.find  44765
-    visibility = @visibility_manager.get_visibility(p.first)
-     assert visibility
+    product = @product_api.find_by_sku 44765
+    elastiic_product = @product_transformer.run(product)
+    assert elastiic_product['visible_in_catalog']
   end
 
   def test_not_turbo_2
-    # without ti  interchange and  not ti manufactured
-    p = @product.find  5636
-    visibility = @visibility_manager.get_visibility(p.first)
-    assert_equal false,  visibility
+    product = @product_api.find_by_sku 5636
+    elastiic_product = @product_transformer.run(product)
+    assert_equal false, elastiic_product['visible_in_catalog']
   end
 
   def test_turbo_without_ti_chra
-    p = @product.find  6700
-    visibility = @visibility_manager.get_visibility(p.first)
-    assert_equal false,  visibility
+    product = @product_api.find_by_sku 6700
+    elastiic_product = @product_transformer.run(product)
+    assert_equal false, elastiic_product['visible_in_catalog']
   end
 
   def test_turbo_with_ti_chra
-    p = @product.find  19191
-    visibility = @visibility_manager.get_visibility(p.first)
-    assert_equal true,  visibility
+    product = @product_api.find_by_sku 19191
+    elastiic_product = @product_transformer.run(product)
+    assert_equal true, elastiic_product['visible_in_catalog']
+  end
+
+  def test_ti_chra_not_external
+    product = @product_api.find_by_sku 67802
+    elastiic_product = @product_transformer.run(product)
+    assert_equal false, elastiic_product['visible_in_catalog']
   end
 end
