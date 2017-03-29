@@ -62,9 +62,9 @@ class Customer < Sinatra::Base
   end
 
   get '/account' do
-    scopes, customer = request.env.values_at :scopes, :customer
-    if scopes.include?('view_prices')
-      settings.customerController.get_account customer['id']
+    scopes = request.env.values_at :scopes
+    if  scopes.first.include?('view_prices')
+      settings.customerController.get_account(request.env.values_at(:customer))
     else
       halt 403
     end
@@ -100,6 +100,11 @@ class Customer < Sinatra::Base
     settings.cartController.get_products_count(request.env.values_at :customer)
   end
 
+  put '/cart/currency' do
+    settings.cartController.set_currency(request.env.values_at(:customer),
+                                                               request.body.read)
+  end
+
   post '/cart/product' do
     settings.cartController.add_product_to_cart(
         request.env.values_at(:customer), request.body.read)
@@ -127,10 +132,8 @@ class Customer < Sinatra::Base
 
   post '/order/save' do
     customer = request.env.values_at :customer
-    customer_id = customer.first['id']
-    request_payload = JSON.parse request.body.read
-    order_data = settings.orderController.save(customer_id, request_payload)
-    customer = settings.customerController.get_account customer_id
+    order_data = settings.orderController.save(request.env.values_at(:customer), request.body.read)
+    customer = settings.customerController.get_account(customer)
     email = Mailer.place_order customer, order_data
     begin
       email.deliver

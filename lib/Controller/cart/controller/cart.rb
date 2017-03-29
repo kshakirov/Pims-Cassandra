@@ -42,6 +42,12 @@ module TurboCassandra
         }
       end
 
+      def set_currency customer_data, body
+        body = JSON.parse body
+        customer_id = get_customer_id(customer_data)
+         @cart_api.set_currency customer_id, body['currency']
+      end
+
     end
   end
 end

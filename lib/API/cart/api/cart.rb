@@ -11,6 +11,10 @@ module TurboCassandra
         @cart_model.find_by_customer_id(customer_id)
       end
 
+      def set_currency customer_id, currency
+        @cart_model.update_currency customer_id, currency
+      end
+
       def_delegator :@cart_model, :add_product, :add_product
       def_delegator :@cart_model, :delete_product, :delete_product
       def_delegator :@cart_model, :purge, :empty_cart

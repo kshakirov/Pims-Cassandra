@@ -1,16 +1,18 @@
 module TurboCassandra
   module Controller
     class Order
-      attr_accessor :order_api
+      attr_accessor :order_api, :currency_api
       include OrderPrint
       include AlsoBought
       include OrderAdminCreate
+      include OrderProductCurrency
 
       public
       def initialize
         @order_api = TurboCassandra::API::Order.new
         @customer_api = TurboCassandra::API::Customer.new
         @cart_api = TurboCassandra::API::Cart.new
+        @currency_api = TurboCassandra::API::Currency.new
       end
 
       private
@@ -20,6 +22,9 @@ module TurboCassandra
         order.map { |o| o }
       end
 
+      def get_customer_id env_customer
+        env_customer.first['id']
+      end
 
       def _get_order_by_id id
         order = @order_api.find_by_id(id)
@@ -87,10 +92,14 @@ module TurboCassandra
         _create_order(customer_id)
       end
 
-      def save customer_id, order_data
+      def save customer_data, body
+        customer_id = get_customer_id(customer_data)
+        order_data = JSON.parse body
         next_id = @order_api.get_next_order_id
         order_data['order_id'] = next_id + 1
         order_data['customer_id'] = customer_id
+        order_data['updated_at'] = Time.now
+        calculate_prices(order_data)
         @order_api.insert order_data
         @cart_api.empty_cart(customer_id)
         @order_api.register_also_bought_products(order_data)

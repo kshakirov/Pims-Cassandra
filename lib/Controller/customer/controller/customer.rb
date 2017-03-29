@@ -1,6 +1,10 @@
 module TurboCassandra
   module Controller
     class Customer
+      private
+      def get_customer_id env_customer
+        env_customer.first['id']
+      end
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new
@@ -8,7 +12,8 @@ module TurboCassandra
         @login_manager = Login.new
       end
 
-      def get_account id
+      def get_account customer_data
+        id = get_customer_id(customer_data)
         @customer.find_by_customer_id id
       end
 

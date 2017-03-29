@@ -28,11 +28,20 @@ class TestCart < Minitest::Test
   end
 
   def test_delete_item
-    @cart_controller.delete_product_from_cart 12, 41661
+    customer_data = [{'id' => 12}]
+    @cart_controller.delete_product_from_cart customer_data , 1
   end
 
   def test_empty_cart
-    result = @cart_api.empty_cart 12
+    customer_data = [{'id' => 12}]
+    result = @cart_controller.empty_customer_cart customer_data
+    assert result
+  end
+
+  def test_set_currency
+    customer_data = [{'id' => 12}]
+    body = {currency: "GBP" }
+    result = @cart_controller.set_currency customer_data, body.to_json
     assert result
   end
 

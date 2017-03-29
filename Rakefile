@@ -51,7 +51,6 @@ namespace :db do
       ruby "tools/schema/currency/create_currencies.rb"
       ruby "tools/schema/featured_product/create_featured_products.rb"
       ruby "tools/schema/customer/create_customers.rb"
-      ruby "tools/schema/cart/create_carts.rb"
       ruby "tools/schema/group_price/create_group_price.rb"
       ruby "tools/schema/order/create_orders.rb"
     end
@@ -102,8 +101,13 @@ namespace :db do
       ruby "tools/schema/currency/create_currency_history.rb"
     end
 
+    task :cart do
+      ruby "tools/schema/cart/create_carts.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
+      Rake::Task['db:setup:cart'].execute
       Rake::Task['db:setup:visitor_log'].execute
       Rake::Task['db:setup:compared_products'].execute
       Rake::Task['db:setup:message_log'].execute

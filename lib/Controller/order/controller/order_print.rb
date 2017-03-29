@@ -2,12 +2,24 @@ module TurboCassandra
   module Controller
     module OrderPrint
       private
-      def products_2_cells products
-        products.map { |p| [p['part_type'], p['name'], p['oem_part'], p['base_price_incl_tax'], p['qty_ordered'], p['base_row_total']] }
+
+      def print_price price, order_currency
+        "#{price} #{order_currency}"
+      end
+
+      def products_2_cells products, currency
+        products.map do |p|
+          [
+              p['part_type'], p['name'], p['oem_part'],
+              print_price(p['price'], currency),
+              p['quantity'],
+              print_price(p['row_total'], currency)
+          ]
+        end
       end
 
       def table_headers
-        ['Part Type', 'Name', 'Qty', 'Price', 'Qty', 'Subtotal']
+        ['Part Type', 'Name', 'OEM Part', 'Price', 'Qty', 'Subtotal']
       end
 
 
@@ -16,14 +28,18 @@ module TurboCassandra
       end
 
       def get_totals_table order
-        [['Subtotal', order['subtotal']], ['Shipping', order['shipping_handling']], ['Grand Total', order['grand_total']]]
+        [
+            ['Subtotal', "#{order['subtotal'].to_s} #{order['currency_code']}"],
+            ['Shipping', order['shipping_handling']],
+            ['Grand Total', "#{order['grand_total'].to_s} #{order['currency_code']}"]
+        ]
       end
 
       public
 
 
       def print_order order_loaded
-        products = products_2_cells(order_loaded['products'])
+        products = products_2_cells(order_loaded['products'], order_loaded['currency_code'])
         products.unshift(table_headers)
         ba = get_addresses(order_loaded['billing_address'])
         s_as = get_addresses(order_loaded['shipping_address'])
@@ -33,10 +49,10 @@ module TurboCassandra
         pdf.image "ti-logo_100x77.jpg", :width => 50, :height => 30
         pdf.move_down 5
         pdf.font "Times-Roman", :style => :bold
-        pdf.text "Order  ID: <font size='8'> <color rgb='#FF82AB'> 11111111 </color> </font>", :inline_format => true
+        pdf.text "Order  ID: <font size='8'> <color rgb='#FF82AB'> #{order_loaded['order_id']} </color> </font>", :inline_format => true
         pdf.move_down 20
         pdf.font "Times-Roman", :style => :bold
-        pdf.text "Order Date: <font size='8' styles='italic'>February 18, 2016 </font>", :inline_format => true
+        pdf.text "Order Date: <font size='8' styles='italic'>#{order_loaded['updated_at']} </font>", :inline_format => true
         pdf.move_down 20
 
 
