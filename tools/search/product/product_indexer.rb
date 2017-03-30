@@ -11,7 +11,7 @@ start_time = Time.now
 product.each { |p|
 
   begin
-    if counter> 18443
+    if counter> 0
       index_manager.add_product p
     end
     elapsed_seconds = ((Time.now - start_time)).to_i
