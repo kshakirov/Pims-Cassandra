@@ -27,7 +27,6 @@ module TurboCassandra
       def update hash
         key_values, args = prepare_key_values(hash)
         execute_query(create_update_sql(key_values), args)
-        hash['id']
       end
 
       def find id
