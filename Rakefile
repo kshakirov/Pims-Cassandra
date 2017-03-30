@@ -183,3 +183,14 @@ namespace :search do
     ruby "tools/search/application/application_indexer.rb"
   end
 end
+
+namespace :sync do
+  namespace :product do
+    task :update do
+      ruby "tools/sync/product/console/product_update.rb"
+    end
+    task :up do
+      ruby "tools/sync/product/console/product_update.rb"
+    end
+  end
+end

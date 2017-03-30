@@ -1,23 +1,31 @@
 module TurboCassandra
-  class Manufacturer
-    public
-    def initialize
-      attribute = TurboCassandra::API::Attribute.new
-      @part_types = attribute.find('manufacturer').first['options']
-    end
+  module Manufacturer
     private
     def get_manufacturer_code manufacturer
-      @part_types.each_index.select{|i| @part_types[i] ==manufacturer}.first
+      @manufacturer_types.each_index.select { |i|  @manufacturer_types[i] ==manufacturer }.first
     end
+
     def _get_manufacturer product
       [{
-          code: get_manufacturer_code(product['manufacturer']),
-          name: product['manufacturer']
-      }]
+           code: get_manufacturer_code(product['manufacturer']),
+           name: product['manufacturer']
+       }]
     end
+
+    def rem_not_external_manufacturer product
+      [{
+           code: get_manufacturer_code(product['manufacturer']),
+           name: "Turbo International"
+       }]
+    end
+
     public
     def get_manufacturer product
+      if is_not_external_manufacturer?(product)
+        rem_not_external_manufacturer product
+      else
         _get_manufacturer product
+      end
     end
   end
 end

@@ -34,7 +34,7 @@ module TurboCassandra
 
     def add_product product
       document = @product_transformer.run product
-      @client.index  index: 'magento_product', type: 'product',  id: product['sku'],  body: document
+      @client.update  index: 'magento_product', type: 'product',  id: document[:sku],  body: document
     end
 
     def delete_product id
@@ -44,6 +44,10 @@ module TurboCassandra
     def add_application application
       document = @application_transformer.run application
       @client.index  index: 'magento_product', type: 'application',  id: document[:id],  body: document
+    end
+
+    def get id
+      @client.get index: 'magento_product', type: 'product', id: id
     end
 
   end

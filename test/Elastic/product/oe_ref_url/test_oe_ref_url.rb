@@ -11,7 +11,7 @@ class TestOeRefUrl < Minitest::Test
     refute_nil product
     elastic_product = @product_transformer.run product
     refute_nil elastic_product
-    assert_equal elastic_product[:not_external_part_number], '258T-011'
+    assert_equal elastic_product[:not_external_part_number], '258t-011'
     assert_equal elastic_product['oe_ref_urls'], nil
 
   end
@@ -21,8 +21,7 @@ class TestOeRefUrl < Minitest::Test
     refute_nil product
     elastic_product = @product_transformer.run product
     refute_nil elastic_product
-    assert_equal elastic_product[:not_external_part_number], '258T-011'
-    assert_equal elastic_product['oe_ref_urls'], nil
+    assert_equal elastic_product['oe_ref_urls'], []
   end
 
   def test_ti_oe_ref_not_ext

@@ -13,6 +13,10 @@ require 'securerandom'
 require 'prawn'
 require 'prawn/table'
 require_relative '../../lib/sources'
+require_relative 'product/console/tcas_client'
+require_relative 'product/api/product'
+require_relative '../../tools/search/product/indexer_helper'
+ENV['TURBO_MODE'] = "development"
 
 def get_tcas_host
   config = YAML.load_file(File.expand_path('../../config/config.yaml', File.dirname(__FILE__)))

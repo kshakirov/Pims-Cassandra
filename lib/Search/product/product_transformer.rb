@@ -1,6 +1,6 @@
 module TurboCassandra
   class EsProductTransformer
-    attr_accessor :product_api, :tcas_server
+    attr_accessor :product_api, :tcas_server, :part_types, :manufacturer_types
     include TurboCassandra::TurboTools
     include TurboCassandra::NotExternalManufacturer
     include TurboCassandra::Visibility
@@ -8,14 +8,22 @@ module TurboCassandra
     include TurboCassandra::TcasService
     include TurboCassandra::TiChraManager
     include TurboCassandra::TiInterchange
+    include TurboCassandra::Manufacturer
+    include TurboCassandra::PartType
+    include TurboCassandra::ApplicationManager
+
+
+    def init_enums
+      attribute_api = TurboCassandra::API::Attribute.new
+      @manufacturer_types = attribute_api.find('manufacturer').first['options']
+      @part_types = attribute_api.find('part').first['options']
+    end
 
     def initialize tcas_server
       @product_api = TurboCassandra::API::Product.new
+       init_enums
       @criticas_manager = TurboCassandra::CriticalDimension.new
-      @manufacturer_manager = TurboCassandra::Manufacturer.new
-      @part_type_manager = TurboCassandra::PartType.new
       @price_manager = TurboCassandra::PriceManager.new
-      @application_manager = TurboCassandra::ApplicationManager.new
       @tcas_server = "http://" +  tcas_server + "/attrsreader"
     end
 
@@ -73,11 +81,11 @@ module TurboCassandra
     end
 
     def add_manufacturer skeleton, product
-      skeleton["manufacturer"] = @manufacturer_manager.get_manufacturer(product)
+      skeleton["manufacturer"] = get_manufacturer(product)
     end
 
     def add_part_type skeleton, product
-      skeleton["part_type"] = @part_type_manager.get_part_type(product)
+      skeleton["part_type"] = get_part_type(product)
     end
 
     def add_price skeleton, product
@@ -95,7 +103,7 @@ module TurboCassandra
     end
 
     def set_application skeleton, product
-      skeleton['application'] = @application_manager.get_application(product)
+      skeleton['application'] = get_application(product)
     end
 
     def add_chras skeleton, product

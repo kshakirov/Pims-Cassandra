@@ -1,4 +1,4 @@
-require_relative 'sync_helper'
+require_relative '../../sync_helper'
 updater = TurboCassandra::Sync::Product::Rest.new(TcasClient.new(get_tcas_host))
 
 (110..720).to_a.each  do |time|

@@ -1,5 +1,5 @@
 module TurboCassandra
-  class ApplicationManager
+  module ApplicationManager
 
     def hash_apps apps
       apps.map { |app| Digest::MD5.hexdigest(app) }
