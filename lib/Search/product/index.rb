@@ -34,11 +34,7 @@ module TurboCassandra
 
     def add_product product
       document = @product_transformer.run product
-      @client.update  index: 'magento_product', type: 'product',  id: document[:sku],  body: document
-    end
-
-    def delete_product id
-      @client.delete index: 'magento_product', type: 'product', id: id
+      @client.index  index: 'magento_product', type: 'product',  id: product['sku'],  body: document
     end
 
     def add_application application

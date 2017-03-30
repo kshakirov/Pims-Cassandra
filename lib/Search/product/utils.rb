@@ -7,7 +7,7 @@ module TurboCassandra
     end
 
     def normalize_part_number part_number
-      part_number.downcase.gsub("/[^[:alnum:][:space:]]/u", '')
+      part_number.downcase.gsub(/[^0-9a-z ]|\s+/i, '')
     end
 
     def is_turbo? product

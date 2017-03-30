@@ -26,8 +26,6 @@ module TurboCassandra
           (not is_ti_manufactured?(product)) and not (has_ti_interchange(product)) or
           (has_foreign_interchange(product) and not has_ti_interchange(product))
         false
-      elsif is_not_external_manufacturer? product
-        false
       else
         true
       end

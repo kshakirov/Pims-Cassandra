@@ -43,7 +43,7 @@ class Admin < Sinatra::Base
   end
 
   get '/customer/:id' do
-    settings.customerController.get_account(params['id'].to_i)
+    settings.customerController.get_account(params)
   end
 
   get '/customer/:id/order/' do

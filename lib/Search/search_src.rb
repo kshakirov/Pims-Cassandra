@@ -1,6 +1,6 @@
 require_relative 'product/utils'
 require_relative 'product/tcas_service'
-require_relative 'product/not_external_manufacture'
+require_relative 'product/not_external_manufacturer'
 require_relative 'product/visibility'
 require_relative 'product/oe_ref_url'
 require_relative 'product/ti_chra_manager'

@@ -2,13 +2,13 @@ module TurboCassandra
   class EsProductTransformer
     attr_accessor :product_api, :tcas_server, :part_types, :manufacturer_types
     include TurboCassandra::TurboTools
-    include TurboCassandra::NotExternalManufacturer
     include TurboCassandra::Visibility
     include TurboCassandra::OeRefUrl
     include TurboCassandra::TcasService
     include TurboCassandra::TiChraManager
     include TurboCassandra::TiInterchange
     include TurboCassandra::Manufacturer
+    include TurboCassandra::NotExternalManufacturer
     include TurboCassandra::PartType
     include TurboCassandra::ApplicationManager
 
@@ -61,16 +61,13 @@ module TurboCassandra
     def add_ti_part skeleton, product
       if not is_ti_manufacturer? product
         skeleton[:ti_part] = get_ti_interchange(product)
-        if is_not_external_manufacturer? product
-          add_hidden_part(product, skeleton)
-        end
       else
         skeleton[:ti_part] = get_ti_itself(product)
       end
     end
 
     def add_oe_ref_url skeleton, product
-      skeleton["oe_ref_urls"] = get_oe_ref_url(skeleton, product)
+      skeleton["oe_ref_urls"] = get_oe_ref_url(product)
     end
 
     def add_critical_attributes skeleton, product
@@ -116,6 +113,12 @@ module TurboCassandra
       skeleton['chra']= get_na_chra(product)
     end
 
+    def add_if_not_external_manfr skeleton, product
+      if is_not_external_manufacturer? product
+        map_product_to_ti(product, skeleton)
+      end
+    end
+
     def run product
       skeleton = _create_skeleton product
       add_ti_part(skeleton, product)
@@ -132,6 +135,7 @@ module TurboCassandra
       else
           add_na_chras(skeleton, product)
       end
+      add_if_not_external_manfr(skeleton, product)
       skeleton
     end
   end
