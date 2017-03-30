@@ -2,9 +2,14 @@ module TurboCassandra
   module Controller
     class Customer
       private
-      def get_customer_id env_customer
-        env_customer.first['id']
+      def get_customer_id customer_data
+        if customer_data.class.name =='Array'
+          customer_data.first['id']
+        elsif customer_data.class.name == 'Hash'
+          customer_data['id'].to_i
+        end
       end
+
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new

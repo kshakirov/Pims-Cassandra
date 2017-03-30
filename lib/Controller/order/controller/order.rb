@@ -17,6 +17,14 @@ module TurboCassandra
 
       private
 
+      def create_customer_order_data customer_id
+        customer_data = @customer_api.find_by_customer_id customer_id
+        {
+          'customer_name' => customer_data['firstname'] + " "  + customer_data['lastname'],
+          'customer_email' => customer_data['email']
+        }
+      end
+
       def _get_order_by_customer_id id
         order = @order_api.find_by_customer_id(id)
         order.map { |o| o }
@@ -44,6 +52,7 @@ module TurboCassandra
             }
         }
       end
+
 
       def get_products cart
         cart['items'].map { |key, value|
@@ -98,6 +107,7 @@ module TurboCassandra
         next_id = @order_api.get_next_order_id
         order_data['order_id'] = next_id + 1
         order_data['customer_id'] = customer_id
+        order_data['data'] = create_customer_order_data(customer_id)
         order_data['updated_at'] = Time.now
         calculate_prices(order_data)
         @order_api.insert order_data
