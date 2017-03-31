@@ -21,4 +21,9 @@ class TestComparedProducts < Minitest::Test
     assert result
   end
 
+  def test_count
+    result  = @compared_product_model.count(1)
+    assert_equal(3, result)
+  end
+
 end

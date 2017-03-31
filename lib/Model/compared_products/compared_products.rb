@@ -22,6 +22,17 @@ module TurboCassandra
         end
       end
 
+      def _count customer_id
+         res =execute_query(count_by_customer_id_cql, [customer_id])
+          if not res.nil? and res.first and res.first.key? 'count'
+            res.first['count']
+          end
+      end
+
+      def _delete_all customer_id
+        execute_query(delete_by_customer_sql, [customer_id])
+      end
+
       public
 
       def find customer_id
@@ -35,6 +46,14 @@ module TurboCassandra
 
       def delete customer_id, product
         _delete(customer_id, product)
+      end
+
+      def count customer_id
+        _count(customer_id)
+      end
+
+      def delete_all customer_id
+        _delete_all(customer_id)
       end
 
     end

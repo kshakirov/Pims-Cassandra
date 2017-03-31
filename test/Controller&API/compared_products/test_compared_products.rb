@@ -19,6 +19,16 @@ class TestComparedProducts < Minitest::Test
     assert result
   end
 
+  def test_delete_all
+    result  = @compared_product_controller.delete_all([{'id' => 1}])
+    assert result
+  end
+
+  def test_count
+    result  = @compared_product_controller.count_products([{'id' => 1}])
+    assert_equal 3, result[:count]
+  end
+
   def test_get_critical
     result  = @compared_product_controller.update({product: 66750, customer_id: 1})
     result  = @compared_product_controller.update({product: 64690, customer_id: 1})

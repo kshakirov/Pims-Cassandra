@@ -21,6 +21,10 @@ module TurboCassandra
         @compared_products_api.update(hash)
       end
 
+      def get_customer_id customer_data
+          customer_data.first['id']
+      end
+
       def _find_by_customer customer_id, customer_group
         skus = @compared_products_api.find(customer_id)
         unless skus.nil?
@@ -52,6 +56,19 @@ module TurboCassandra
       def delete customer_id, product
         _delete(customer_id, product)
       end
+
+      def count_products customer_data
+        customer_id = get_customer_id(customer_data)
+        {
+            count: @compared_products_api.count(customer_id)
+        }
+      end
+
+      def delete_all customer_data
+        customer_id = get_customer_id(customer_data)
+        @compared_products_api.delete_all customer_id
+      end
+
     end
   end
 end

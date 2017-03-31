@@ -175,6 +175,14 @@ class Customer < Sinatra::Base
     settings.comparedProductsController.find_by_customer(customer['id'], customer['group'])
   end
 
+  get '/compared_product/count/' do
+    settings.comparedProductsController.count_products(request.env.values_at(:customer))
+  end
+
+  delete'/compared_product/' do
+    settings.comparedProductsController.delete_all(request.env.values_at(:customer))
+  end
+
   put '/compared_product/:id' do
     customer = request.env.values_at(:customer).first
     payload = {product: params['id'].to_i, customer_id: customer['id']}
