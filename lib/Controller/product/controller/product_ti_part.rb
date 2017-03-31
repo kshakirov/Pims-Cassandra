@@ -22,6 +22,7 @@ module TurboCassandra
 
       def get_ti_part interchanges
         tis = get_interchanged_products(interchanges)
+        tis.compact!
         tis = tis.select{|i| is_ti_product?(i) }
         create_response(tis)
       end
