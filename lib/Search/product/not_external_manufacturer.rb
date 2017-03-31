@@ -26,7 +26,7 @@ module TurboCassandra
       if skeleton[:ti_part] and skeleton[:ti_part][:ti_sku]
         ti_product = @product_api.find_by_sku skeleton[:ti_part][:ti_sku]
         unless ti_product.nil?
-          get_oe_ref_url(ti_product)
+          return get_oe_ref_url(ti_product), ti_product
         end
       end
     end
@@ -34,10 +34,17 @@ module TurboCassandra
     public
 
     def map_product_to_ti product, skeleton
-      skeleton[:not_external_part_number] = add_hidden_part(product)
-      skeleton['manufacturer'] = rem_not_external_manufacturer(product)
-      skeleton['oe_ref_urls'] = gsub_ti_oe_ref_url skeleton
-      skeleton['visible_in_catalog'] = false
+      if is_turbo? product
+        skeleton['invisible_in_search'] = true
+      else
+        skeleton[:not_external_part_number] = add_hidden_part(product)
+        skeleton['manufacturer'] = rem_not_external_manufacturer(product)
+        skeleton['oe_ref_urls'], ti_product = gsub_ti_oe_ref_url skeleton
+        skeleton['visible_in_catalog'] = false
+        if not  ti_product.nil? and ti_product['description']
+          skeleton['description'] = ti_product['description']
+        end
+      end
     end
 
   end

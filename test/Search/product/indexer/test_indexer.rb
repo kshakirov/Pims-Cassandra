@@ -19,7 +19,7 @@ class TestProductIndexe < Minitest::Test
   end
 
   def test_add_not_external
-    product = @product.find_by_sku  47123
+    product = @product.find_by_sku  47124
     response  = @product_indexer.add_product product
     refute_nil response
   end

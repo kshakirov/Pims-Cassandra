@@ -24,6 +24,26 @@ class TestNotExternalManufacturer < Minitest::Test
     refute_nil product
     elastic_product = @product_transformer.run product
     refute_nil elastic_product
+    assert_equal elastic_product['visible_in_catalog'], false
+
+  end
+
+
+  def test_turbo
+    product = @product.find_by_sku  13445
+    refute_nil product
+    elastic_product = @product_transformer.run product
+    refute_nil elastic_product
+    assert_equal elastic_product['invisible_in_search'], true
+
+  end
+
+
+  def test_ti_description
+    product = @product.find_by_sku  47124
+    elastic_product = @product_transformer.run product
+    refute_nil elastic_product
+    assert_equal "RET RING, RHB5",  elastic_product['description']
 
 
   end
