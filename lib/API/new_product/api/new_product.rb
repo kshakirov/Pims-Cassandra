@@ -1,7 +1,7 @@
 module TurboCassandra
   module API
     class NewProduct
-
+      include OeRefProduct
       private
       def sort products, new_ids
         new_ids.map do |ni|
@@ -34,14 +34,15 @@ module TurboCassandra
       def _get_scheleton product
         {
             description: product['description'],
-            name: product['name'],
+            name: product['part_number'],
             part_type: product['part_type'],
             url: "/#/part/sku/#{product['sku']}",
             image_url: "/imageserver/product/#{product['sku']}/image/215/165",
             price: nil,
+            sku: product['sku'],
             turbo_model: product['turbo_model'],
             turbo_type: product['turbo_type'],
-            oe_ref_urls: []
+            oe_ref_urls: get_oe_refs(product['interchanges'])
         }
       end
 
