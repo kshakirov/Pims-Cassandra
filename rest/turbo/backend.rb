@@ -30,7 +30,7 @@ class Public < Sinatra::Base
 
 
   configure do
-    set :menuController, TurboCassandra::Controller::Menu.new
+    set :menuController, TurboCassandra::Controller::Menu::Main.new
     set :productController, TurboCassandra::Controller::Product.new
     set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new

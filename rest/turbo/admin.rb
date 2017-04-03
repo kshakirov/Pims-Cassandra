@@ -19,7 +19,7 @@ class Admin < Sinatra::Base
     set :productController, TurboCassandra::Controller::Product.new
     set :productCreatedAtController, TurboCassandra::Controller::ProductCreatedAt.new
     set :groupPriceController, TurboCassandra::Controller::GroupPrice.new
-    set :menuController, TurboCassandra::Controller::Menu.new
+    set :menuController, TurboCassandra::Controller::Menu::Main.new
   end
 
 
