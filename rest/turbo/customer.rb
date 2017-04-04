@@ -195,7 +195,7 @@ class Customer < Sinatra::Base
   end
 
   get '/product/:id/also_bought/' do
-    settings.orderController.get_also_bought_products(params['id'])
+    settings.orderController.get_also_bought_products(params['id'], request.env.values_at(:customer))
   end
 
   after do

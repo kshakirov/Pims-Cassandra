@@ -1,7 +1,7 @@
 module TurboCassandra
   module Controller
     class Order
-      attr_accessor :order_api, :currency_api
+      attr_accessor :order_api, :currency_api, :group_price_api, :product_api
       include OrderPrint
       include AlsoBought
       include OrderAdminCreate
@@ -13,6 +13,8 @@ module TurboCassandra
         @customer_api = TurboCassandra::API::Customer.new
         @cart_api = TurboCassandra::API::Cart.new
         @currency_api = TurboCassandra::API::Currency.new
+        @group_price_api = TurboCassandra::API::GroupPrice.new
+        @product_api = TurboCassandra::API::Product.new
       end
 
       private
