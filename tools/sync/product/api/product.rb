@@ -67,6 +67,11 @@ module TurboCassandra
           products.map { |product| process_product(product) }
         end
 
+        def update_specific_array skus
+          products = query_specific(skus)
+          products.map { |product| process_product(product) }
+        end
+
         def update
           products = query_update
           products.map{|product| process_product(product)}
