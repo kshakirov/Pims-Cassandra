@@ -18,12 +18,12 @@ require_relative 'product/api/product'
 require_relative '../../tools/search/product/indexer_helper'
 ENV['TURBO_MODE'] = "development"
 
+@config = YAML.load_file(File.expand_path('../../config/config.yaml', File.dirname(__FILE__)))
+
 def get_tcas_host
-  config = YAML.load_file(File.expand_path('../../config/config.yaml', File.dirname(__FILE__)))
-  if not config.nil?
-    config[ENV['TURBO_MODE']]['tcas_host']
-  else
-    puts "SET ELASTIC_INSTANCE VARIABLE"
-    exit 1
-  end
+  @config[ENV['TURBO_MODE']]['tcas_host']
+end
+
+def get_metdata_host
+  @config[ENV['TURBO_MODE']]['metadata_server']
 end

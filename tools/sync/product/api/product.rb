@@ -2,9 +2,9 @@ module TurboCassandra
   module Sync
     module Product
       class Rest
-        def initialize tcas_client
-          @metadata_server = 'localhost'
-          @metadata_server_port = 4568
+        def initialize tcas_client, metadata_server, metadata_server_port=4568
+          @metadata_server = metadata_server
+          @metadata_server_port = metadata_server_port
           @product_api = TurboCassandra::API::Product.new
           @product_batch = TurboCassandra::API::Batch::Product.new
           @tcas_client = tcas_client

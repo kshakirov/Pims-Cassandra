@@ -1,5 +1,6 @@
 require_relative '../../sync_helper'
-updater = TurboCassandra::Sync::Product::Rest.new(TcasClient.new(get_tcas_host))
+metadata_server = get_metdata_host
+updater = TurboCassandra::Sync::Product::Rest.new(TcasClient.new(get_tcas_host), metadata_server)
 
 (110..720).to_a.each  do |time|
   start_time = Time.now
