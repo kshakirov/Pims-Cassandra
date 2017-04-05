@@ -3,7 +3,7 @@ module TurboCassandra
     module Product
       class Rest
         def initialize tcas_client
-          @metadata_server = 'timms.turbointernational.com'
+          @metadata_server = 'localhost'
           @metadata_server_port = 4568
           @product_api = TurboCassandra::API::Product.new
           @product_batch = TurboCassandra::API::Batch::Product.new
@@ -63,7 +63,7 @@ module TurboCassandra
 
         public
         def update_specific skus
-          products = query_specific(skus)
+          products = query_specific([skus.to_i])
           products.map { |product| process_product(product) }
         end
 
