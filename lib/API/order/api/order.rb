@@ -1,11 +1,13 @@
 module TurboCassandra
   module API
     class Order
-      attr_accessor :order_model
+      attr_accessor :order_model, :product_api
       extend Forwardable
+      include ProductInterchangeResolver
       include AlsoBought
       def initialize
         @order_model = TurboCassandra::Model::Order.new
+        @product_api = TurboCassandra::API::Product.new
       end
 
       def_delegator :@order_model, :find_by_customer_id, :find_by_customer_id

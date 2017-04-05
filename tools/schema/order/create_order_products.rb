@@ -4,5 +4,10 @@ cql = %Q(CREATE TABLE  order_products
         (
             order_id bigint,
             sku bigint ,
-            name text,  Primary Key(order_id, sku)))
+            name text,
+            part_type text,
+            description text,
+            interchanges frozen <list<map<bigint,text>>>,
+            Primary Key(order_id, sku))
+        )
   execute_lazy cql, []

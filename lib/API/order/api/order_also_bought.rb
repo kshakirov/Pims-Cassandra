@@ -6,8 +6,34 @@ module TurboCassandra
         order_data['products'].map { |p| p['sku'] }
       end
 
+      def _product_skeleton product
+        {
+            sku: product['sku'],
+            name: product['part_number'],
+            description: product['description'],
+            part_type: product['part_type'],
+            interchanges:  resolve(product['interchanges'])
+
+        }
+      end
+
+      def _product_order_skeleton product
+        {
+            sku: product['sku'],
+            name: product['part_number'],
+
+        }
+      end
+
       def map_order_products order_data
-        order_data['products'].map { |p| {sku: p['sku'], name: p['name']} }
+        order_data['products'].map { |p|
+          product = @product_api.find_by_sku p ['sku'].to_i
+          if not product.nil?
+              _product_skeleton(product)
+          else
+            _product_order_skeleton(p)
+          end
+        }
       end
 
       def make_product_data_2_register order_data, p
@@ -21,7 +47,10 @@ module TurboCassandra
         {
             order_id: order_data['order_id'].to_i,
             sku: p[:sku].to_i,
-            name: p[:name] || ''
+            name: p[:name] || '',
+            part_type: p[:part_type],
+            description: p[:description],
+            interchanges: p[:interchanges]
         }
       end
 
