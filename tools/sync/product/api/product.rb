@@ -34,7 +34,7 @@ module TurboCassandra
         def prepare_product_data product
           sku = product['sku']
           @product_batch.remove_keys(product)
-          @product_batch.prepare_interchanges(product, @tcas_client.query_interchanges(sku))
+          @product_batch.prepare_interchanges(product)
           @product_batch.prepare_ti_part(product, @tcas_client.query_interchanges(sku))
           @product_batch.parse_critical_attributes(product)
         end

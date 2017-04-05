@@ -3,15 +3,16 @@ module TurboCassandra
     module Batch
       module Interchange
 
-        def _prepare_interchanges interchanges
-          interchanges.map { |i| i['id'].to_i }
+        def verify_nterchanges interchanges
+          if interchanges.class.name == 'Array'
+            interchanges.select { |i| i.class.superclass.name != 'Integer' }
+          end
         end
 
-        def prepare_interchanges  product_hash, interchanges
-          if not (interchanges.nil? or interchanges.size == 0)
-            product_hash['interchanges'] = _prepare_interchanges(interchanges)
-          else
-              product_hash.delete 'interchanges'
+        def prepare_interchanges product_hash
+          verification =  verify_nterchanges(product_hash['interchanges'])
+          if not verification or  verification.size > 0
+            product_hash['interchanges']  = []
           end
         end
       end
