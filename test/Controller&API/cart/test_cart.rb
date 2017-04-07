@@ -14,8 +14,8 @@ class TestCart < Minitest::Test
   end
 
   def test_add_item
-    customer_data = [{'id' => 12}]
-    product = @product_controller.get_product 1
+    customer_data = [{'id' => 487}]
+    product = @product_controller.get_product 6232
     request_payload = {
         'product' => product,
         'price' => 74.8,
@@ -43,6 +43,14 @@ class TestCart < Minitest::Test
     body = {currency: "GBP" }
     result = @cart_controller.set_currency customer_data, body.to_json
     assert result
+  end
+
+  def test_update
+    customer_data = [{'id' => 487}]
+    cart = @cart_controller.get_customer_cart customer_data
+    refute_nil cart
+    body = {'cart' => cart}
+    @cart_controller.update_cart body.to_json
   end
 
 end

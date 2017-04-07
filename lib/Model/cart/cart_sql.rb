@@ -24,6 +24,7 @@ module TurboCassandra
       def create_update_currency_sql
         "UPDATE carts SET currency = ? WHERE id=?"
       end
+
     end
   end
 end

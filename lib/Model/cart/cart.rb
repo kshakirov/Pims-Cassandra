@@ -10,6 +10,18 @@ module TurboCassandra
         execute_query(create_insert_cql, [customer_id, "USD", customer_id])
       end
 
+      def is_product_in_cart? cart, product
+        cart['items'].key? product['sku']
+      end
+
+      def change_qty cart, product, qty
+        item = cart['items'][product['sku']]
+        item['qty'] = (item['qty'].to_i +  qty).to_s
+        item['subtotal'] = (item['qty'].to_i * item['unit_price'].to_f).to_s
+
+      end
+
+
       def prepare_product_item product, price, qty
         item_hash = {}
         item_content = {}
@@ -42,8 +54,13 @@ module TurboCassandra
 
       def _add_product cart, product, price, qty
         cql = create_update_product_item_sql
-        args = merge_cart_products(cart, prepare_product_item(product, price, qty))
-        execute_query(cql, [args, cart['id']])
+        if is_product_in_cart? cart, product
+          change_qty cart, product, qty
+          execute_query(cql, [cart['items'], cart['id']])
+        else
+          args = merge_cart_products(cart, prepare_product_item(product, price, qty))
+          execute_query(cql, [args, cart['id']])
+        end
       end
 
       def get_grand_total cart
@@ -85,6 +102,12 @@ module TurboCassandra
         end
         update_grand_total(_add_product(cart, product, price, qty), cart)
 
+      end
+
+      def update cart
+        cql = create_update_product_item_sql
+        execute_query(cql, [cart['items'], cart['id']])
+        execute_query(create_update_total_sql, [cart['subtotal'].to_f, cart['id']])
       end
 
       def delete_product customer_id, product_sku

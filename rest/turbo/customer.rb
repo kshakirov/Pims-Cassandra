@@ -38,7 +38,7 @@ class Customer < Sinatra::Base
       :authentication => :login,
       :enable_starttls_auto => true,
       :user_name => 'kyrylo.shakirov@zorallabs.com',
-      :password => '',
+      :password => 'Servantes1',
   }
   ActionMailer::Base.view_paths = 'views/'
 
@@ -103,6 +103,10 @@ class Customer < Sinatra::Base
   put '/cart/currency' do
     settings.cartController.set_currency(request.env.values_at(:customer),
                                                                request.body.read)
+  end
+
+  post '/cart/' do
+    settings.cartController.update_cart(request.body.read)
   end
 
   post '/cart/product' do

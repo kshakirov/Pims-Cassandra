@@ -11,6 +11,14 @@ module TurboCassandra
         env_customer.first['id']
       end
 
+      def verify_map_text map
+        Hash[map.map{|m| [m[0].to_s, m[1].to_s]}]
+      end
+
+      def cart_items_to_int items
+        Hash[items.map{|h| [h[0].to_i, verify_map_text(h[1])]}]
+      end
+
       public
       def get_customer_cart customer_data
         customer_id = customer_data.first['id']
@@ -40,6 +48,12 @@ module TurboCassandra
         {
            count:  @cart_api.count_products(customer_id)
         }
+      end
+
+      def update_cart body
+        cart = JSON.parse(body)['cart']
+        cart['items'] = cart_items_to_int(cart['items'])
+        @cart_api.update cart
       end
 
       def set_currency customer_data, body
