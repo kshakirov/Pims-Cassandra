@@ -2,16 +2,7 @@ module TurboCassandra
   module Model
     class MessageLog
       include TurboCassandra::Model::Utils
-      private
-
-      def insert_cql names, values
-        "INSERT INTO message_logs  (#{names}) " \
-            "VALUES (#{values})"
-      end
-
-      def select_by_sender_email_cql
-        "SELECT * from  message_logs WHERE sender_email=? "
-      end
+      include MessageLogSql
 
       public
       def insert hash
@@ -22,6 +13,11 @@ module TurboCassandra
 
       def find_by_sender_email email
         result = execute_query(select_by_sender_email_cql, [email])
+        result.map{|r| r}
+      end
+
+      def paginate
+        result = execute_query(select_paginated_cql, [])
         result.map{|r| r}
       end
     end

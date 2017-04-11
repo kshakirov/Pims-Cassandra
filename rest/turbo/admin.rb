@@ -118,6 +118,11 @@ class Admin < Sinatra::Base
                                                         settings.admin_email)
   end
 
+  post '/message/paginate' do
+    settings.messageLogController.get_paginated(request.body.read,)
+  end
+
+
   get '/order/' do
     settings.orderController.all
   end

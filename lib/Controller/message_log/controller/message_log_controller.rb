@@ -72,6 +72,12 @@ module TurboCassandra
         message = "New  Customer [#{request_payload['email']}],  new password   [ #{request_payload['password']}]"
         _add_outcomming(request_payload["email"], admin_email, message)
       end
+
+      def get_paginated body
+        request_payload = JSON.parse body
+        @message_log_api.paginate nil
+
+      end
     end
   end
 
