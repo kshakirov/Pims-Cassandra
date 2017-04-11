@@ -31,8 +31,8 @@ module TurboCassandra
           _get_message_by_sender_email(email)
       end
 
-      def paginate paging_state
-        @message_log_model.paginate
+      def paginate paging_state, page_size
+        @message_log_model.paginate paging_state, page_size
       end
     end
   end

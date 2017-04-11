@@ -42,7 +42,6 @@ class TestMessageLogController < Minitest::Test
   end
 
   def teardown
-    p "Finishing tests"
     @rabbit_queue.connection.close
   end
 

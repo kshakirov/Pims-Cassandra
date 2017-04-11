@@ -11,7 +11,7 @@ module TurboCassandra
       end
 
       def select_paginated_cql
-        "SELECT * from  message_logs"
+        "SELECT * FROM message_logs"
       end
 
     end

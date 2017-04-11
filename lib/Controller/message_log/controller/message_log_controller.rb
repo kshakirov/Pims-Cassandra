@@ -1,6 +1,7 @@
 module TurboCassandra
   module Controller
     class MessageLog
+      include MessageLogPagination
       private
       def prepare_queue rabbit_conn, queue
         channel = rabbit_conn.create_channel
@@ -73,11 +74,6 @@ module TurboCassandra
         _add_outcomming(request_payload["email"], admin_email, message)
       end
 
-      def get_paginated body
-        request_payload = JSON.parse body
-        @message_log_api.paginate nil
-
-      end
     end
   end
 

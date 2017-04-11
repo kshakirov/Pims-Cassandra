@@ -16,9 +16,19 @@ module TurboCassandra
         result.map{|r| r}
       end
 
-      def paginate
-        result = execute_query(select_paginated_cql, [])
-        result.map{|r| r}
+      def execute_paginate  paging_state, page_size
+        session = TurboCluster.get_session
+        session.execute(select_paginated_cql,
+                        page_size: page_size, paging_state: paging_state)
+      end
+
+      def paginate paging_state, page_size
+        rs = execute_paginate(paging_state, page_size)
+        {
+            results: rs.map{|r| r},
+            last: rs.last_page?,
+            paging_state: rs.paging_state
+        }
       end
     end
   end

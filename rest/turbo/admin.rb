@@ -1,5 +1,9 @@
 class AdminLogin < Sinatra::Base
-  set :adminLoginController, TurboCassandra::Controller::AdminLogin.new('162.249.218.162')
+  register Sinatra::ConfigFile
+  helpers Sinatra::Cookies
+  config_file '../../config/config.yaml'
+  set :active_directory_host,   self.send(ENV['TURBO_MODE'])['active_directory']
+  set :adminLoginController, TurboCassandra::Controller::AdminLogin.new(settings.active_directory_host)
 
   before do
     content_type :json
@@ -119,7 +123,7 @@ class Admin < Sinatra::Base
   end
 
   post '/message/paginate' do
-    settings.messageLogController.get_paginated(request.body.read,)
+    settings.messageLogController.paginated(request.body.read,)
   end
 
 

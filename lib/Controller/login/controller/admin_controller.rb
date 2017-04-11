@@ -44,7 +44,7 @@ module TurboCassandra
 
       public
 
-      def initialize ldap_host= '162.249.218.162'
+      def initialize ldap_host
         @jwt_issuer = get_jwt_user
         @jwt_secret = get_jwt_secret
         settings = get_ldap_settings(ldap_host)
