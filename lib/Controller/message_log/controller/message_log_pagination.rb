@@ -9,7 +9,9 @@ module TurboCassandra
       end
 
       def bin_to_hex(s)
-        s.each_byte.map { |b| b.to_i }
+        unless s.nil?
+          s.each_byte.map { |b| b.to_i }
+        end
       end
 
       def hex_to_bin(s)
@@ -27,7 +29,9 @@ module TurboCassandra
       public
       def paginated body
         params = JSON.parse body
-        response = @message_log_api.paginate(get_paging_state(params), get_page_size(params))
+        params['paging_state'] = get_paging_state params
+        params['page_size'] = get_page_size params
+        response = @message_log_api.paginate(params)
         response[:paging_state] = bin_to_hex(response[:paging_state])
         response
       end

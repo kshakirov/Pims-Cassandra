@@ -15,6 +15,17 @@ class TestMessageLogController < Minitest::Test
     assert_equal 10, result[:results].size
   end
 
+  def test_paginated_sender
+    body = {
+        sender: "kirill.shakirov4@gmail.com",
+        recipient: 'kyrylo.shakirov@zorallabs.com',
+        paging_state: nil,
+        page_size: 10
+    }
+    result = @message_log_controller.paginated body.to_json
+    assert_equal 10, result[:results].size
+  end
+
   def teardown
     @rabbit_queue.connection.close
   end
