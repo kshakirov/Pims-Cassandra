@@ -1,3 +1,19 @@
+class AdminLogin < Sinatra::Base
+  set :adminLoginController, TurboCassandra::Controller::AdminLogin.new('162.249.218.162')
+
+  before do
+    content_type :json
+  end
+
+  post '/login' do
+    settings.adminLoginController.authenticate_admin(request.body.read)
+  end
+
+  after do
+    response.body = JSON.dump(response.body)
+  end
+end
+
 class Admin < Sinatra::Base
 
   use JwtAuth
@@ -9,7 +25,6 @@ class Admin < Sinatra::Base
     set :featuredProductController, TurboCassandra::Controller::FeaturedProduct.new
     set :newProductController, TurboCassandra::Controller::NewProduct.new
     set :product_controller, TurboCassandra::Controller::Product.new
-    set :loginBackEnd, TurboCassandra::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
     set :attributeController, TurboCassandra::Controller::Attribute.new
     set :attributeSetController, TurboCassandra::Controller::AttributeSet.new
@@ -26,7 +41,6 @@ class Admin < Sinatra::Base
   before do
     content_type :json
   end
-
 
   get '/manufacturer/' do
     settings.menuController.get_manufacturers

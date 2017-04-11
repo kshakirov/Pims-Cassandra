@@ -5,5 +5,6 @@ require 'json'
 require 'cassandra'
 require 'digest'
 require 'jwt'
+require 'active_directory'
 require_relative '../../../lib/sources'
 

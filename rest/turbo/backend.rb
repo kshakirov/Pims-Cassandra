@@ -12,9 +12,11 @@ require 'action_mailer'
 require 'active_support'
 require 'active_support/all'
 require 'securerandom'
+require 'active_directory'
 require 'prawn'
 require 'prawn/table'
 require_relative '../../lib/sources'
+require_relative 'jwt_auth'
 require_relative 'mailer'
 
 
@@ -32,7 +34,7 @@ class Public < Sinatra::Base
   configure do
     set :menuController, TurboCassandra::Controller::Menu::Main.new
     set :productController, TurboCassandra::Controller::Product.new
-    set :loginBackEnd, TurboCassandra::Login.new
+    set :loginController, TurboCassandra::Controller::Login.new
     set :orderController, TurboCassandra::Controller::Order.new
     set :logBackEnd, TurboCassandra::VisitorLogBackEnd.new
     set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
@@ -123,7 +125,7 @@ class Public < Sinatra::Base
 
   post '/frontend/customer/login' do
     request_payload = JSON.parse request.body.read
-    settings.loginBackEnd.validate_password(request_payload['password'], request_payload['customer_email'])
+    settings.loginController.validate_password(request_payload['password'], request_payload['customer_email'])
   end
 
   post '/frontend/customer/contact_us' do
