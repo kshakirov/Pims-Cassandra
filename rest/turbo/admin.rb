@@ -2,7 +2,7 @@ class AdminLogin < Sinatra::Base
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
-  set :active_directory_host,   self.send(ENV['TURBO_MODE'])['active_directory']
+  set :active_directory_host, self.send(ENV['TURBO_MODE'])['active_directory']
   set :adminLoginController, TurboCassandra::Controller::AdminLogin.new(settings.active_directory_host)
 
   before do
@@ -21,7 +21,9 @@ end
 class Admin < Sinatra::Base
 
   use JwtAuth
+  set :public_folder, Proc.new { File.join(root.gsub("rest/turob", ''), "views") }
   set :rabbit_queue, TurboCassandra::Controller::RabbitQueue.new("localhost")
+
 
   configure do
     set :customerController, TurboCassandra::Controller::Customer.new
@@ -39,6 +41,7 @@ class Admin < Sinatra::Base
     set :productCreatedAtController, TurboCassandra::Controller::ProductCreatedAt.new
     set :groupPriceController, TurboCassandra::Controller::GroupPrice.new
     set :menuController, TurboCassandra::Controller::Menu::Main.new
+    set :templateController, TurboCassandra::Controller::Template.new
   end
 
 
@@ -201,8 +204,17 @@ class Admin < Sinatra::Base
     settings.currencyController.update_all(request.body.read)
   end
 
+  get '/template/:name' do
+    settings.templateController.load(settings.root, params)
+
+  end
+
+  post '/template/' do
+    settings.templateController.save(request.body.read)
+  end
+
   after do
-    response.body = JSON.dump(response.body)
+      response.body = JSON.dump(response.body)
   end
 
 
