@@ -1,7 +1,10 @@
 
 class Customer < Sinatra::Base
-  use JwtAuth
+  register Sinatra::ConfigFile
+  helpers Sinatra::Cookies
+  config_file '../../config/config.yaml'
 
+  use JwtAuth
   ActionMailer::Base.smtp_settings = {
       :address => "smtp.office365.com",
       :port => '587',
@@ -17,6 +20,10 @@ class Customer < Sinatra::Base
     env_customer.first['id']
   end
 
+  set :rabbit_queue,
+      TurboCassandra::Controller::RabbitQueue.
+          new(self.send(ENV['TURBO_MODE'])['queue_host'])
+
   configure do
     set :customerController, TurboCassandra::Controller::Customer.new
     set :orderController, TurboCassandra::Controller::Order.new
@@ -24,6 +31,8 @@ class Customer < Sinatra::Base
     set :cartController, TurboCassandra::Controller::Cart.new
     set :logBackEnd, TurboCassandra::VisitorLogBackEnd.new
     set :comparedProductsController, TurboCassandra::Controller::ComparedProducts.new
+    set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
+    set :admin_email, "kyrylo.shakirov@zorallabs.com"
   end
 
 
@@ -106,15 +115,8 @@ class Customer < Sinatra::Base
 
   post '/order/save' do
     customer = request.env.values_at :customer
-    order_data = settings.orderController.save(request.env.values_at(:customer), request.body.read)
-    customer = settings.customerController.get_account(customer)
-    email = Mailer.place_order customer, order_data
-    begin
-      email.deliver
-      {order_id: order_data['order_id'], mailed: true}
-    rescue
-      {order_id: order_data['order_id'], mailed: false}
-    end
+    settings.orderController.save(request.env.values_at(:customer), request.body.read)
+
   end
 
   get '/data' do
@@ -170,6 +172,11 @@ class Customer < Sinatra::Base
 
   get '/product/:id/also_bought/' do
     settings.orderController.get_also_bought_products(params['id'], request.env.values_at(:customer))
+  end
+
+  post '/order/email' do
+    settings.messageLogController.queue_order_task(request.body.read,
+                                                   settings.admin_email)
   end
 
   after do

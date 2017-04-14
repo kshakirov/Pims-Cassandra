@@ -172,14 +172,14 @@
                                             </td>
                                             <td align="center" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                              <span class="x_price"><%= product['base_price_incl_tax']%></span></td>
+                                              <span class="x_price"><%= product['price']%></span></td>
                                             <td align="center" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                              <%= product['qty_ordered']%>
+                                              <%= product['quantity']%>
                                             </td>
                                             <td align="right" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                              <span class="x_price"><%= product['base_row_total']%></span></td>
+                                              <span class="x_price"><%= product['row_total']%></span></td>
                                           </tr>
                                           </tbody>
                                         <% end %>

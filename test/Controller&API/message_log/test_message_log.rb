@@ -12,7 +12,7 @@ class TestMessageLogController < Minitest::Test
     request = {
         'email' => "kshakirov@zoral.com.ua"
     }
-    result = @message_log_controller.add_password_reset_msg(request.to_json, "kshakirov@zoral.com.ua")
+    result = @message_log_controller.queue_password_reset_task(request.to_json, "kshakirov@zoral.com.ua")
     refute_nil result
 
   end
@@ -21,7 +21,7 @@ class TestMessageLogController < Minitest::Test
     request = {
         'email' => "kshakirov@zoral.com.ua"
     }
-    result = @message_log_controller.add_new_customer_msg(request.to_json, "kshakirov@zoral.com.ua")
+    result = @message_log_controller.queue_new_customer_task(request.to_json, "kshakirov@zoral.com.ua")
     refute_nil result
   end
 
@@ -43,6 +43,16 @@ class TestMessageLogController < Minitest::Test
 
   def teardown
     @rabbit_queue.connection.close
+  end
+
+  def test_order_task_msg
+    request = {
+        'email' => "kshakirov@zoral.com.ua",
+        'order_id' => 100000001
+    }
+    result = @message_log_controller.queue_order_task(request.to_json, "kshakirov@zoral.com.ua")
+    refute_nil result
+
   end
 
 end

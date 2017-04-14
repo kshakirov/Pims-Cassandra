@@ -31,15 +31,29 @@ module TurboCassandra
         }.to_json
       end
 
-      def _add_incomming sender_email, admin_email, body, payload
+      def prepare_order_queue_payload request
+        {
+            "email": request['email'],
+            "order_id": request['order_id'],
+            "action": 'order'
+        }.to_json
+      end
+
+      def log_task sender_email, admin_email, body
         message_data = prepare_incoming_message(sender_email, admin_email, body)
         @message_log_api.add_message(message_data)
+      end
+
+      def publish_task payload
         @channel.publish(payload, :routing_key => @queue)
       end
 
-      def _add_outcomming recepient_email, admin_email, body
+      def commit_log recepient_email, admin_email, body
         message_date = prepare_outcoming_message(recepient_email, admin_email, body)
         @message_log_api.add_message(message_date)
+        {
+            result: true
+        }
       end
 
       public
@@ -49,29 +63,38 @@ module TurboCassandra
         @channel = prepare_queue(rabbit_conn, queue)
       end
 
-      def add_password_reset_msg read, admin_email
-        request_payload = JSON.parse read
-        payload = prepare_queue_payload(request_payload["email"], 'reset')
-        _add_incomming(request_payload["email"],
-                       admin_email, 'Reset Password', payload)
+      def queue_password_reset_task read, admin_email
+        request = JSON.parse read
+        queue_payload = prepare_queue_payload(request["email"], 'reset')
+        log_task(request["email"], admin_email, "Customer [#{request['email']}] Queued To Reset Password")
+        publish_task(queue_payload)
       end
 
-      def add_password_sent_msg read, admin_email
-        request_payload = JSON.parse read
-        message = "New  Password " + request_payload['password']
-        _add_outcomming(request_payload["email"], admin_email, message)
+
+      def queue_order_task body, admin_email
+        request = JSON.parse body
+        task_payload = prepare_order_queue_payload(request)
+        log_task(request["email"], admin_email, "Order [#{request['order_id']}] Queued To Email")
+        publish_task(task_payload)
       end
 
-      def add_new_customer_msg read, admin_email
-        request_payload = JSON.parse read
-        payload = prepare_queue_payload(request_payload["email"], 'new')
-        _add_incomming(request_payload["email"], admin_email, 'New Customer', payload)
+
+      def log_task_complete body, admin_email
+        request_payload = JSON.parse body
+        commit_log(request_payload["email"], admin_email, request_payload['message'])
       end
 
-      def add_new_customer_sent_msg read, admin_email
+      def queue_new_customer_task read, admin_email
+        request = JSON.parse read
+        queue_payload = prepare_queue_payload(request["email"], 'new')
+        log_task(request_payload["email"], admin_email, 'New Customer')
+        publish_task( queue_payload)
+      end
+
+      def log_new_customer_task read, admin_email
         request_payload = JSON.parse read
         message = "New  Customer [#{request_payload['email']}],  new password   [ #{request_payload['password']}]"
-        _add_outcomming(request_payload["email"], admin_email, message)
+        commit_log(request_payload["email"], admin_email, message)
       end
 
     end

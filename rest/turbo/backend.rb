@@ -15,6 +15,7 @@ require 'securerandom'
 require 'active_directory'
 require 'prawn'
 require 'prawn/table'
+require 'erb'
 require_relative '../../lib/sources'
 require_relative 'jwt_auth'
 require_relative 'mailer'
@@ -154,12 +155,12 @@ class Public < Sinatra::Base
   end
 
   post '/frontend/customer/password/reset/' do
-    settings.messageLogController.add_password_reset_msg(request.body.read,
-                                                         settings.admin_email)
+    settings.messageLogController.queue_password_reset_task(
+        request.body.read, settings.admin_email)
   end
 
   post '/frontend/customer/new/' do
-    settings.messageLogController.add_new_customer_msg(request.body.read,
+    settings.messageLogController.queue_new_customer_task(request.body.read,
                                                        settings.admin_email)
   end
 

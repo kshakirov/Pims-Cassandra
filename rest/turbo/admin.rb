@@ -21,8 +21,14 @@ end
 class Admin < Sinatra::Base
 
   use JwtAuth
+  register Sinatra::ConfigFile
+  helpers Sinatra::Cookies
+  config_file '../../config/config.yaml'
+
   set :public_folder, Proc.new { File.join(root.gsub("rest/turob", ''), "views") }
-  set :rabbit_queue, TurboCassandra::Controller::RabbitQueue.new("localhost")
+  set :rabbit_queue,
+      TurboCassandra::Controller::RabbitQueue.
+          new(self.send(ENV['TURBO_MODE'])['queue_host'])
 
 
   configure do
@@ -100,7 +106,7 @@ class Admin < Sinatra::Base
     settings.attributeSetController.update_critical_property(request_payload)
   end
 
-  put '/customer/password/reset/' do
+  post '/customer/password/reset/' do
     settings.adminController.reset_password(request.body.read)
   end
 
@@ -121,8 +127,8 @@ class Admin < Sinatra::Base
   end
 
   post '/message/' do
-    settings.messageLogController.add_password_sent_msg(request.body.read,
-                                                        settings.admin_email)
+    settings.messageLogController.log_task_complete(request.body.read,
+                                                    settings.admin_email)
   end
 
   post '/message/paginate' do
@@ -206,11 +212,18 @@ class Admin < Sinatra::Base
 
   get '/template/:name' do
     settings.templateController.load(settings.root, params)
+  end
 
+  put '/template/preview' do
+    settings.templateController.preview(request.body.read)
   end
 
   post '/template/' do
     settings.templateController.save(request.body.read)
+  end
+
+  post '/template/process' do
+    settings.templateController.process(request.body.read, settings.root)
   end
 
   after do
