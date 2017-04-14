@@ -156,12 +156,12 @@ class Public < Sinatra::Base
 
   post '/frontend/customer/password/reset/' do
     settings.messageLogController.queue_password_reset_task(
-        request.body.read, settings.admin_email)
+        request.body.read)
   end
 
   post '/frontend/customer/new/' do
-    settings.messageLogController.queue_new_customer_task(request.body.read,
-                                                       settings.admin_email)
+    settings.messageLogController.queue_new_customer_task(
+        request.body.read)
   end
 
 

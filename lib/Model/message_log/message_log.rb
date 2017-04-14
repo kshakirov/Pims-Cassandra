@@ -4,15 +4,35 @@ module TurboCassandra
       include TurboCassandra::Model::Utils
       include MessageLogSql
 
+      private
+      def return_id hash
+        if hash.key? 'id'
+          hash['id']
+        elsif hash.key? :id
+          hash[:id]
+        end
+      end
+
       public
       def insert hash
         names, values, args = prepare_attributes(hash)
         execute_query(insert_cql(names, values), args)
-        true
+        return_id(hash)
+      end
+
+      def update email, id, data
+        sets, args = prepare_sets(data)
+        args.push(email, id)
+        execute_query(update_cql(sets), args)
       end
 
       def find_by_sender_email email
-        result = execute_query(select_by_sender_email_cql, [email])
+        result = execute_query(select_by_email_cql, [email])
+        result.map{|r| r}
+      end
+
+      def find_by_email_and_id email, id
+        result = execute_query(select_by_email_and_id, [email,id])
         result.map{|r| r}
       end
 

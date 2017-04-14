@@ -4,10 +4,10 @@ module TurboCassandra
       private
       def _add_message message_data
         message = {
-            sender_email: message_data[:sender_email],
-            recepient_email: message_data[:recepient_email],
-            date: Time.now.to_time,
-            id: @generator.uuid,
+            customer_email: message_data[:customer_email],
+            id: @generator.now,
+            status: message_data[:status],
+            date_start:  Time.now.to_time,
             message: message_data[:message]
         }
         @message_log_model.insert(message)
@@ -33,6 +33,10 @@ module TurboCassandra
 
       def paginate params
         @message_log_model.paginate params
+      end
+
+      def update_message_by_id email, id, message_data
+        @message_log_model.update email, id, message_data
       end
     end
   end

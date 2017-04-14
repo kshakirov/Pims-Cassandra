@@ -23,6 +23,15 @@ module TurboCassandra
             prepare_values(hash), prepare_args(hash)
       end
 
+
+      def prepare_set hash
+        hash.map{|h| "#{h[0]} = ?"}.join(',')
+      end
+
+      def prepare_sets hash
+        return prepare_set(hash), prepare_args(hash)
+      end
+
       def prepare_ins list
         list.map { |v| "'#{v.to_s}'" }.join(",")
       end

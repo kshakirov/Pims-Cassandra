@@ -175,8 +175,8 @@ class Customer < Sinatra::Base
   end
 
   post '/order/email' do
-    settings.messageLogController.queue_order_task(request.body.read,
-                                                   settings.admin_email)
+    settings.messageLogController.queue_order_task(
+        request.body.read)
   end
 
   after do

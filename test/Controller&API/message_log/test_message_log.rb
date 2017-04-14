@@ -12,7 +12,7 @@ class TestMessageLogController < Minitest::Test
     request = {
         'email' => "kshakirov@zoral.com.ua"
     }
-    result = @message_log_controller.queue_password_reset_task(request.to_json, "kshakirov@zoral.com.ua")
+    result = @message_log_controller.queue_password_reset_task(request.to_json)
     refute_nil result
 
   end
@@ -21,7 +21,7 @@ class TestMessageLogController < Minitest::Test
     request = {
         'email' => "kshakirov@zoral.com.ua"
     }
-    result = @message_log_controller.queue_new_customer_task(request.to_json, "kshakirov@zoral.com.ua")
+    result = @message_log_controller.queue_new_customer_task(request.to_json)
     refute_nil result
   end
 
@@ -50,7 +50,19 @@ class TestMessageLogController < Minitest::Test
         'email' => "kshakirov@zoral.com.ua",
         'order_id' => 100000001
     }
-    result = @message_log_controller.queue_order_task(request.to_json, "kshakirov@zoral.com.ua")
+    result = @message_log_controller.queue_order_task(request.to_json)
+    refute_nil result
+
+  end
+
+  def test_task_complete
+    data = {
+        'id' => 'c3cacc80-211f-11e7-884b-77058f46a03a',
+        'message' => 'Customer [kshakirov@zoral.com.ua] Password [iRjHg4oTWfWCIQ] Reset and Sent',
+        'email' => 'kshakirov@zoral.com.ua',
+        'status' => 'Success'
+    }
+    result = @message_log_controller.log_task_complete(data.to_json)
     refute_nil result
 
   end

@@ -87,6 +87,7 @@ namespace :db do
     end
     task :message_log do
       ruby "tools/schema/message_log/create_message_log.rb"
+      ruby "tools/schema/message_log/add_index.rb"
     end
     task :order_product do
       ruby "tools/schema/order/create_order_products.rb"

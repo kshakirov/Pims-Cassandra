@@ -25,7 +25,7 @@ class Admin < Sinatra::Base
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
 
-  set :public_folder, Proc.new { File.join(root.gsub("rest/turob", ''), "views") }
+  set :public_folder, Proc.new { File.join(root.gsub("rest/turbo", ''), "views") }
   set :rabbit_queue,
       TurboCassandra::Controller::RabbitQueue.
           new(self.send(ENV['TURBO_MODE'])['queue_host'])
@@ -127,8 +127,7 @@ class Admin < Sinatra::Base
   end
 
   post '/message/' do
-    settings.messageLogController.log_task_complete(request.body.read,
-                                                    settings.admin_email)
+    settings.messageLogController.log_task_complete(request.body.read)
   end
 
   post '/message/paginate' do

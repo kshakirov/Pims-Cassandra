@@ -12,7 +12,7 @@ product_hashes = read_product_from_file
 product_hashes.each_with_index do |product_hash, index|
   sku = product_hash['sku']
   product_batch.remove_keys(product_hash)
-  product_batch.prepare_interchanges(product_hash, tcas_client.query_interchanges(sku))
+  product_batch.prepare_interchanges(product_hash)
   product_batch.prepare_ti_part(product_hash, tcas_client.query_interchanges(sku))
   product_batch.parse_critical_attributes(product_hash)
   product_hash['created_at'] =generator.now
