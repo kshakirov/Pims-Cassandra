@@ -91,6 +91,10 @@ module TurboCassandra
           @catalog_manager.get_filters
         end
 
+        def get_part_type_filters
+          @catalog_manager.get_part_type_filters
+        end
+
         def get_sorters
           @catalog_manager.get_sorters
         end
