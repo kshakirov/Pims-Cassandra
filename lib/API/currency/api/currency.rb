@@ -2,13 +2,17 @@ module TurboCassandra
   module API
     class Currency
       def initialize
-        @currency_model = TurboCassandra::Model::Currency.new
       end
+
       def all
-        @currency_model.all
+        TurboCassandra::Model::Currency.all
       end
+
       def update currencies
-        @currency_model.insert currencies
+        currencies.each do |c|
+          currency = TurboCassandra::Model::Currency.new currencies
+          currency.save
+        end
       end
     end
   end
