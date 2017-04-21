@@ -1,8 +1,6 @@
 module TurboCassandra
   module Model
     class MessageLog < BaseModel
-      self.primary_index ['customer_email', 'id']
-
       def save
         super
         if @attributes.key? 'id'
@@ -12,5 +10,6 @@ module TurboCassandra
         end
       end
     end
+    MessageLog.primary_index =  ['customer_email', 'id']
   end
 end

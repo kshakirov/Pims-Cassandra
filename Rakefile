@@ -111,6 +111,11 @@ namespace :db do
       ruby "tools/schema/cart/create_carts.rb"
     end
 
+    task :invoice do
+      ruby "tools/schema/invoice/create_invoice_product.rb"
+      ruby "tools/schema/invoice/create_product_invoice.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:cart'].execute
@@ -122,6 +127,7 @@ namespace :db do
       Rake::Task['db:setup:shipment'].execute
       Rake::Task['db:setup:currency_history'].execute
       Rake::Task['db:setup:new_product'].execute
+      Rake::Task['db:setup:invoice'].execute
     end
   end
 
