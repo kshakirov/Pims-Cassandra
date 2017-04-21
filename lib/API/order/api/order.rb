@@ -8,6 +8,7 @@ module TurboCassandra
       def initialize
         @order_model = TurboCassandra::Model::Order.new
         @product_api = TurboCassandra::API::Product.new
+        @invoice_api = TurboCassandra::API::Invoice.new
       end
 
       def_delegator :@order_model, :find_by_customer_id, :find_by_customer_id
@@ -36,7 +37,7 @@ module TurboCassandra
       end
 
       def  get_also_bought_products sku
-        _get_also_bought_products sku
+        @invoice_api.get_also_bought_prods sku
       end
     end
   end

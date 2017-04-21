@@ -29,7 +29,7 @@ module TurboCassandra
       end
 
       def create_invoice_id invoice_data
-        invoice_data['no'] + invoice_data['headerSeqNo'] + invoice_data['customerNo']
+        invoice_data['no'] + invoice_data['headerSeqNo']
       end
 
       def prep_product_invoice invoice_data
@@ -49,7 +49,14 @@ module TurboCassandra
               interchanges: p['interchanges'],
               description: p['description'],
               part_type: p['partTypeName'],
-              name: p['partNumber']
+              name: p['partNumber'],
+              unit_price: p['unitPrice'],
+              detail_seq_no: p['detailSeqNo'],
+              quantity_shipped: p['quantityShipped'],
+              unit_cost: p['unitCost'],
+              extension_amt: p['extensionAmt'],
+              armc_234_entry_currency: p['armc234EntryCurrency'],
+              armc_234_entry_rate: p['armc234EntryRate']
           }
         end
       end
@@ -89,8 +96,13 @@ module TurboCassandra
         Model::ProductInvoice.find_by sku: sku
       end
 
-      def get_also_bought_products sku
-        invoice_ids = get_invoice_by_product sku
+      def get_also_bought_prods sku
+         Model::AlsoBoughtProduct.find_by  sku_original: sku
+      end
+
+      def add_also_bought_prod prod_data
+        prod = Model::AlsoBoughtProduct.new(prod_data)
+        prod.save
       end
     end
   end

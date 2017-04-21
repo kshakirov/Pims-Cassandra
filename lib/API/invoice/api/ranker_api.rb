@@ -14,8 +14,19 @@ module TurboCassandra
         map.reverse
       end
 
-      def prep_ranked_prods freq_map
-        freq_map.map{|m| m[:product] }
+      def prep_ranked_prods freq_map, sku
+        freq_map.map do |m|
+          p = m[:product]
+          {
+              sku_original: sku,
+              rank: m[:freq],
+              sku: p['sku'],
+              description: p['description'],
+              part_type: p['part_type'],
+              name: p['name'],
+              interchanges: p['interchanges']
+          }
+        end
       end
 
       def get_sku_freq unique_skus, invoices
@@ -33,7 +44,7 @@ module TurboCassandra
         unique_skus.delete_if {|s| s['sku'] == sku}
         freq_map = get_sku_freq(unique_skus, invoice_prods)
         freq_map = sort_freq_map(freq_map)
-        prep_ranked_prods(freq_map)
+        prep_ranked_prods(freq_map, sku)
       end
       def get_invoices_ids invoices
         invoices.map{|i| i['invoice_id']}

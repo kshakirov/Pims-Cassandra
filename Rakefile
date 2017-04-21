@@ -114,6 +114,7 @@ namespace :db do
     task :invoice do
       ruby "tools/schema/invoice/create_invoice_product.rb"
       ruby "tools/schema/invoice/create_product_invoice.rb"
+      ruby "tools/schema/invoice/create_also_bought_product.rb"
     end
 
     task :all do

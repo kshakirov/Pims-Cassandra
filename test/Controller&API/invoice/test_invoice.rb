@@ -42,8 +42,19 @@ class TestInvoice < Minitest::Test
 
   def test_ranker_api
     ranker = TurboCassandra::API::Ranker.new
+
     ranked = ranker.rank_bougt_products  48208
     assert_equal 10, ranked.size
+    ranked.each do |rank|
+      @invoice_api.add_also_bought_prod rank
+    end
+
+  end
+
+  def test_get_also_bought_prod
+    prods = @invoice_api.get_also_bought_prods  48208
+    refute_nil prods
+    assert_equal 10, prods.size
   end
 
 
