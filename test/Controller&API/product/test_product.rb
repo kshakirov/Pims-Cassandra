@@ -51,5 +51,11 @@ class TestProduct < Minitest::Test
     assert true
   end
 
+  def test_application
+  sku = 62958
+  product = @product_controller.get_product 62958
+  assert_equal 63, product['application_detail']
+  end
+
 end
 

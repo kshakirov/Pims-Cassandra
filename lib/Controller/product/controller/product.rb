@@ -6,6 +6,7 @@ module TurboCassandra
       include TurboCassandra::Controller::TiPart
       include ProductAdminWithPrice
       include Pagination
+      include ProductApplication
 
       public
       def initialize
@@ -30,6 +31,7 @@ module TurboCassandra
         unless  is_ti_product? product
           product['ti_part_sku'], product['ti_part_number'] = add_ti_part_attributes(product)
         end
+        prepare_application(product)
         product
       end
 
