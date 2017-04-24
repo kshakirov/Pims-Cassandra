@@ -111,6 +111,10 @@ namespace :db do
       ruby "tools/schema/cart/create_carts.rb"
     end
 
+    task :customer_group do
+      ruby "tools/schema/customer_group/create_customer_group.rb"
+    end
+
     task :invoice do
       ruby "tools/schema/invoice/create_invoice_product.rb"
       ruby "tools/schema/invoice/create_product_invoice.rb"
@@ -129,6 +133,7 @@ namespace :db do
       Rake::Task['db:setup:currency_history'].execute
       Rake::Task['db:setup:new_product'].execute
       Rake::Task['db:setup:invoice'].execute
+      Rake::Task['db:setup:customer_group'].execute
     end
   end
 
@@ -160,6 +165,10 @@ namespace :db do
       ruby "tools/fixtures/attribute_set/populate.rb"
       ruby "tools/fixtures/attribute_set/update_1.rb"
       ruby "tools/fixtures/attribute_set/update_2.rb"
+    end
+
+    task :customer_group do
+      ruby "tools/fixtures/customer_group/populate.rb"
     end
 
     task :all do

@@ -48,6 +48,7 @@ class Admin < Sinatra::Base
     set :groupPriceController, TurboCassandra::Controller::GroupPrice.new
     set :menuController, TurboCassandra::Controller::Menu::Main.new
     set :templateController, TurboCassandra::Controller::Template.new
+    set :customerGroupController, TurboCassandra::Controller::CustomerGroup.new
   end
 
 
@@ -223,6 +224,14 @@ class Admin < Sinatra::Base
 
   post '/template/process' do
     settings.templateController.process(request.body.read, settings.root)
+  end
+
+  get '/customer_group/' do
+    settings.customerGroupController.all
+  end
+
+  put '/customer_group/' do
+    settings.customerGroupController.update_group(request.body.read)
   end
 
   after do
