@@ -11,6 +11,12 @@ module TurboCassandra
       def delete_node node_name
         TurboCassandra::Model::AuthenticationNode.delete node_name
       end
+
+      def get_node name
+        node = TurboCassandra::Model::AuthenticationNode.find name
+        node.to_hash
+      end
+
     end
   end
 end

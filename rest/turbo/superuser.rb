@@ -8,20 +8,11 @@ class SuperUser < Sinatra::Base
 
   configure do
     set :userController, TurboCassandra::Controller::User.new
-    set :currencyController, TurboCassandra::Controller::Currency.new
+    set :authNodeController, TurboCassandra::Controller::AuthenticationNode.new
   end
 
 
-  # def logged_in?
-  #   scopes, customer = request.env.values_at :scopes, :customer
-  #   if customer['id'] == 488
-  #     return true
-  #   end
-  #   false
-  # end
-
-
-  set(:probability) { |value|
+  set(:clearance) { |value|
     condition {
       scopes, customer = request.env.values_at :scopes, :customer
       if customer['id'] == 487
@@ -37,7 +28,7 @@ class SuperUser < Sinatra::Base
     content_type :json
   end
 
-  get '/user/', :probability => true do
+  get '/user/', :clearance => true do
     settings.userController.get_users_list
   end
 
@@ -52,6 +43,22 @@ class SuperUser < Sinatra::Base
   delete '/user/:login' do
     settings.userController.delete_user params
   end
+
+  get '/authentication_node/', :clearance  => true do
+    settings.authNodeController.all
+  end
+
+  post '/authentication_node/', :clearance => true  do
+    settings.authNodeController.add_node request.body.read
+  end
+
+  get '/authentication_node/:name', :clearance => true do
+    settings.authNodeController.get_node params
+  end
+  delete '/authentication_node/:name', :clearance => true do
+    settings.authNodeController.delete params
+  end
+
 
   not_found do
     403
