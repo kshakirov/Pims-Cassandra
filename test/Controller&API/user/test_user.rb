@@ -28,5 +28,10 @@ class TestUser < Minitest::Test
     @user_api.delete_user 'kshakirov'
   end
 
+  def test_find
+    user = @user_api.find_user 'kshakirov'
+    assert_instance_of Hash, user.to_hash
+  end
+
 
 end

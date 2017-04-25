@@ -11,6 +11,11 @@ module TurboCassandra
       def delete_user login
         TurboCassandra::Model::User.delete login
       end
+
+      def find_user login
+        TurboCassandra::Model::User.find login
+      end
+
     end
   end
 end
