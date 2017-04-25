@@ -47,6 +47,10 @@ module TurboCassandra
       "INSERT into #{class_name} (#{names}) VALUES (#{values}) "
     end
 
+    def self.delete_template
+      "DELETE from #{class_name} " + " WHERE #{prep_primary_args}"
+    end
+
     class << self
       attr_accessor :primary_index
     end
@@ -102,8 +106,9 @@ module TurboCassandra
       select_template("*") + " WHERE #{key} IN (#{args})"
     end
 
-    def self
-
+    def self.delete params
+      execute delete_template, [params]
+      true
     end
 
     def self.find_by params

@@ -121,6 +121,10 @@ namespace :db do
       ruby "tools/schema/invoice/create_also_bought_product.rb"
     end
 
+    task :user do
+      ruby "tools/schema/user/create_user.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:cart'].execute
@@ -134,6 +138,7 @@ namespace :db do
       Rake::Task['db:setup:new_product'].execute
       Rake::Task['db:setup:invoice'].execute
       Rake::Task['db:setup:customer_group'].execute
+      Rake::Task['db:setup:user'].execute
     end
   end
 
