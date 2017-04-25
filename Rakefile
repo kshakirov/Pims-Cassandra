@@ -125,6 +125,10 @@ namespace :db do
       ruby "tools/schema/user/create_user.rb"
     end
 
+    task :authentication_node do
+      ruby "tools/schema/authentication_node/create_authentication_node.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:cart'].execute
@@ -139,6 +143,7 @@ namespace :db do
       Rake::Task['db:setup:invoice'].execute
       Rake::Task['db:setup:customer_group'].execute
       Rake::Task['db:setup:user'].execute
+      Rake::Task['db:setup:authentication_node'].execute
     end
   end
 
