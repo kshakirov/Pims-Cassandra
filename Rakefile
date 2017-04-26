@@ -181,6 +181,14 @@ namespace :db do
       ruby "tools/fixtures/customer_group/populate.rb"
     end
 
+    task :authentication_node do
+      ruby "tools/fixtures/authentication_node/populate.rb"
+    end
+
+    task :user do
+      ruby "tools/fixtures/user/populate.rb"
+    end
+
     task :all do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"
@@ -193,6 +201,9 @@ namespace :db do
       ruby "tools/fixtures/product/populate.rb"
       ruby "tools/fixtures/currency/populate.rb"
       ruby "tools/fixtures/featured_new_product/populate.rb"
+      ruby "tools/fixtures/customer_group/populate.rb"
+      ruby "tools/fixtures/authentication_node/populate.rb"
+      ruby "tools/fixtures/user/populate.rb"
     end
   end
 end

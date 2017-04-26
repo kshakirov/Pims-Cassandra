@@ -2,23 +2,6 @@ module TurboCassandra
   module Controller
     module OuterAuthenticate
 
-      def get_ldap_settings ldap_host
-        {
-            :host => ldap_host,
-            :base => 'dc=TurboInternational,dc=local',
-            :port => 636,
-            :encryption => {
-                :method => :simple_tls,
-                :tls_options => {verify_mode: OpenSSL::SSL::VERIFY_NONE}
-            },
-            :auth => {
-                :method => :simple,
-                :username => "LDAP",
-                :password => "9)Fkp6%gaBk"
-            }
-        }
-      end
-
       def setup_active_dir node
         {
             :host => node.host,
