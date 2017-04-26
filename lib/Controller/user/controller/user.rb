@@ -1,9 +1,19 @@
 module TurboCassandra
   module Controller
     class User
+      include TurboCassandra::Controller::PasswordHash
+      private
+      def process_pass user_hash
+        unless user_hash['password'].nil?
+          user_hash['password'] = _hash_password(user_hash['password']).to_s
+        end
+      end
+
+      public
       def initialize
         @user_api = API::User.new
       end
+
       def get_users_list
         @user_api.all
       end
@@ -21,6 +31,7 @@ module TurboCassandra
 
       def create_user body
         user_hash = JSON.parse body
+        process_pass(user_hash)
         @user_api.add_user user_hash
       end
 

@@ -2,32 +2,15 @@ module TurboCassandra
   module Controller
     class Login
       include JwtSettings
+      include PasswordHash
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new
         @jwt_issuer = get_jwt_user
         @jwt_secret =  get_jwt_secret
-
       end
 
       private
-      def _hash_password data
-        md5 = Digest::MD5.new
-        md5.update data
-      end
-
-      def validate_hashes password, hash
-        hash_with_salt = hash.split(':');
-        case hash_with_salt.size
-          when 1
-            _hash_password(password) === hash
-          when 2
-            _hash_password(hash_with_salt[1] + password) === hash_with_salt[0]
-          else
-            false
-        end
-      end
-
       def get_customer customer_email
         @customer.find_by_email customer_email
       end

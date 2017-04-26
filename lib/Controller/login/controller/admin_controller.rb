@@ -2,7 +2,9 @@ module TurboCassandra
   module Controller
     class AdminLogin
       include JwtSettings
+      include PasswordHash
       include OuterAuthenticate
+      include PasswordHash
       private
 
       def result_fail
@@ -19,7 +21,7 @@ module TurboCassandra
       end
 
       def inner_authenticate user, password
-        if user.password == password
+        if  validate_hashes(password, user.password)
           result_success(create_internal_token(user))
         else
           result_fail

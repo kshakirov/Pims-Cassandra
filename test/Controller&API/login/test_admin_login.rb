@@ -25,8 +25,8 @@ class TestLogin < Minitest::Test
 
   def test_internal_login
     body = {
-        login: 'Test',
-        password: '123'
+        login: 'kshakirov',
+        password: 'test'
     }
     result = @admin_login_controller.authenticate_admin(body.to_json)
     refute_nil result
