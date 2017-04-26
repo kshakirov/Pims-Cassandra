@@ -10,5 +10,5 @@ cql = %Q(CREATE TABLE  authentication_nodes
             base_dn text,
             ldap_filter text,
             timeout int,
-            attributes frozen <list<map<text,text>>>))
+            attributes map<text,text>))
 execute_lazy(cql, [])

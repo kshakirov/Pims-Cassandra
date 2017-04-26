@@ -13,8 +13,7 @@ module TurboCassandra
       end
 
       def get_node name
-        node = TurboCassandra::Model::AuthenticationNode.find name
-        node.to_hash
+        TurboCassandra::Model::AuthenticationNode.find name
       end
 
     end

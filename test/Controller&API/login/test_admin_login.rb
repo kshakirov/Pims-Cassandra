@@ -1,8 +1,8 @@
-require_relative "test_helper"
+require_relative "../test_helper"
 class TestLogin < Minitest::Test
   include TurboCassandra::Controller::JwtSettings
   def setup
-    @admin_login_controller = TurboCassandra::Controller::AdminLogin.new
+    @admin_login_controller = TurboCassandra::Controller::AdminLogin.new '162.249.218.162'
     @options = {
         algorithm: 'HS256', iss: get_jwt_user
     }
@@ -23,6 +23,24 @@ class TestLogin < Minitest::Test
     assert_equal 'jbond@turbointernational.com', admin_info.first['admin']['id']
   end
 
+  def test_internal_login
+    body = {
+        login: 'Test',
+        password: '123'
+    }
+    result = @admin_login_controller.authenticate_admin(body.to_json)
+    refute_nil result
+    assert_equal 'success', result[:result]
+  end
 
+  def test_external_login
+    body = {
+        login: 'jbond',
+        password: 'assembly01!'
+    }
+    result = @admin_login_controller.authenticate_admin(body.to_json)
+    refute_nil result
+    assert_equal 'success', result[:result]
+  end
 
 end

@@ -11,9 +11,8 @@ class TestUser < Minitest::Test
         name: "Kirill Shakirov",
         email: "kshakirov@zoral.com.ua",
         password: "test",
-        must_change: true
-
-
+        must_change: true,
+        authentication_node: 'Internal'
     }
     res = @user_api.add_user user
     refute_nil res

@@ -14,8 +14,8 @@ class SuperUser < Sinatra::Base
 
   set(:clearance) { |value|
     condition {
-      scopes, customer = request.env.values_at :scopes, :customer
-      if customer['id'] == 487
+      group = request.env.values_at :group
+      if group.first == 'superuser'
         true
       else
         false

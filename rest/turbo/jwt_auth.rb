@@ -14,6 +14,12 @@ class JwtAuth
 
       env[:scopes] = payload['scopes']
       env[:customer] = payload['customer']
+      if payload.key? 'admin'
+        if payload['admin'].key? 'group'
+          env[:group] = payload['admin']['group']
+        end
+      end
+
 
       @app.call env
     rescue JWT::DecodeError
