@@ -41,6 +41,12 @@ module TurboCassandra
           product_hash.delete('custom_attrs')
         end
 
+        def derive_name product_hash
+          if product_hash['name'].nil?
+            product_hash['name'] = "#{product_hash['part_type']} - #{product_hash['part_number']}"
+          end
+        end
+
         def parse_critical_attributes product_hash
           if product_hash.key? 'custom_attrs'
             _parse_critical_attributes(product_hash)

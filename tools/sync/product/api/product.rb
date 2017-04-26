@@ -46,6 +46,7 @@ module TurboCassandra
           @product_batch.remove_keys(product)
           @product_batch.prepare_interchanges(product)
           @product_batch.parse_critical_attributes(product)
+          @product_batch.derive_name(product)
         end
 
         def return_operation_result action,  sku
