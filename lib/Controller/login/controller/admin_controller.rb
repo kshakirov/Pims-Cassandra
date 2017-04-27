@@ -8,9 +8,7 @@ module TurboCassandra
       private
 
       def result_fail
-        {
-            result: 'failed'
-        }
+        raise "Admin Login or Password Is Invalid"
       end
 
       def result_success token
@@ -47,7 +45,7 @@ module TurboCassandra
 
       def get_user_auth_sys login, password
         user =@user_api.find_user login
-        if not user.nil?
+        if not user.to_hash.nil?
           if user.authentication_node == 'Internal'
             inner_authenticate(user, password)
           elsif user.authentication_node

@@ -29,7 +29,7 @@ module TurboCassandra
             iat: Time.now.to_i,
             iss: @jwt_issuer,
             admin: {
-                id: admin.first.userprincipalname.first.to_s,
+                id: admin.first.samaccountname.first.to_s,
                 group: admin.first.primarygroupid.first.to_s,
                 name: admin.first.displayname.first.to_s
             }

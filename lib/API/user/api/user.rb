@@ -15,7 +15,6 @@ module TurboCassandra
       def find_user login
         TurboCassandra::Model::User.find login
       end
-
     end
   end
 end

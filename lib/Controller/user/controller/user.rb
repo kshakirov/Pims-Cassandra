@@ -35,6 +35,23 @@ module TurboCassandra
         @user_api.add_user user_hash
       end
 
+      def get_profile env
+        name = ''
+        image_id = ''
+        if env.key? :group
+          name = env[:name]
+          image_id = env[:id]
+        elsif env.key? 'customer'
+          name = env['name']
+          image_id = env['id']
+        end
+        {
+            image_id: image_id,
+            name: name
+
+        }
+      end
+
     end
   end
 end

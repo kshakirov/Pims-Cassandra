@@ -17,6 +17,9 @@ class JwtAuth
       if payload.key? 'admin'
         if payload['admin'].key? 'group'
           env[:group] = payload['admin']['group']
+          env[:id] = payload['admin']['id']
+          env[:name] = payload['admin']['name']
+
         end
       end
 

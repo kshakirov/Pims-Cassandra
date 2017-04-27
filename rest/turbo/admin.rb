@@ -1,4 +1,5 @@
 class AdminLogin < Sinatra::Base
+  use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
@@ -51,6 +52,7 @@ class Admin < Sinatra::Base
     set :menuController, TurboCassandra::Controller::Menu::Main.new
     set :templateController, TurboCassandra::Controller::Template.new
     set :customerGroupController, TurboCassandra::Controller::CustomerGroup.new
+    set :userController, TurboCassandra::Controller::User.new
   end
 
 
@@ -235,6 +237,10 @@ class Admin < Sinatra::Base
 
   put '/customer_group/' do
     settings.customerGroupController.update_group(request.body.read)
+  end
+
+  post '/profile' do
+    settings.userController.get_profile(request.env)
   end
 
 
