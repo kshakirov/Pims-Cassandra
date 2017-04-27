@@ -39,6 +39,10 @@ module TurboCassandra
       execute(insert_template(names, values), real_args)
     end
 
+    def self.aggregation_template func, aggregator
+      "SELECT  #{func}(#{aggregator}) FROM #{class_name}"
+    end
+
     def self.distinct_template key
       "Select distinct #{key} from #{class_name}"
     end
@@ -129,9 +133,11 @@ module TurboCassandra
       prep_response(results)
     end
 
-    def self.find_all
-
+    def self.max
+        result = execute(aggregation_template('MAX',primary_index.first),[])
+        result.first.values.first
     end
+
 
     def self.find *params
       result = execute select_find_prim_template, params

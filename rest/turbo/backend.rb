@@ -18,10 +18,13 @@ require 'prawn/table'
 require 'erb'
 require_relative '../../lib/sources'
 require_relative 'jwt_auth'
+require_relative 'exception_handling'
 require_relative 'mailer'
+require 'multi_json'
 
 
 class Public < Sinatra::Base
+  use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
@@ -40,18 +43,7 @@ class Public < Sinatra::Base
     set :logBackEnd, TurboCassandra::VisitorLogBackEnd.new
     set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
     set :md5, Digest::MD5.new
-    set :admin_email, "kyrylo.shakirov@zorallabs.com"
   end
-
-  ActionMailer::Base.smtp_settings = {
-      :address => "smtp.office365.com",
-      :port => '587',
-      :authentication => :login,
-      :enable_starttls_auto => true,
-      :user_name => 'kyrylo.shakirov@zorallabs.com',
-      :password => '',
-  }
-  ActionMailer::Base.view_paths = 'views/'
 
 
   before do

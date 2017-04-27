@@ -20,10 +20,10 @@ module TurboCassandra
       private
 
       def create_customer_order_data customer_id
-        customer_data = @customer_api.find_by_customer_id customer_id
+        customer = @customer_api.find_by_customer_id customer_id
         {
-          'customer_name' => customer_data['firstname'] + " "  + customer_data['lastname'],
-          'customer_email' => customer_data['email']
+          'customer_name' => customer.firstname + " "  + customer.lastname,
+          'customer_email' => customer.email
         }
       end
 
@@ -42,14 +42,14 @@ module TurboCassandra
       end
 
       def get_customer_data customer_id
-        customer_data = @customer_api.find_by_customer_id customer_id
+        customer = @customer_api.find_by_customer_id customer_id
         {
             order_id: 1,
             customer_id: customer_id,
             data: {
-                billing_address: customer_data['default_billing_address'],
-                shipping_address: customer_data['default_shipping_address'],
-                email: customer_data['email']
+                billing_address: customer.default_billing_address,
+                shipping_address: customer.default_shipping_address,
+                email: customer.email
 
             }
         }

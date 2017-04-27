@@ -18,9 +18,11 @@ class AdminLogin < Sinatra::Base
   end
 end
 
+
 class Admin < Sinatra::Base
 
   use JwtAuth
+  use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
@@ -55,6 +57,7 @@ class Admin < Sinatra::Base
   before do
     content_type :json
   end
+
 
   get '/manufacturer/' do
     settings.menuController.get_manufacturers
@@ -233,6 +236,9 @@ class Admin < Sinatra::Base
   put '/customer_group/' do
     settings.customerGroupController.update_group(request.body.read)
   end
+
+
+
 
   after do
       response.body = JSON.dump(response.body)

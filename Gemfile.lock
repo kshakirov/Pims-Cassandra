@@ -126,6 +126,7 @@ DEPENDENCIES
   jwt
   march_hare
   minitest
+  multi_json (~> 1.12, >= 1.12.1)
   prawn
   prawn-table
   puma

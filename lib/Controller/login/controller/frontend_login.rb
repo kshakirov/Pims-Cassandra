@@ -7,7 +7,7 @@ module TurboCassandra
       def initialize
         @customer = TurboCassandra::API::Customer.new
         @jwt_issuer = get_jwt_user
-        @jwt_secret =  get_jwt_secret
+        @jwt_secret = get_jwt_secret
       end
 
       private
@@ -36,15 +36,17 @@ module TurboCassandra
       public
       def validate_password password, customer_email
         customer = get_customer customer_email
-        if validate_hashes(password, customer['password'])
-          {
-              result: 'success',
-              token: token(customer)
-          }
+        if not customer.nil?
+          if validate_hashes(password, customer['password'])
+            {
+                result: 'success',
+                token: token(customer)
+            }
+          else
+            raise "Invalid Login or Password"
+          end
         else
-          {
-              result: 'failed'
-          }
+          raise "Invalid Login or Password"
         end
       end
 

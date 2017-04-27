@@ -8,6 +8,15 @@ module TurboCassandra
         channel.queue(queue)
       end
 
+      def is_email_unique? email
+        customers = TurboCassandra::Model::Customer.find_by email: email
+        if customers.empty?
+          true
+        else
+          raise 'Email Is Already Used'
+        end
+      end
+
       def prepare_incoming_message customer_email, message
         {
             customer_email: customer_email,
@@ -63,6 +72,7 @@ module TurboCassandra
       public
       def initialize (rabbit_conn, queue='customer_email')
         @message_log_api = TurboCassandra::API::MessageLog.new
+        @customer_api = TurboCassandra::API::Customer.new
         @queue = queue
         @channel = prepare_queue(rabbit_conn, queue)
       end
@@ -90,9 +100,11 @@ module TurboCassandra
 
       def queue_new_customer_task read
         request = JSON.parse read
-        message_id = log_task(request_payload["email"],'New Customer')
-        queue_payload = prepare_queue_payload(request["email"], 'new', message_id)
-        publish_task( queue_payload)
+        if is_email_unique? request['email']
+          message_id = log_task(request["email"],'New Customer')
+          queue_payload = prepare_queue_payload(request["email"], 'new', message_id)
+          publish_task( queue_payload)
+        end
       end
 
       def log_new_customer_task read

@@ -7,7 +7,16 @@ module TurboCassandra
       include AdminCustomerPassword
       include AdminCustomerRespose
       include AdminCustomerOrder
+
       private
+      def is_email_unique? email
+        customers = TurboCassandra::Model::Customer.find_by email: email
+        if customers.empty?
+          true
+        else
+          raise 'Email Is Already Used'
+        end
+      end
 
       def get_customer_by_email email
         @customer_api.find_by_email email
@@ -69,9 +78,11 @@ module TurboCassandra
 
       def create_new_customer_by_admin body
         customer_data = JSON.parse body
-        customer_data["default_shipping_address"] = add_default_shipping_address
-        customer_data["default_billing_address"] = add_default_billing_address
-        create_base(customer_data)
+        if is_email_unique? customer_data['email']
+          customer_data["default_shipping_address"] = add_default_shipping_address
+          customer_data["default_billing_address"] = add_default_billing_address
+          create_base(customer_data)
+        end
       end
 
       def delete id

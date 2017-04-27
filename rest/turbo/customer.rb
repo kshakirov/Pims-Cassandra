@@ -5,6 +5,7 @@ class Customer < Sinatra::Base
   config_file '../../config/config.yaml'
 
   use JwtAuth
+  use ExceptionHandling
   ActionMailer::Base.smtp_settings = {
       :address => "smtp.office365.com",
       :port => '587',

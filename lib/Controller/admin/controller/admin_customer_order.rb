@@ -14,14 +14,14 @@ module TurboCassandra
       end
 
       def get_customer_data customer_id
-        customer_data = @customer_api.find_by_customer_id customer_id
+        customer = @customer_api.find_by_customer_id customer_id
         {
             order_id: 1,
             customer_id: customer_id,
-            billing_address:  customer_data['default_billing_address'],
-            shipping_address:  customer_data['default_shipping_address'],
+            billing_address:  customer.default_billing_address,
+            shipping_address:  customer.default_shipping_address,
             data: {
-                'email' => customer_data['email']
+                'email' => customer.email
             }
 
         }

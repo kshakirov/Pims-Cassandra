@@ -10,6 +10,15 @@ module TurboCassandra
         end
       end
 
+      def is_email_unique? data
+        customers = TurboCassandra::Model::Customer.find_by email: data['email']
+        if customers.empty? or customers.first['id'] == data['id']
+          true
+        else
+          raise 'Email Is Already Used'
+        end
+      end
+
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new
@@ -19,11 +28,14 @@ module TurboCassandra
 
       def get_account customer_data
         id = get_customer_id(customer_data)
-        @customer.find_by_customer_id id
+        customer = @customer.find_by_customer_id id
+        customer.to_hash
       end
 
       def update_account data
-        @customer.update(data)
+        if is_email_unique? data
+            @customer.update(data)
+        end
       end
 
       def update_password data
