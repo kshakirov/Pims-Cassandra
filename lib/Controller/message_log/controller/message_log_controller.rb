@@ -10,11 +10,18 @@ module TurboCassandra
 
       def is_email_unique? email
         customers = TurboCassandra::Model::Customer.find_by email: email
-        if customers.empty?
-          true
-        else
+        unless customers.empty?
           raise 'Email Is Already Used'
         end
+        true
+      end
+
+      def is_email_available? email
+        customers = TurboCassandra::Model::Customer.find_by email: email
+        if customers.empty?
+          raise 'No User With This Email'
+        end
+        true
       end
 
       def prepare_incoming_message customer_email, message
@@ -79,16 +86,18 @@ module TurboCassandra
 
       def queue_password_reset_task read
         request = JSON.parse read
-        message_id = log_task(request["email"], "Customer [#{request['email']}] Queued To Reset Password")
-        queue_payload = prepare_queue_payload(request["email"], 'reset', message_id)
-        publish_task(queue_payload)
+        if is_email_available? request['email']
+          message_id = log_task(request["email"], "Customer [#{request['email']}] Queued To Reset Password")
+          queue_payload = prepare_queue_payload(request["email"], 'reset', message_id)
+          publish_task(queue_payload)
+        end
       end
 
 
       def queue_order_task body
         request = JSON.parse body
         message_id = log_task(request["email"], "Order [#{request['order_id']}] Queued To Email")
-        task_payload = prepare_order_queue_payload(request,message_id)
+        task_payload = prepare_order_queue_payload(request, message_id)
         publish_task(task_payload)
       end
 
@@ -101,9 +110,9 @@ module TurboCassandra
       def queue_new_customer_task read
         request = JSON.parse read
         if is_email_unique? request['email']
-          message_id = log_task(request["email"],'New Customer')
+          message_id = log_task(request["email"], 'New Customer')
           queue_payload = prepare_queue_payload(request["email"], 'new', message_id)
-          publish_task( queue_payload)
+          publish_task(queue_payload)
         end
       end
 
