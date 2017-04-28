@@ -1,6 +1,7 @@
 class SuperUser < Sinatra::Base
 
   use JwtAuth
+  use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
@@ -18,7 +19,7 @@ class SuperUser < Sinatra::Base
       if group.first == 'superuser'
         true
       else
-        false
+       raise "You Are Not Authorized to View This Page"
       end
     }
   }
@@ -40,7 +41,11 @@ class SuperUser < Sinatra::Base
     settings.userController.create_user request.body.read
   end
 
-  delete '/user/:login' do
+  put '/user/:id' do
+    settings.userController.update_user request.body.read
+  end
+
+  delete '/user/:id' do
     settings.userController.delete_user params
   end
 

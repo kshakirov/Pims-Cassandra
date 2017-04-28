@@ -19,7 +19,7 @@ module TurboCassandra
       end
 
       def inner_authenticate user, password
-        if  validate_hashes(password, user.password)
+        if  validate_hashes(password, user['password'])
           result_success(create_internal_token(user))
         else
           result_fail
@@ -32,9 +32,9 @@ module TurboCassandra
             iat: Time.now.to_i,
             iss: @jwt_issuer,
             admin: {
-                id: user.login,
+                id: user['login'],
                 group: 'superuser',
-                name: user.name
+                name: user['name']
             }
         }
       end
@@ -44,12 +44,12 @@ module TurboCassandra
       end
 
       def get_user_auth_sys login, password
-        user =@user_api.find_user login
-        if not user.to_hash.nil?
-          if user.authentication_node == 'Internal'
+        user =@user_api.find_user_by_login login
+        if not user.nil?
+          if user['authentication_node'] == 'Internal'
             inner_authenticate(user, password)
-          elsif user.authentication_node
-            outer_authenticate login, password, user.authentication_node
+          elsif user['authentication_node']
+            outer_authenticate login, password, user['authentication_node']
           else
             result_fail
           end

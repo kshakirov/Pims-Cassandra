@@ -9,9 +9,35 @@ module TurboCassandra
         end
       end
 
+      def is_login_unique? login
+          user = @user_api.find_user_by_login login
+          if user.nil?
+            return true
+          end
+          raise "User With This Login already exists"
+
+      end
+
+      def is_updated_login_unique? user_hash
+        user = @user_api.find_user_by_login user_hash['login']
+        if user.nil? or  user['id'].to_s  == user_hash['id']
+          return true
+        end
+        raise "User With This Login already exists"
+      end
+
+      def add_id user_hash
+        user_hash['id'] = @generator.uuid
+      end
+
+      def coerce_id user_hash
+        user_hash['id'] =  Cassandra::Uuid.new(user_hash['id'])
+      end
+
       public
       def initialize
         @user_api = API::User.new
+        @generator = Cassandra::Uuid::Generator.new
       end
 
       def get_users_list
@@ -20,19 +46,32 @@ module TurboCassandra
 
       def get_user params
         login = params['login']
-        user = @user_api.find_user login
+
+        user = @user_api.find_user_by_login login
         user.to_hash
       end
 
       def delete_user params
-        login = params['login']
-        @user_api.delete_user login
+        id = Cassandra::Uuid.new(params['id'])
+        @user_api.delete_user id
       end
 
       def create_user body
         user_hash = JSON.parse body
-        process_pass(user_hash)
-        @user_api.add_user user_hash
+        if is_login_unique? user_hash['login']
+          add_id(user_hash)
+          process_pass(user_hash)
+          @user_api.add_user user_hash
+        end
+      end
+
+      def update_user body
+        user_hash = JSON.parse body
+        if is_updated_login_unique? user_hash
+          coerce_id(user_hash)
+          process_pass(user_hash)
+          @user_api.add_user user_hash
+        end
       end
 
       def get_profile env

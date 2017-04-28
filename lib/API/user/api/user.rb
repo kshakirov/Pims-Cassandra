@@ -8,12 +8,18 @@ module TurboCassandra
         user = TurboCassandra::Model::User.new user_hash
         user.save
       end
-      def delete_user login
-        TurboCassandra::Model::User.delete login
+      def delete_user id
+        TurboCassandra::Model::User.delete id
       end
 
-      def find_user login
-        TurboCassandra::Model::User.find login
+      def find_user  id
+        TurboCassandra::Model::User.find id
+      end
+      def find_user_by_login login
+        users = TurboCassandra::Model::User.find_by login: login
+        if users and users.class.name == 'Array'
+          users.first
+        end
       end
     end
   end
