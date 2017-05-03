@@ -8,5 +8,6 @@ customers_hashes.each_with_index do |customer_hash|
   customer_hash =  customer_batch.prepare_customer_hash(customer_hash)
   customer_hash['group_id'] = customer_batch.gsub_group_id(customer_hash['group_id'])
   customer = TurboCassandra::Model::Customer.new customer_hash
+  puts "Adding Customer [#{customer_hash['id']}]"
   customer.save
 end
