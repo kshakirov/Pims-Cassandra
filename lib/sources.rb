@@ -1,3 +1,4 @@
+require_relative 'Controller/login/controller/admin_reset_pass'
 require_relative 'Controller/login/controller/password_hash'
 require_relative 'Controller/menu/catalog_header'
 require_relative 'Controller/menu/catalog_manager'

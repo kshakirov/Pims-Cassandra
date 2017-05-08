@@ -3,8 +3,13 @@ class AdminLogin < Sinatra::Base
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
   config_file '../../config/config.yaml'
+
+  set :rabbit_queue,
+      TurboCassandra::Controller::RabbitQueue.
+          new(self.send(ENV['TURBO_MODE'])['queue_host'])
   set :active_directory_host, self.send(ENV['TURBO_MODE'])['active_directory']
   set :adminLoginController, TurboCassandra::Controller::AdminLogin.new(settings.active_directory_host)
+  set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
 
   before do
     content_type :json
@@ -12,6 +17,13 @@ class AdminLogin < Sinatra::Base
 
   post '/login' do
     settings.adminLoginController.authenticate_admin(request.body.read)
+  end
+
+  post '/reset' do
+    password_data = settings.adminLoginController.reset_password(request.body.read)
+    settings.messageLogController.queue_user_reset_notification password_data
+
+
   end
 
   after do

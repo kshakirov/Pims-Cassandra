@@ -5,6 +5,7 @@ module TurboCassandra
       include PasswordHash
       include OuterAuthenticate
       include PasswordHash
+      include AdminResetPassword
       private
 
       def result_fail
@@ -17,6 +18,16 @@ module TurboCassandra
             token: token
         }
       end
+
+      def _prepare_response user
+        {
+            'password' => user.password,
+            'login' => user.login,
+            'authenticaion_node' => user.authentication_node
+
+        }
+      end
+
 
       def inner_authenticate user, password
         if  validate_hashes(password, user['password'])
@@ -71,6 +82,11 @@ module TurboCassandra
       def authenticate_admin body
         payload = JSON.parse body
         get_user_auth_sys(payload['login'], payload['password'])
+      end
+
+      def reset_password body
+        request = JSON.parse body
+        _reset_password request['login']
       end
     end
   end

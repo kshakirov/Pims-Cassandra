@@ -57,7 +57,7 @@ module TurboCassandra
         }.to_json
       end
 
-      def prepare_notify_queue_payload request, message_id
+      def prep_user_data_payload request, message_id
         {
             "email": request['email'],
             "notification_code": 'send_user_data',
@@ -67,6 +67,19 @@ module TurboCassandra
                 "login": request['login'],
                 "authentication_node": get_auth_node(request),
                 "password": get_password(request)
+            }
+        }.to_json
+      end
+
+      def prep_pass_reset_payload request, message_id
+        {
+            "email": request['email'],
+            "notification_code": 'reset_password',
+            "action": 'notification',
+            "id": message_id.to_s,
+            "data": {
+                "login": request['login'],
+                "password": request['password']
             }
         }.to_json
       end
@@ -156,7 +169,13 @@ module TurboCassandra
 
       def queue_user_notification request
         message_id = log_task(request["email"], "User Data [#{request['']}] Queued To Email")
-        task_payload = prepare_notify_queue_payload(request, message_id)
+        task_payload = prep_user_data_payload(request, message_id)
+        publish_task(task_payload)
+      end
+
+      def queue_user_reset_notification request
+        message_id = log_task(request["email"], "User Data [#{request['']}] Queued To Email")
+        task_payload = prep_pass_reset_payload(request, message_id)
         publish_task(task_payload)
       end
 

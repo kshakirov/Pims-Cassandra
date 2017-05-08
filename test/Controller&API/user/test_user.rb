@@ -20,6 +20,18 @@ class TestUser < Minitest::Test
     @user_controller.create_user user.to_json
   end
 
+
+  def test_update
+    user = {
+        'id' => 'e8c58125-e27d-40f6-996a-9392528bbd63',
+        'login' => 'kshakirov',
+        'name'=> "Kirill Shakirov",
+        'email' => "kshakirov@zoral.com.ua",
+        'password' => "test",
+    }
+    @user_controller.update_user user
+  end
+
   def test_all
     all = @user_api.all
     assert_true 1, all.size
