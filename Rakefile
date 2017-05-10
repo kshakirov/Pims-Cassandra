@@ -129,6 +129,10 @@ namespace :db do
       ruby "tools/schema/authentication_node/create_authentication_node.rb"
     end
 
+    task :admin_email do
+      ruby "tools/schema/admin_email/create_admin_email.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:cart'].execute
@@ -144,6 +148,7 @@ namespace :db do
       Rake::Task['db:setup:customer_group'].execute
       Rake::Task['db:setup:user'].execute
       Rake::Task['db:setup:authentication_node'].execute
+      Rake::Task['db:setup:admin_email'].execute
     end
   end
 
@@ -189,6 +194,10 @@ namespace :db do
       ruby "tools/fixtures/user/populate.rb"
     end
 
+    task :admin_email do
+      ruby "tools/fixtures/admin_email/populate.rb"
+    end
+
     task :all do
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"
@@ -204,6 +213,7 @@ namespace :db do
       ruby "tools/fixtures/customer_group/populate.rb"
       ruby "tools/fixtures/authentication_node/populate.rb"
       ruby "tools/fixtures/user/populate.rb"
+      ruby "tools/fixtures/admin_email/populate.rb"
     end
   end
 end

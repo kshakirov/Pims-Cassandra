@@ -65,6 +65,7 @@ class Admin < Sinatra::Base
     set :templateController, TurboCassandra::Controller::Template.new
     set :customerGroupController, TurboCassandra::Controller::CustomerGroup.new
     set :userController, TurboCassandra::Controller::User.new
+    set :adminEmailController, TurboCassandra::Controller::AdminEmail.new
   end
 
 
@@ -253,6 +254,10 @@ class Admin < Sinatra::Base
 
   post '/profile' do
     settings.userController.get_profile(request.env)
+  end
+
+  get '/admin_email/' do
+    settings.adminEmailController.all
   end
 
 
