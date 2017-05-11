@@ -229,7 +229,7 @@ class Admin < Sinatra::Base
   end
 
   get '/template/:name' do
-    settings.templateController.load(settings.root, params)
+    settings.templateController.load(params)
   end
 
   put '/template/preview' do
@@ -241,7 +241,7 @@ class Admin < Sinatra::Base
   end
 
   post '/template/process' do
-    settings.templateController.process(request.body.read, settings.root)
+    settings.templateController.process(request.body.read)
   end
 
   get '/customer_group/' do
@@ -258,6 +258,10 @@ class Admin < Sinatra::Base
 
   get '/admin_email/' do
     settings.adminEmailController.all
+  end
+
+  put '/admin_email/' do
+    settings.adminEmailController.update(request.body.read)
   end
 
 

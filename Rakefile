@@ -133,6 +133,14 @@ namespace :db do
       ruby "tools/schema/admin_email/create_admin_email.rb"
     end
 
+    task :admin_email do
+      ruby "tools/schema/admin_email/create_admin_email.rb"
+    end
+
+    task :notification do
+      ruby "tools/schema/notification/create_notification.rb"
+    end
+
     task :all do
       Rake::Task['db:setup:base'].execute
       Rake::Task['db:setup:cart'].execute
@@ -149,6 +157,7 @@ namespace :db do
       Rake::Task['db:setup:user'].execute
       Rake::Task['db:setup:authentication_node'].execute
       Rake::Task['db:setup:admin_email'].execute
+      Rake::Task['db:setup:notification'].execute
     end
   end
 
@@ -196,6 +205,10 @@ namespace :db do
 
     task :admin_email do
       ruby "tools/fixtures/admin_email/populate.rb"
+    end
+
+    task :notification do
+      ruby "tools/fixtures/notification/populate.rb"
     end
 
     task :all do

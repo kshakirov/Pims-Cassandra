@@ -2,20 +2,16 @@ module TurboCassandra
   module Controller
     class Template
       include TemplateNotification
+      include TemplatePreview
 
       def initialize
         @order_api = TurboCassandra::API::Order.new
         @customer_api = TurboCassandra::API::Customer.new
-        @templates = {
-            notification: 'notification.html.erb',
-            order: 'place_order.html.erb'
-        }
+        @admin_email_api = TurboCassandra::API::AdminEmail.new
+        @notification_api = TurboCassandra::API::Notification.new
       end
 
       private
-      def calculate_path root, filename
-        root.gsub("rest/turbo", "") + 'views/mailer/' + filename
-      end
 
       def create_order_data order_id
         order = @order_api.find_by_id(order_id)
@@ -23,77 +19,77 @@ module TurboCassandra
        return order.first, customer.to_hash
       end
 
-      def create_order_template  request, root
-        template = read_template root, @templates[:order]
+      def prep_response template, sender_email, sender_name
+        {
+            file: template,
+            action: 1,
+            admin_email: sender_email,
+            admin_name: sender_name
+        }
+      end
+
+      def create_order_template  request
+        template_data = get_template('order')
+        sender_name, sender_email = get_admin_email_data(template_data)
         order_id = request['order_id']
         @order, @customer = create_order_data(order_id)
-        renderer = ERB.new(template)
-        {
-            file: renderer.result(binding),
-            action: 1
-        }
+        renderer = ERB.new(template_data.template_name)
+        prep_response(renderer.result(binding), sender_email, sender_name)
       end
 
-      def read_template root, filename
-        template_filename = calculate_path(root, filename)
-        File.read(template_filename)
-      end
-
-      def create_forgotten_pass_template request, root
-        template = read_template root, @templates[:notification]
+      def create_forgotten_pass_template request
+        template_data = get_template('forgotten_password')
         email, password = request['email'], request['password']
-        renderer = ERB.new(template)
-        {
-            file: renderer.result(binding),
-            action: 1
-        }
+        sender_name, sender_email = get_admin_email_data(template_data)
+        renderer = ERB.new(template_data.template_name)
+        prep_response(renderer.result(binding), sender_email, sender_name)
+      end
+
+      def get_admin_email_data template_data
+        admin_email = @admin_email_api.get template_data.admin_email_code
+        return admin_email.sender_name, admin_email.sender_email
+      end
+
+      def get_template code
+        @notification_api.get code
       end
 
       public
-      def load root, params
-        content = {type: 'html'}
-        filename = calculate_path(root, params['name'])
-        content[:file] = File.read(filename)
-        content['filename'] = filename
-        content
+      def load params
+        template_data = get_template(params['name'])
+        {
+            type: 'html',
+            file: template_data.template_name,
+            filename: params['name'],
+            admin_email: @admin_email_api.get(template_data.admin_email_code).to_hash
+
+        }
       end
 
       def save body
         file_object = JSON.parse body
-        IO.write(file_object['filename'], file_object['file'])
+        notification = @notification_api.get file_object['filename']
+        notification.template_name = file_object['file']
+        notification.admin_email_code = file_object['admin_email']['code']
+        notification.save
       end
 
-      def preview body
-        file_object = JSON.parse body
-        if file_object['filename'].include?  'place_order.html.erb'
-          @order, @customer = create_order_data(100000001)
-          renderer = ERB.new(file_object['file'])
-          {
-              file: renderer.result(binding)
-          }
-        elsif file_object['filename'].include? 'notification'
-            email, password = "kshakirov@zoral.com.ua", "1212fdfdfe454545"
-            server = "Turbointernational.com"
-            renderer = ERB.new(file_object['file'])
-            {
-                file: renderer.result(binding)
-            }
-        end
-      end
-
-      def process body, root
+      def process body
         request = JSON.parse body
         if request['action'] == 'forgotten_password'
-            create_forgotten_pass_template(request, root)
+            create_forgotten_pass_template(request)
         elsif request['action'] == 'order'
-          create_order_template(request, root)
+          create_order_template(request)
         elsif request['action'] =='notification'
-           create_notification_template(request, root)
+           create_notification_template(request)
         else
           {
               action: nil
           }
         end
+      end
+      def preview body
+        _preview body
       end
 
     end
