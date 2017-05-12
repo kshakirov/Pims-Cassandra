@@ -23,7 +23,7 @@ module TurboCassandra
       def _preview body
         file_object = JSON.parse body
         if file_object['filename'].include? 'order'
-          @order, @customer = create_order_data(100000001)
+          @order, @customer = create_order_data(100000006)
           sender_name, sender_email = get_admin_email_sender(file_object['admin_email'])
           renderer = ERB.new(file_object['file'])
           prep_preview_response(renderer.result(binding))

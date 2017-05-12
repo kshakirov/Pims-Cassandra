@@ -2,7 +2,7 @@
 class Customer < Sinatra::Base
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-  config_file '../../config/config.yaml'
+  config_file '../../config/config.yml'
 
   use JwtAuth
   use ExceptionHandling

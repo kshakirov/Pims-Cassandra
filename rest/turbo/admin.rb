@@ -2,7 +2,7 @@ class AdminLogin < Sinatra::Base
   use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-  config_file '../../config/config.yaml'
+  config_file '../../config/config.yml'
 
   set :rabbit_queue,
       TurboCassandra::Controller::RabbitQueue.
@@ -38,7 +38,7 @@ class Admin < Sinatra::Base
   use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-  config_file '../../config/config.yaml'
+  config_file '../../config/config.yml'
 
   set :public_folder, Proc.new { File.join(root.gsub("rest/turbo", ''), "views") }
   set :rabbit_queue,

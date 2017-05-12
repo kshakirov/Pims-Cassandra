@@ -11,6 +11,7 @@ require "march_hare"
 require 'action_mailer'
 require 'active_support'
 require 'active_support/all'
+require 'action_view'
 require 'securerandom'
 require 'active_directory'
 require 'prawn'
@@ -28,7 +29,7 @@ class Public < Sinatra::Base
   use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-  config_file '../../config/config.yaml'
+  config_file '../../config/config.yml'
   set :rabbit_queue,
       TurboCassandra::Controller::RabbitQueue.
           new(self.send(ENV['TURBO_MODE'])['queue_host'])

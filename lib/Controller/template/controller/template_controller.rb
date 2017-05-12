@@ -3,6 +3,8 @@ module TurboCassandra
     class Template
       include TemplateNotification
       include TemplatePreview
+      include ActionView::Helpers::NumberHelper
+
 
       def initialize
         @order_api = TurboCassandra::API::Order.new

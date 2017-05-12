@@ -4,7 +4,7 @@ class SuperUser < Sinatra::Base
   use ExceptionHandling
   register Sinatra::ConfigFile
   helpers Sinatra::Cookies
-  config_file '../../config/config.yaml'
+  config_file '../../config/config.yml'
   set :rabbit_queue,
       TurboCassandra::Controller::RabbitQueue.
           new(self.send(ENV['TURBO_MODE'])['queue_host'])

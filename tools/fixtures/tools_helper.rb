@@ -19,7 +19,7 @@ end
 
 
 def get_tcas_host
-  config = YAML.load_file(File.expand_path('../../config/config.yaml', File.dirname(__FILE__)))
+  config = YAML.load_file(File.expand_path('../../config/config.yml', File.dirname(__FILE__)))
   if not config.nil?
     config[ENV['TURBO_MODE']]['tcas_host']
   else
