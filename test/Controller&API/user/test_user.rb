@@ -17,7 +17,8 @@ class TestUser < Minitest::Test
         must_change: true,
         authentication_node: 'Internal'
     }
-    @user_controller.create_user user.to_json
+    user = user.to_json
+    @user_controller.create_user JSON.parse(user)
   end
 
 
@@ -56,6 +57,20 @@ class TestUser < Minitest::Test
   def test_delete_controller
     id = Cassandra::Uuid.new('2053217f-2140-4f40-9273-b4c7b275ea19')
     @user_api.delete_user id
+  end
+
+  def test_image
+    id = 'eda71920-19d7-40e3-a1ba-b190c7a8d348'
+    id = Cassandra::Uuid.new(id)
+    img = IO.binread("/home/kshakirov/git/cassandra/ti_cassandra/sinatra_cassandra/kshakirov.png")
+    bimg = Base64.encode64(img)
+    user = @user_api.find_user id
+    user.image=bimg
+    user.save
+  end
+
+  def test_get_image
+
   end
 
 

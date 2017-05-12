@@ -37,6 +37,10 @@ namespace :db do
       ruby "tools/schema/product/update_products_1.rb"
     end
 
+    task :user do
+      ruby "tools/schema/user/update_user_1.rb"
+    end
+
     task :all do
       Rake::Task['db:migrate:currency'].execute
       Rake::Task['db:migrate:attribute'].execute

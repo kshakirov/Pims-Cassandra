@@ -256,6 +256,10 @@ class Admin < Sinatra::Base
     settings.userController.get_profile(request.env)
   end
 
+  get '/profile/user/:id/image' do
+    content_type 'image/jpeg'
+    settings.userController.get_profile_image(params)
+  end
   get '/admin_email/' do
     settings.adminEmailController.all
   end
@@ -264,11 +268,10 @@ class Admin < Sinatra::Base
     settings.adminEmailController.update(request.body.read)
   end
 
-
-
-
   after do
+    unless request.path_info.include? "image"
       response.body = JSON.dump(response.body)
+    end
   end
 
 

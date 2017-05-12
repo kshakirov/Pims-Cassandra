@@ -82,8 +82,13 @@ class SuperUser < Sinatra::Base
   get '/authentication_node/:name', :clearance => true do
     settings.authNodeController.get_node params
   end
+
   delete '/authentication_node/:name', :clearance => true do
     settings.authNodeController.delete params
+  end
+
+  post '/user/:login/image/upload/' do
+    settings.userController.add_profile_image params
   end
 
 

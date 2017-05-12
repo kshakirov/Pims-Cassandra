@@ -16,6 +16,7 @@ require 'active_directory'
 require 'prawn'
 require 'prawn/table'
 require 'erb'
+require "base64"
 require_relative '../../lib/sources'
 require_relative 'jwt_auth'
 require_relative 'exception_handling'

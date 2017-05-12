@@ -52,7 +52,6 @@ module TurboCassandra
 
       def get_user params
         login = params['login']
-
         user = @user_api.find_user_by_login login
         user.to_hash
       end
@@ -90,9 +89,25 @@ module TurboCassandra
         end
         {
             image_id: image_id,
-            name: name
+            name: name,
 
         }
+      end
+
+      def get_profile_image params
+        user = @user_api.find_user_by_login params['id']
+        unless user.nil?
+          user['image']
+        end
+      end
+
+      def add_profile_image params
+        user = @user_api.find_user_by_login params['login']
+        user = @user_api.find_user(user['id'])
+        unless user.nil?
+          user.image = Base64.encode64(params['file'][:tempfile].read.force_encoding('ASCII-8BIT'))
+          user.save
+        end
       end
 
     end

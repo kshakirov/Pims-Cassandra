@@ -1,6 +1,10 @@
 require_relative '../tools_helper'
 
 user_controller = TurboCassandra::Controller::User.new
+def to_js_from user
+  js = user.to_json
+  JSON.parse js
+end
 user = {
     login: 'kshakirov',
     name: "Kirill Shakirov",
@@ -9,7 +13,7 @@ user = {
     must_change: true,
     authentication_node: 'Internal'
 }
-user_controller.create_user user.to_json
+user_controller.create_user(to_js_from(user))
 
 user = {
     login: 'pdthiry',
@@ -20,7 +24,7 @@ user = {
     authentication_node: 'TurboInternational LDAP'
 }
 
-user_controller.create_user user.to_json
+user_controller.create_user(to_js_from(user))
 
 user = {
     login: 'pthiry',
@@ -30,7 +34,7 @@ user = {
     must_change: true,
     authentication_node: 'Internal'
 }
-user_controller.create_user user.to_json
+user_controller.create_user(to_js_from(user))
 
 
 user = {
@@ -40,4 +44,4 @@ user = {
     authentication_node: 'TurboInternational LDAP'
 }
 
-user_controller.create_user user.to_json
+user_controller.create_user(to_js_from(user))
