@@ -19,6 +19,10 @@ module TurboCassandra
         end
       end
 
+      def get_address_name data
+        data.keys.find{|key| key.include? 'address'}
+      end
+
       public
       def initialize
         @customer = TurboCassandra::API::Customer.new
@@ -35,6 +39,16 @@ module TurboCassandra
       def update_account data
         if is_email_unique? data
             @customer.update(data)
+        end
+      end
+
+      def update_address body
+        data =   JSON.parse body
+        customer = @customer.find_by_customer_id data['id']
+        unless customer.nil?
+          method_name = get_address_name(data)
+          customer.send(method_name, data[method_name])
+          customer.save
         end
       end
 

@@ -137,6 +137,10 @@ class Customer < Sinatra::Base
         JSON.parse request.body.read)
   end
 
+  put '/account/address/' do
+    settings.customerController.update_address(request.body.read)
+  end
+
   put '/account/password/' do
     customer_data = JSON.parse request.body.read
     result = settings.customerController.update_password customer_data
