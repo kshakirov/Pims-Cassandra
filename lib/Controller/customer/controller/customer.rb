@@ -20,7 +20,16 @@ module TurboCassandra
       end
 
       def get_address_name data
-        data.keys.find{|key| key.include? 'address'}
+        data.keys.find { |key| key.include? 'address' }
+      end
+
+      def verify_address data
+        address_type = get_address_name(data)
+        if data[address_type]['country_id']=="US" and data[address_type]['region_id'].nil?
+          raise "State/Province Is Required"
+        else
+          true
+        end
       end
 
       public
@@ -38,14 +47,14 @@ module TurboCassandra
 
       def update_account data
         if is_email_unique? data
-            @customer.update(data)
+          @customer.update(data)
         end
       end
 
       def update_address body
-        data =   JSON.parse body
+        data = JSON.parse body
         customer = @customer.find_by_customer_id data['id']
-        unless customer.nil?
+        unless customer.nil? or verify_address(data)
           method_name = get_address_name(data)
           customer.send(method_name, data[method_name])
           customer.save
