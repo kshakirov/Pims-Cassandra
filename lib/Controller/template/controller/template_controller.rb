@@ -21,12 +21,13 @@ module TurboCassandra
        return order.first, customer.to_hash
       end
 
-      def prep_response template, sender_email, sender_name
+      def prep_response template, sender_email, sender_name, template_data
         {
             file: template,
             action: 1,
             admin_email: sender_email,
-            admin_name: sender_name
+            admin_name: sender_name,
+            subject: add_subject(template_data)
         }
       end
 
@@ -36,7 +37,8 @@ module TurboCassandra
         order_id = request['order_id']
         @order, @customer = create_order_data(order_id)
         renderer = ERB.new(template_data.template_name)
-        prep_response(renderer.result(binding), sender_email, sender_name)
+        prep_response(renderer.result(binding), sender_email, sender_name,
+        template_data)
       end
 
       def create_forgotten_pass_template request
@@ -44,7 +46,8 @@ module TurboCassandra
         email, password = request['email'], request['password']
         sender_name, sender_email = get_admin_email_data(template_data)
         renderer = ERB.new(template_data.template_name)
-        prep_response(renderer.result(binding), sender_email, sender_name)
+        prep_response(renderer.result(binding), sender_email, sender_name,
+        template_data)
       end
 
       def get_admin_email_data template_data
@@ -62,6 +65,7 @@ module TurboCassandra
         {
             type: 'html',
             file: template_data.template_name,
+            data: template_data.data,
             filename: params['name'],
             admin_email: @admin_email_api.get(template_data.admin_email_code).to_hash
 
@@ -73,6 +77,7 @@ module TurboCassandra
         notification = @notification_api.get file_object['filename']
         notification.template_name = file_object['file']
         notification.admin_email_code = file_object['admin_email']['code']
+        notification.data = file_object['data']
         notification.save
       end
 
