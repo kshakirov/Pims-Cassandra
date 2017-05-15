@@ -1,9 +1,9 @@
-require_relative 'test_helper'
+require_relative '../test_helper'
 class TestPrintOrder < Minitest::Test
-
   def test_render
-    order = TurboCassandra::OrderBackEnd.new
+    order = TurboCassandra::Controller::Order.new
     refute_nil order
-    order.print(100000312)
+    data = order.print(100000365)
+    IO.binwrite("order.pdf",data)
   end
 end

@@ -2,6 +2,7 @@ module TurboCassandra
   module Controller
     class Order
       attr_accessor :order_api, :currency_api, :group_price_api, :product_api
+      include Carmen
       include OrderPrint
       include AlsoBought
       include OrderAdminCreate

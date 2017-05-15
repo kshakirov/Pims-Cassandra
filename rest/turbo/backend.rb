@@ -18,6 +18,7 @@ require 'prawn'
 require 'prawn/table'
 require 'erb'
 require "base64"
+require 'carmen'
 require_relative '../../lib/sources'
 require_relative 'jwt_auth'
 require_relative 'exception_handling'

@@ -1,6 +1,7 @@
 module TurboCassandra
   module Controller
     module OrderPrint
+      include Carmen
       private
 
       def print_price price, order_currency
@@ -19,7 +20,7 @@ module TurboCassandra
       end
 
       def table_headers
-        ['Part Type', 'Name', 'OEM Part', 'Price', 'Qty', 'Subtotal']
+        ['Part Type', 'TI Part #', 'OEM Part', 'Price', 'Qty', 'Subtotal']
       end
 
 
@@ -35,14 +36,29 @@ module TurboCassandra
         ]
       end
 
+      def output_address address_data, pdf
+        country =  Country.coded(address_data['country_id'])
+        pdf.text address_data['lastname']
+        pdf.text address_data['street'] + ', ' + address_data['city'].to_s
+        pdf.move_down 1
+        pdf.text country.subregions.coded(address_data['region_id']).name.to_s + ', '  + country.name.to_s + ', ' + address_data['postcode'].to_s
+        pdf.move_down 1
+        pdf.text  'T: ' +  address_data['telephone'].to_s
+      end
+
+      def format_time order_time
+        unless order_time.nil?
+         return order_time.strftime("%Y-%m-%d")
+        end
+        ""
+      end
+
       public
 
 
       def print_order order_loaded
         products = products_2_cells(order_loaded['products'], order_loaded['currency_code'])
         products.unshift(table_headers)
-        ba = get_addresses(order_loaded['billing_address'])
-        s_as = get_addresses(order_loaded['shipping_address'])
         order_total_data = get_totals_table(order_loaded)
 
         pdf = Prawn::Document.new
@@ -52,7 +68,7 @@ module TurboCassandra
         pdf.text "Order  ID: <font size='8'> <color rgb='#FF82AB'> #{order_loaded['order_id']} </color> </font>", :inline_format => true
         pdf.move_down 20
         pdf.font "Times-Roman", :style => :bold
-        pdf.text "Order Date: <font size='8' styles='italic'>#{order_loaded['updated_at']} </font>", :inline_format => true
+        pdf.text "Order Date: <font size='8' styles='italic'>#{format_time(order_loaded['updated_at'])} </font>", :inline_format => true
         pdf.move_down 20
 
 
@@ -64,10 +80,7 @@ module TurboCassandra
           pdf.move_down 10
           pdf.font_size 6
           pdf.font "Times-Roman", :style => :italic
-          s_as.each do |b|
-            pdf.text b
-            pdf.move_down 1
-          end
+          output_address(order_loaded['billing_address'], pdf)
         end
 
         a_cursor = pdf.cursor
@@ -78,10 +91,7 @@ module TurboCassandra
           pdf.move_down 10
           pdf.font_size 6
           pdf.font "Times-Roman", :style => :italic
-          ba.each do |b|
-            pdf.text b
-            pdf.move_down 1
-          end
+          output_address(order_loaded['shipping_address'], pdf)
         end
 
         pdf.move_down 20
