@@ -69,6 +69,13 @@ module TurboCassandra
         end
       end
 
+      def create_user_with_pass user_hash
+        password = SecureRandom.urlsafe_base64(10)
+        user_hash['password'] = password
+        create_user(user_hash)
+        password
+      end
+
       def update_user user_hash
         if is_updated_login_unique? user_hash
           coerce_id(user_hash)
