@@ -12,6 +12,19 @@ module TurboCassandra
         end
       end
 
+      def get_next_order
+        @featured_product_api.next_order
+      end
+
+      def populate_featured_product product
+        {
+            sku: product['sku'],
+            ord: get_next_order,
+            visible: false,
+            part_number: product['part_number']
+        }
+      end
+
       def _update product
         np= TurboCassandra::Model::NewProduct.find product['sku']
         if product['ord'] != np.ord
@@ -92,6 +105,13 @@ module TurboCassandra
         products = @product_api.where_skus(new_product_ids.map{|n| n['sku']})
         products = sort(products, new_product_ids.map{|n| n['sku']})
         _create_response(products)
+      end
+
+      def next_order
+        order = TurboCassandra::Model::FeaturedProductOrder.max({'max' => 'ord', "by" => {
+            "cluster": 1
+        }})
+        order.nil?  ? 1 : order + 1
       end
     end
 

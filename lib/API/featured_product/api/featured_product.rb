@@ -106,7 +106,7 @@ module TurboCassandra
         order = TurboCassandra::Model::FeaturedProductOrder.max({'max' => 'ord', "by" => {
             "cluster": 1
         }})
-        order + 1
+        order.nil?  ? 1 : order + 1
       end
 
     end

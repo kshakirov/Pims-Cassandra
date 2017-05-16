@@ -7,10 +7,15 @@ module TurboCassandra
       end
 
       private
+
+      def get_next_order
+        @new_product_api.next_order
+      end
+
       def populate_featured_product product
         {
             sku: product['sku'],
-            ord: 100,
+            ord: get_next_order,
             visible: false,
             part_number: product['part_number']
 
