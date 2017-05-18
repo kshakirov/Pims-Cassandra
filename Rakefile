@@ -13,8 +13,9 @@ namespace :db do
       ruby "tools/schema/currency/update_currencies_2.rb"
     end
     task :attribute do
-      ruby "tools/schema/attribute/update_attributes_1.rb"
-      ruby "tools/schema/attribute/update_attributes_2.rb"
+      # ruby "tools/schema/attribute/update_attributes_1.rb"
+      # ruby "tools/schema/attribute/update_attributes_2.rb"
+      ruby "tools/schema/attribute/update_attributes_3.rb"
     end
     task :order do
       ruby "tools/schema/order/update_orders_1.rb"
@@ -182,6 +183,7 @@ namespace :db do
 
     task :attribute do
       ruby "tools/fixtures/attribute/populate.rb"
+      ruby "tools/fixtures/attribute/insert_default_attributes.rb"
     end
 
     task :price do

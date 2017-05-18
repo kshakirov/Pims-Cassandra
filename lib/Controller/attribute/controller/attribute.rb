@@ -10,8 +10,7 @@ module TurboCassandra
       end
 
       def find_by_code params
-        result = @attribute.find(params['code'])
-        result.first
+        @attribute.find(params['code'])
       end
 
       def find_by_codes body
@@ -25,6 +24,11 @@ module TurboCassandra
 
       def all
         @attribute.all
+      end
+
+      def create body
+        attribute = JSON.parse body
+        @attribute.create attribute
       end
     end
   end
