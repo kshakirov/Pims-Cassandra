@@ -71,10 +71,22 @@ class SuperUser < Sinatra::Base
     settings.userController.update_user(body)
   end
 
+  put '/user/:id/password/generate/' do
+    body = JSON.parse request.body.read
+    settings.userController.update_user_with_pass(body)
+  end
+
   put '/user/:id/notify' do
     body = JSON.parse request.body.read
     password = body['password']
     settings.userController.update_user body
+    body['password'] = password
+    settings.messageLogController.queue_user_notification(body)
+  end
+
+  put '/user/:id/notify/password/generate/' do
+    body = JSON.parse request.body.read
+    password = settings.userController.update_user_with_pass(body)
     body['password'] = password
     settings.messageLogController.queue_user_notification(body)
   end

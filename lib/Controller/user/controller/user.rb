@@ -84,6 +84,13 @@ module TurboCassandra
         end
       end
 
+      def update_user_with_pass user_hash
+        password = SecureRandom.urlsafe_base64(10)
+        user_hash['password'] = password
+        update_user(user_hash)
+        password
+      end
+
       def get_profile env
         name = ''
         image_id = ''
