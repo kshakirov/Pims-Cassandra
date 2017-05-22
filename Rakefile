@@ -191,14 +191,14 @@ namespace :db do
       ruby "tools/fixtures/attribute/insert_default_attributes.rb"
     end
 
-    task :price do
-      ruby "tools/fixtures/group_price/populate.rb"
-    end
-
     task :attribute_set do
       ruby "tools/fixtures/attribute_set/populate.rb"
       ruby "tools/fixtures/attribute_set/update_1.rb"
       ruby "tools/fixtures/attribute_set/update_2.rb"
+    end
+
+    task :price do
+      ruby "tools/fixtures/group_price/populate.rb"
     end
 
     task :customer_group do
@@ -226,31 +226,20 @@ namespace :db do
     end
 
     task :all do
-      ruby "tools/fixtures/product/populate.rb"
-      ruby "tools/fixtures/customer/populate.rb"
-      ruby "tools/fixtures/currency/populate.rb"
-
-      ruby "tools/fixtures/attribute/populate.rb"
-      ruby "tools/fixtures/attribute_set/populate.rb"
-      ruby "tools/fixtures/attribute_set/update_1.rb"
-      ruby "tools/fixtures/attribute_set/update_2.rb"
-      ruby "tools/fixtures/customer/populate.rb"
-      ruby "tools/fixtures/group_price/populate.rb"
-      ruby "tools/fixtures/order/populate.rb"
-      ruby "tools/fixtures/order/shipments_populate.rb"
-
-      ruby "tools/fixtures/featured_new_product/populate.rb"
-      ruby "tools/fixtures/customer_group/populate.rb"
-      ruby "tools/fixtures/authentication_node/populate.rb"
-      ruby "tools/fixtures/user/populate.rb"
-      ruby "tools/fixtures/admin_email/populate.rb"
-
-    end
-
-    task :all do
       Rake::Task['db:setup:product'].execute
       Rake::Task['db:setup:customer'].execute
       Rake::Task['db:setup:currency'].execute
+      Rake::Task['db:setup:order'].execute
+      Rake::Task['db:setup:shipment'].execute
+      Rake::Task['db:setup:attribute'].execute
+      Rake::Task['db:setup:attribute_set'].execute
+      Rake::Task['db:setup:price'].execute
+      Rake::Task['db:setup:customer_group'].execute
+      Rake::Task['db:setup:authentication_node'].execute
+      Rake::Task['db:setup:user'].execute
+      Rake::Task['db:setup:admin_email'].execute
+      Rake::Task['db:setup:notification'].execute
+      Rake::Task['db:setup:featured_product'].execute
 
     end
   end
