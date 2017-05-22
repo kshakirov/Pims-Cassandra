@@ -226,20 +226,20 @@ namespace :db do
     end
 
     task :all do
-      Rake::Task['db:setup:product'].execute
-      Rake::Task['db:setup:customer'].execute
-      Rake::Task['db:setup:currency'].execute
-      Rake::Task['db:setup:order'].execute
-      Rake::Task['db:setup:shipment'].execute
-      Rake::Task['db:setup:attribute'].execute
-      Rake::Task['db:setup:attribute_set'].execute
-      Rake::Task['db:setup:price'].execute
-      Rake::Task['db:setup:customer_group'].execute
-      Rake::Task['db:setup:authentication_node'].execute
-      Rake::Task['db:setup:user'].execute
-      Rake::Task['db:setup:admin_email'].execute
-      Rake::Task['db:setup:notification'].execute
-      Rake::Task['db:setup:featured_product'].execute
+      Rake::Task['db:populate:product'].execute
+      Rake::Task['db:populate:customer'].execute
+      Rake::Task['db:populate:currency'].execute
+      Rake::Task['db:populate:order'].execute
+      Rake::Task['db:populate:shipment'].execute
+      Rake::Task['db:populate:attribute'].execute
+      Rake::Task['db:populate:attribute_set'].execute
+      Rake::Task['db:populate:price'].execute
+      Rake::Task['db:populate:customer_group'].execute
+      Rake::Task['db:populate:authentication_node'].execute
+      Rake::Task['db:populate:user'].execute
+      Rake::Task['db:populate:admin_email'].execute
+      Rake::Task['db:populate:notification'].execute
+      Rake::Task['db:populate:featured_product'].execute
 
     end
   end
