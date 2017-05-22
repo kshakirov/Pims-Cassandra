@@ -173,6 +173,11 @@ namespace :db do
     task :customer do
       ruby "tools/fixtures/customer/populate.rb"
     end
+
+    task :currency do
+      ruby "tools/fixtures/currency/populate.rb"
+    end
+
     task :order do
       ruby "tools/fixtures/order/populate.rb"
     end
@@ -221,6 +226,10 @@ namespace :db do
     end
 
     task :all do
+      ruby "tools/fixtures/product/populate.rb"
+      ruby "tools/fixtures/customer/populate.rb"
+      ruby "tools/fixtures/currency/populate.rb"
+
       ruby "tools/fixtures/attribute/populate.rb"
       ruby "tools/fixtures/attribute_set/populate.rb"
       ruby "tools/fixtures/attribute_set/update_1.rb"
@@ -229,18 +238,19 @@ namespace :db do
       ruby "tools/fixtures/group_price/populate.rb"
       ruby "tools/fixtures/order/populate.rb"
       ruby "tools/fixtures/order/shipments_populate.rb"
-      ruby "tools/fixtures/currency/populate.rb"
+
       ruby "tools/fixtures/featured_new_product/populate.rb"
       ruby "tools/fixtures/customer_group/populate.rb"
       ruby "tools/fixtures/authentication_node/populate.rb"
       ruby "tools/fixtures/user/populate.rb"
       ruby "tools/fixtures/admin_email/populate.rb"
-      ruby "tools/fixtures/product/populate.rb"
+
     end
 
     task :all do
       Rake::Task['db:setup:product'].execute
       Rake::Task['db:setup:customer'].execute
+      Rake::Task['db:setup:currency'].execute
 
     end
   end
