@@ -5,6 +5,8 @@ require 'elasticsearch'
 require 'yaml'
 require 'rest-client'
 require 'json'
+require 'action_view'
+require 'carmen'
 require_relative '../../../lib/sources'
 require_relative '../../../lib/Search/search_src'
 

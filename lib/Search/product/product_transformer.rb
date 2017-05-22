@@ -15,8 +15,8 @@ module TurboCassandra
 
     def init_enums
       attribute_api = TurboCassandra::API::Attribute.new
-      @manufacturer_types = attribute_api.find('manufacturer').first['options']
-      @part_types = attribute_api.find('part').first['options']
+      @manufacturer_types = attribute_api.find('manufacturer')['options']
+      @part_types = attribute_api.find('part')['options']
     end
 
     def initialize
