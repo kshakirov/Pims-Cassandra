@@ -4,6 +4,8 @@ require 'active_support/all'
 require 'elasticsearch'
 require 'yaml'
 require 'json'
+require 'action_view'
+require 'carmen'
 require_relative '../../../lib/sources'
 require_relative '../../../lib/Search/search_src'
 
