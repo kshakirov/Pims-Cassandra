@@ -20,16 +20,6 @@ def check_environment r_path
 end
 
 
-def get_tcas_host
-  config = YAML.load_file(File.expand_path('../../config/config.yml', File.dirname(__FILE__)))
-  if not config.nil?
-    config[ENV['TURBO_MODE']]['tcas_host']
-  else
-    puts "SET ELASTIC_INSTANCE VARIABLE"
-    exit 1
-  end
-end
-
 def read_product_from_file
   YAML.load_stream(open(File.expand_path(check_environment('data/all_products.yml'), File.dirname(__FILE__))))
 end

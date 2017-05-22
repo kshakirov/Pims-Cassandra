@@ -229,13 +229,19 @@ namespace :db do
       ruby "tools/fixtures/group_price/populate.rb"
       ruby "tools/fixtures/order/populate.rb"
       ruby "tools/fixtures/order/shipments_populate.rb"
-      ruby "tools/fixtures/product/populate.rb"
       ruby "tools/fixtures/currency/populate.rb"
       ruby "tools/fixtures/featured_new_product/populate.rb"
       ruby "tools/fixtures/customer_group/populate.rb"
       ruby "tools/fixtures/authentication_node/populate.rb"
       ruby "tools/fixtures/user/populate.rb"
       ruby "tools/fixtures/admin_email/populate.rb"
+      ruby "tools/fixtures/product/populate.rb"
+    end
+
+    task :all do
+      Rake::Task['db:setup:product'].execute
+      Rake::Task['db:setup:customer'].execute
+
     end
   end
 end
