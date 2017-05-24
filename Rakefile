@@ -8,7 +8,7 @@ namespace :db do
   end
 
   namespace :migrate do
-    task :currency_api do
+    task :currency do
       ruby "tools/schema/currency/update_currencies_1.rb"
       ruby "tools/schema/currency/update_currencies_2.rb"
     end
@@ -51,7 +51,6 @@ namespace :db do
     task :base do
       ruby "tools/schema/attribute/create_attributes.rb"
       ruby "tools/schema/attribute/add_attribute_set_index.rb"
-      ruby "tools/schema/attribute/insert_default_attributes.rb"
       ruby "tools/schema/attribute_set/create_attribute_sets.rb"
       ruby "tools/schema/currency/create_currencies.rb"
       ruby "tools/schema/customer/create_customers.rb"
@@ -132,10 +131,6 @@ namespace :db do
       ruby "tools/schema/admin_email/create_admin_email.rb"
     end
 
-    task :admin_email do
-      ruby "tools/schema/admin_email/create_admin_email.rb"
-    end
-
     task :notification do
       ruby "tools/schema/notification/create_notification.rb"
     end
@@ -152,6 +147,7 @@ namespace :db do
       Rake::Task['db:setup:message_log'].execute
       Rake::Task['db:setup:order_product'].execute
       Rake::Task['db:setup:product'].execute
+      Rake::Task['db:setup::product_created_at'].execute
       Rake::Task['db:setup:shipment'].execute
       Rake::Task['db:setup:currency_history'].execute
       Rake::Task['db:setup:new_product'].execute
