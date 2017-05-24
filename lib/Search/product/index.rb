@@ -1,7 +1,8 @@
 module TurboCassandra
   class ElasticIndex
     include TurboCassandra::TurboTools
-    def initialize elastic_host
+    def initialize elastic_host, index_name
+      @index_name = index_name
       @client = Elasticsearch::Client.new(host: elastic_host , log: false)
       @client.transport.reload_connections!
       @product_mapper = TurboCassandra::EsProductMapping.new
@@ -34,16 +35,16 @@ module TurboCassandra
 
     def add_product product
       document = @product_transformer.run product
-      @client.index  index: 'magento_product', type: 'product',  id: product['sku'],  body: document
+      @client.index  index: @index_name, type: 'product',  id: product['sku'],  body: document
     end
 
     def add_application application
       document = @application_transformer.run application
-      @client.index  index: 'magento_product', type: 'application',  id: document[:id],  body: document
+      @client.index  index: @index_name, type: 'application',  id: document[:id],  body: document
     end
 
     def get id
-      @client.get index: 'magento_product', type: 'product', id: id
+      @client.get index: @index_name, type: 'product', id: id
     end
 
   end

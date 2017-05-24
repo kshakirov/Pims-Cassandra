@@ -2,8 +2,9 @@ require_relative 'indexer_helper'
 
 
 elastic_host = get_elastic_host
+index_name = get_index_name
 product = TurboCassandra::API::Product.new
-index_manager = TurboCassandra::ElasticIndex.new(elastic_host)
+index_manager = TurboCassandra::ElasticIndex.new(elastic_host, index_name)
 
 counter=1
 start_time = Time.now
