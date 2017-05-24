@@ -19,7 +19,6 @@ require_relative 'product/api/product'
 require_relative 'invoice/api/invoice'
 require_relative '../../tools/search/product/indexer_helper'
 
-ENV['TURBO_MODE'] = "development"
 
 @config = YAML.load_file(File.expand_path('../../config/config.yml', File.dirname(__FILE__)))
 
