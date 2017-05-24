@@ -11,13 +11,13 @@ development:
   active_directory: '162.249.218.162'
 
 staging:
-   queue_host:  '10.0.3.1'
+   queue_host:  '10.8.0.1'
    elastic_host:  '10.8.0.11'
    metadata_server: 'timms.turbointernational.com'
    active_directory: '162.249.218.162'
 
 production:
-   queue_host:  '10.0.3.1'
+   queue_host:  '10.8.0.1'
    elastic_host:  '10.8.0.11'
    metadata_server: 'timms.turbointernational.com'
    active_directory: '162.249.218.162'
