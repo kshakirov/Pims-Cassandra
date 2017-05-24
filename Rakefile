@@ -243,7 +243,6 @@ end
 namespace :search do
   task :create_index do
     ruby "tools/search/product/create_index.rb"
-    ruby "tools/search/product/put_mapping.rb"
   end
   task :delete_index do
     ruby "tools/search/product/delete_index.rb"
