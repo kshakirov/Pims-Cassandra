@@ -31,6 +31,11 @@ module TurboCassandra
           JSON.parse response.body
         end
 
+        def query_update_by_name server_name
+          response = RestClient.get("http://#{@metadata_server}:#{@metadata_server_port.to_s}/product/update/#{server_name}")
+          JSON.parse response.body
+        end
+
         def exists? sku
           @product_api.find_by_sku(sku)
         end
@@ -91,6 +96,10 @@ module TurboCassandra
 
         def update
           products = query_update
+          products.map{|product| process_product(product)}
+        end
+        def update_by_name server_name
+          products = query_update_by_name server_name
           products.map{|product| process_product(product)}
         end
       end

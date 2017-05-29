@@ -22,6 +22,20 @@ require_relative '../../tools/search/product/indexer_helper'
 
 @config = YAML.load_file(File.expand_path('../../config/config.yml', File.dirname(__FILE__)))
 
+
 def get_metdata_host
   @config[ENV['TURBO_MODE']]['metadata_server']
+end
+
+def get_index_name
+  "turbointernational_#{ENV['TURBO_MODE'].downcase}"
+end
+
+def get_elastic_host
+  if not @config.nil?
+    @config[ENV['TURBO_MODE']]['elastic_host']
+  else
+    puts "SET ELASTIC_INSTANCE VARIABLE"
+    exit 1
+  end
 end
