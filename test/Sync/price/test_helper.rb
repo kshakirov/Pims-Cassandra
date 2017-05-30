@@ -16,16 +16,7 @@ require 'prawn'
 require 'prawn/table'
 require 'carmen'
 require 'carmen/country'
-require_relative '../lib/sources'
+require 'rest-client'
+require_relative '../../../lib/sources'
+require_relative '../../../tools/sync/price/api/price_rest'
 ENV['TURBO_MODE'] = "development"
-
-
-def read_product_from_file
-  YAML.load_file('../all_products.yml')
-end
-
-def read_attributes_from_file
-  fd = File.open(__dir__ + '/../attribute.json', 'r')
-  data = fd.read
-  JSON.parse data
-end

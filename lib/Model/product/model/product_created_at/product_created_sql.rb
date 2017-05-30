@@ -12,6 +12,12 @@ module TurboCassandra
                         page_size: page_size, paging_state: paging_state)
       end
 
+      def execute_paginate_by  paging_state, page_size, manufacturer
+        session = TurboCluster.get_session
+        session.execute("SELECT * FROM products_created_at WHERE manufacturer = '#{manufacturer}'",
+                        page_size: page_size, paging_state: paging_state)
+      end
+
       def create_delete_cql
         "DELETE FROM products_created_at WHERE manufacturer=? AND part_type=? AND created_at=?"
       end
