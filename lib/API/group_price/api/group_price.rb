@@ -2,14 +2,25 @@ module TurboCassandra
   module API
     class GroupPrice
       extend Forwardable
-
-      def initialize
-        @group_price_model = TurboCassandra::Model::GroupPrice.new
+      def find_by_sku_group_id sku, group_id
+        group_prices = find sku
+        unless group_prices.nil?
+          group_prices.to_hash
+          group_prices['prices'][group_id]
+        end
       end
 
-      def_delegator :@group_price_model, :find_by_sku_group_id, :find_by_sku_group_id
-      def_delegator :@group_price_model, :find, :find
-      def_delegator :@group_price_model, :insert, :create
+      def find sku
+        group_prices = TurboCassandra::Model::GroupPrice.find sku
+        unless group_prices.nil?
+          group_prices.to_hash
+        end
+      end
+
+      def create hash
+        group_prices = TurboCassandra::Model::GroupPrice.new hash
+        group_prices.save
+      end
     end
   end
 end

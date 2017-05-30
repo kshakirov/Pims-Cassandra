@@ -27,6 +27,15 @@ module TurboCassandra
               paging_state: rs.paging_state
           }
       end
+
+      def paginate_by_manufacturer manufacturer, page_size=10, paging_state=nil
+        rs = execute_paginate_by paging_state, page_size, manufacturer
+        {
+            results: rs.map{|r| r},
+            last: rs.last_page?,
+            paging_state: rs.paging_state
+        }
+      end
     end
   end
 end
