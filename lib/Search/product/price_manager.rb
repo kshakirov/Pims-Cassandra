@@ -3,12 +3,12 @@ module TurboCassandra
     include TurboTools
     public
     def initialize
-      @group_price = TurboCassandra::Model::GroupPrice.new
+      @group_price_api = TurboCassandra::API::GroupPrice.new	
     end
 
     private
     def get_ti_part_price sku
-      price  = @group_price.find sku
+      price  = @group_price_api.find sku
       if price and  price.key? 'prices'
         price['prices']
       end
