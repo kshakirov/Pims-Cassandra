@@ -11,7 +11,12 @@ module TurboCassandra
       end
 
       def is_product_in_cart? cart, product
-        cart['items'].key? product['sku']
+        if cart['items'].nil?
+          false
+        else
+          cart['items'].key? product['sku']
+        end
+
       end
 
       def change_qty cart, product, qty
