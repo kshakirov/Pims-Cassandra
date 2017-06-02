@@ -5,7 +5,7 @@ module TurboCassandra
       def get_customer_id customer_data
         if customer_data.class.name =='Array'
           customer_data.first['id']
-        elsif customer_data.class.name == 'Hash'
+        elsif customer_data.class.name.include? 'Hash'
           customer_data['id'].to_i
         end
       end
