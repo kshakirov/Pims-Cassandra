@@ -1,307 +1,307 @@
-<!DOCTYPE html>n
-<html lang="en">n
-<head>n
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    n <title>Title</title>n
+   <title>Title</title>
 </head>
-nn
-<body>n
-<div>n
+
+<body>
+<div>
     <div style="background:#F6F6F6; font-family:Verdana,Arial,Helvetica,sans-serif; font-size:12px; margin:0; padding:0">
-        n
+       
         <div style="background:#F6F6F6; font-family:Verdana,Arial,Helvetica,sans-serif; font-size:12px; margin:0; padding:0">
-            n
-            <table cellspacing="0" cellpadding="0" border="0" width="100%">n
-                <tbody>n
-                <tr>n
-                    <td align="center" valign="top" style="padding:20px 0 20px 0">n
-                        <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" n
-                               style="border:1px solid #E0E0E0">n
-                            <tbody>n
-                            <tr>n
-                                <td valign="top">n <a href="http://www.turbointernational.com/" target="_blank">n
+           
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tbody>
+                <tr>
+                    <td align="center" valign="top" style="padding:20px 0 20px 0">
+                        <table bgcolor="#FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650"
+                               style="border:1px solid #E0E0E0">
+                            <tbody>
+                            <tr>
+                                <td valign="top">n <a href="http://www.turbointernational.com/" target="_blank">
                                     <imgn blockedimagesrc="https://www.turbointernational.com/media/email/logo/default/TI_Logos_v4_email.jpg"
-                                          n alt="Turbo International" border="0" style="margin-bottom:10px">n
-                                </a>n
+                                         alt="Turbo International" border="0" style="margin-bottom:10px">
+                                </a>
                                 </td>
-                                n
+                               
                             </tr>
-                            n
-                            <tr>n
+                           
+                            <tr>
                                 <td valign="top">n <h1
                                         style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0">
-                                    n Hello, <%= @customer['firstname'] %> <%= @customer['lastname'] %>n </h1>n
+                                   Hello, <%= @customer['firstname'] %> <%= @customer['lastname'] %>n </h1>
                                     <p style="font-size:12px; line-height:16px; margin:0 0 11px 0">Thank you for yourn
                                         order from Turbo International. You can check the status of your order by
-                                        <an href="http://www.turbointernational.com/customer/account/" n target="_blank"
+                                        <an href="http://www.turbointernational.com/customer/account/"target="_blank"
                                             style="color:#1E7EC8">logging into your account</a>. Ifn you have any
                                             questions about your order please contact us at
-                                            <an href="mailto:support@turbointernational.com" target="_blank" n
+                                            <an href="mailto:support@turbointernational.com" target="_blank"
                                                 style="color:#1E7EC8">support@turbointernational.com</a> or call us atn
                                                 <span class="x_nobr">+1.760.476.1444</span> Monday - Friday, 8am - 5pm
                                                 PST.
                                     </p>
-                                    n <p style="font-size:12px; line-height:16px; margin:0">Your order confirmation isn
-                                        below. Thank you again for your business.</p>n
+                                   <p style="font-size:12px; line-height:16px; margin:0">Your order confirmation isn
+                                        below. Thank you again for your business.</p>
                                 </td>
-                                n
+                               
                             </tr>
-                            n
-                            <tr>n
-                                <td>n
+                           
+                            <tr>
+                                <td>
                                     <h2 style="font-size:18px; font-weight:normal; margin:0">Your Order <%=@order['order_id']
-                                        %>n
+                                        %>
                                         <small>(placed on <%= @order['updated_at']%>, <%= @order['time']%>)</small>
-                                        n
+                                       
                                     </h2>
-                                    n
+                                   
                                 </td>
-                                n
+                               
                             </tr>
-                            n
-                            <tr>n
-                                <td>n
-                                    <table cellspacing="0" cellpadding="0" border="0" width="650">n
-                                        <thead>n
-                                        <tr>n
-                                            <th align="left" width="325" bgcolor="#EAEAEA" n
-                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">n
+                           
+                            <tr>
+                                <td>
+                                    <table cellspacing="0" cellpadding="0" border="0" width="650">
+                                        <thead>
+                                        <tr>
+                                            <th align="left" width="325" bgcolor="#EAEAEA"
+                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">
                                                 Billing Information:n
                                             </th>
-                                            n
+                                           
                                             <th width="10"></th>
-                                            n
-                                            <th align="left" width="325" bgcolor="#EAEAEA" n
-                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">n
+                                           
+                                            <th align="left" width="325" bgcolor="#EAEAEA"
+                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">
                                                 Payment Method:n
                                             </th>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </thead>
-                                        n
-                                        <tbody>n
-                                        <tr>n
-                                            <td valign="top" n
+                                       
+                                        <tbody>
+                                        <tr>
+                                            <td valign="top"
                                                 style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA; border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA">
-                                                n <%= @customer['firstname'] %> <%= @customer['lastname'] %> <br>n <%=
+                                               <%= @customer['firstname'] %> <%= @customer['lastname'] %> <br>n <%=
                                                 @order['billing_address']['company'] %><br>n <%=
                                                 @order['billing_address']['street'] %><br>n <%=
                                                 @order['billing_address']['city'] %>, <%=
                                                 @order['shipping_address']['region_id'] %>, <%=
                                                 @order['shipping_address']['postcode'] %><br>n <%=
                                                 @order['billing_address']['country_id'] %><br>n T: <%=
-                                                @order['billing_address']['telephone'] %>n
+                                                @order['billing_address']['telephone'] %>
                                             </td>
-                                            n
+                                           
                                             <td>&nbsp;</td>
-                                            n
-                                            <td valign="top" n
+                                           
+                                            <td valign="top"
                                                 style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA; border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA">
-                                                n <p> <%= @order['payment_method'] %></p>n
+                                               <p> <%= @order['payment_method'] %></p>
                                             </td>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </tbody>
-                                        n
+                                       
                                     </table>
-                                    n <br>n
-                                    <table cellspacing="0" cellpadding="0" border="0" width="650">n
-                                        <thead>n
-                                        <tr>n
-                                            <th align="left" width="325" bgcolor="#EAEAEA" n
-                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">n
+                                   <br>
+                                    <table cellspacing="0" cellpadding="0" border="0" width="650">
+                                        <thead>
+                                        <tr>
+                                            <th align="left" width="325" bgcolor="#EAEAEA"
+                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">
                                                 Shipping Information:n
                                             </th>
-                                            n
+                                           
                                             <th width="10"></th>
-                                            n
-                                            <th align="left" width="325" bgcolor="#EAEAEA" n
-                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">n
+                                           
+                                            <th align="left" width="325" bgcolor="#EAEAEA"
+                                                style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em">
                                                 Shipping Method:n
                                             </th>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </thead>
-                                        n
-                                        <tbody>n
-                                        <tr>n
-                                            <td valign="top" n
+                                       
+                                        <tbody>
+                                        <tr>
+                                            <td valign="top"
                                                 style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA; border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA">
-                                                n <%= @customer['firstname'] %> <%= @customer['lastname'] %><br>n <%=
+                                               <%= @customer['firstname'] %> <%= @customer['lastname'] %><br>n <%=
                                                 @order['shipping_address']['company'] %><br>n <%=
                                                 @order['shipping_address']['street'] %><br>n <%=
                                                 @order['shipping_address']['city'] %>, <%=
                                                 @order['shipping_address']['region_id'] %>, <%=
                                                 @order['shipping_address']['postcode'] %><br>n <%=
                                                 @order['shipping_address']['country_id'] %><br>n T: <%=
-                                                @order['shipping_address']['telephone'] %>n
+                                                @order['shipping_address']['telephone'] %>
                                             <td>&nbsp;</td>
-                                            n
-                                            <td valign="top" n
+                                           
+                                            <td valign="top"
                                                 style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA; border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA">
-                                                n <%= @order['shipping_method'] %> &nbsp; </td>
-                                            n
+                                               <%= @order['shipping_method'] %> &nbsp; </td>
+                                           
                                         </tr>
-                                        n
+                                       
                                         </tbody>
-                                        n
+                                       
                                     </table>
-                                    n <br>n
-                                    <table cellspacing="0" cellpadding="0" border="0" width="650" n
-                                           style="border:1px solid #EAEAEA">n
-                                        <tbody>n
-                                        <tr>n
+                                   <br>
+                                    <table cellspacing="0" cellpadding="0" border="0" width="650"
+                                           style="border:1px solid #EAEAEA">
+                                        <tbody>
+                                        <tr>
                                             <td width="50%">Special Instructions</td>
-                                            n
+                                           
                                             <td><b><%= @order['special_instructions'] %></b></td>
-                                            n
+                                           
                                         </tr>
-                                        n
-                                        <tr>n
+                                       
+                                        <tr>
                                             <td>Customer Purchase Order</td>
-                                            n
+                                           
                                             <td><b><%= @order['customer_purchase_order'] %></b></td>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </tbody>
-                                        n
+                                       
                                     </table>
-                                    n <br>n <br>n
-                                    <table cellspacing="0" cellpadding="0" border="0" width="650" n
-                                           style="border:1px solid #EAEAEA">n
-                                        <thead>n
-                                        <tr>n
-                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">n
+                                   <br>n <br>
+                                    <table cellspacing="0" cellpadding="0" border="0" width="650"
+                                           style="border:1px solid #EAEAEA">
+                                        <thead>
+                                        <tr>
+                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">
                                                 Part Typen
                                             </th>
-                                            n
-                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">n
+                                           
+                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">
                                                 TI Part #n
                                             </th>
-                                            n
-                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">n
+                                           
+                                            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">
                                                 OEM Part #n
                                             </th>
-                                            n
-                                            <th align="center" bgcolor="#EAEAEA" n
+                                           
+                                            <th align="center" bgcolor="#EAEAEA"
                                                 style="font-size:13px; padding:3px 9px">Unit Pricen
                                             </th>
-                                            n
-                                            <th align="center" bgcolor="#EAEAEA" n
+                                           
+                                            <th align="center" bgcolor="#EAEAEA"
                                                 style="font-size:13px; padding:3px 9px">Qtyn
                                             </th>
-                                            n
+                                           
                                             <th align="right" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">
-                                                n Subtotaln
+                                               Subtotaln
                                             </th>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </thead>
-                                        n <%@order['products'].each do |product|%>n
-                                        <tbody bgcolor="#F6F6F6">n
-                                        <tr>n
-                                            <td align="left" valign="top" n
+                                       <%@order['products'].each do |product|%>
+                                        <tbody bgcolor="#F6F6F6">
+                                        <tr>
+                                            <td align="left" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <strong style="font-size:11px"><%= product['part_type']%></strong>
+                                               <strong style="font-size:11px"><%= product['part_type']%></strong>
                                             </td>
-                                            n
-                                            <td align="left" valign="top" n
+                                           
+                                            <td align="left" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <%= product['name']%>n
+                                               <%= product['name']%>
                                             </td>
-                                            n
-                                            <td align="left" valign="top" n
+                                           
+                                            <td align="left" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <%= product['oem_part']%>n
+                                               <%= product['oem_part']%>
                                             </td>
-                                            n
-                                            <td align="center" valign="top" n
+                                           
+                                            <td align="center" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <span class="x_price"><%= product['price']%></span></td>
-                                            n
-                                            <td align="center" valign="top" n
+                                               <span class="x_price"><%= product['price']%></span></td>
+                                           
+                                            <td align="center" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <%= product['quantity']%>n
+                                               <%= product['quantity']%>
                                             </td>
-                                            n
-                                            <td align="right" valign="top" n
+                                           
+                                            <td align="right" valign="top"
                                                 style="font-size:11px; padding:3px 9px; border-bottom:1px dotted #CCCCCC">
-                                                n <span class="x_price"><%= product['row_total']%></span></td>
-                                            n
+                                               <span class="x_price"><%= product['row_total']%></span></td>
+                                           
                                         </tr>
-                                        n
+                                       
                                         </tbody>
-                                        n <% end %>nn
-                                        <tbody>n
-                                        <tr class="x_subtotal">n
+                                       <% end %>
+                                        <tbody>
+                                        <tr class="x_subtotal">
                                             <td colspan="5" align="right" style="padding:3px 9px">Subtotal</td>
-                                            n
+                                           
                                             <td align="right" style="padding:3px 9px">
                                                 <spann class="x_price"><%= @order['subtotal'] %></span>
                                             </td>
-                                            n
+                                           
                                         </tr>
-                                        n
-                                        <tr class="x_shipping">n
+                                       
+                                        <tr class="x_shipping">
                                             <td colspan="5" align="right" style="padding:3px 9px">Shipping &amp;n
                                                 Handlingn
                                             </td>
-                                            n
-                                            <td align="right" style="padding:3px 9px"><span class="x_price"><%= @order['shipping_handling'] %></span>n
+                                           
+                                            <td align="right" style="padding:3px 9px"><span class="x_price"><%= @order['shipping_handling'] %></span>
                                             </td>
-                                            n
+                                           
                                         </tr>
-                                        n
-                                        <tr class="x_grand_total">n
+                                       
+                                        <tr class="x_grand_total">
                                             <td colspan="5" align="right" style="padding:3px 9px"><strong>Grandn
                                                 Total</strong></td>
-                                            n
-                                            <td align="right" style="padding:3px 9px"><strong><span class="x_price"><%= @order['grand_total'] %></span></strong>n
+                                           
+                                            <td align="right" style="padding:3px 9px"><strong><span class="x_price"><%= @order['grand_total'] %></span></strong>
                                             </td>
-                                            n
+                                           
                                         </tr>
-                                        n
+                                       
                                         </tbody>
-                                        n
+                                       
                                     </table>
-                                    n <p style="font-size:12px; margin:0 0 10px 0"></p>n
+                                   <p style="font-size:12px; margin:0 0 10px 0"></p>
                                 </td>
-                                n
+                               
                             </tr>
-                            n
-                            <tr>n
-                                <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center">n
+                           
+                            <tr>
+                                <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center">
                                     <center>n <p style="font-size:12px; margin:0">Thank you, <strong>Turbon
-                                        International</strong></p>n
+                                        International</strong></p>
                                     </center>
-                                    n
+                                   
                                 </td>
-                                n
+                               
                             </tr>
-                            n
+                           
                             </tbody>
-                            n
+                           
                         </table>
-                        n
+                       
                     </td>
-                    n
+                   
                 </tr>
-                n
+               
                 </tbody>
-                n
+               
             </table>
-            n
+           
         </div>
-        n
+       
     </div>
-    nn
+    
 </div>
-n
+
 </body>
-n
+
 </html>
