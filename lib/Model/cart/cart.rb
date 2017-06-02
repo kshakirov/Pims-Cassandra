@@ -11,7 +11,7 @@ module TurboCassandra
       end
 
       def is_product_in_cart? cart, product
-        if cart['items'].nil?
+        if  cart.nil? or cart['items'].nil?
           false
         else
           cart['items'].key? product['sku']
