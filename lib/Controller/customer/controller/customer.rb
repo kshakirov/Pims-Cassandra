@@ -1,6 +1,44 @@
 module TurboCassandra
   module Controller
+
+    module AddressVerification
+
+      def is_usa? address
+        address['country_id']=="US"
+      end
+
+      def has_country? address
+        not address['country_id'].nil? and not address['country_id'].size ==0
+      end
+
+      def has_not_state? address
+        address['region_id'].nil? or address['region_id'].size == 0
+      end
+
+      def no_city_street_pcode address
+        keys = %W(city street postcode)
+        keys.any? do |key|
+          address[key].nil? or address[key].size == 0
+        end
+      end
+
+      def verify_address data
+        address_type = get_address_name(data)
+        if not has_country? data[address_type]
+          raise "Country Is Required"
+        elsif is_usa? data[address_type] and has_not_state? data[address_type]
+          raise "State/Province Is Required"
+        elsif no_city_street_pcode data[address_type]
+          raise "City,Street, Postal Code  are Required"
+        end
+        true
+      end
+    end
+
+
+
     class Customer
+      include AddressVerification
       private
       def get_customer_id customer_data
         if customer_data.class.name =='Array'
@@ -23,14 +61,6 @@ module TurboCassandra
         data.keys.find { |key| key.include? 'address' }
       end
 
-      def verify_address data
-        address_type = get_address_name(data)
-        if data[address_type]['country_id']=="US" and data[address_type]['region_id'].nil?
-          raise "State/Province Is Required"
-        else
-          true
-        end
-      end
 
       public
       def initialize
@@ -54,7 +84,7 @@ module TurboCassandra
       def update_address body
         data = JSON.parse body
         customer = @customer.find_by_customer_id data['id']
-        unless customer.nil? or verify_address(data)
+        if not customer.nil? and verify_address(data)
           method_name = get_address_name(data)
           customer.send(method_name, data[method_name])
           customer.save

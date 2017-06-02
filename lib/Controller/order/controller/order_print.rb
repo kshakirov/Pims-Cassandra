@@ -36,12 +36,21 @@ module TurboCassandra
         ]
       end
 
+
+      def get_region_name country, address_data
+        region = country.subregions.coded(address_data['region_id'])
+        if region
+          return region.name.to_s
+        end
+        ""
+      end
+
       def output_address address_data, pdf
         country =  Country.coded(address_data['country_id'])
         pdf.text address_data['lastname']
         pdf.text address_data['street'] + ', ' + address_data['city'].to_s
         pdf.move_down 1
-        pdf.text country.subregions.coded(address_data['region_id']).name.to_s + ', '  + country.name.to_s + ', ' + address_data['postcode'].to_s
+        pdf.text  get_region_name(country, address_data)  + ', '  + country.name.to_s + ', ' + address_data['postcode'].to_s
         pdf.move_down 1
         pdf.text  'T: ' +  address_data['telephone'].to_s
       end
