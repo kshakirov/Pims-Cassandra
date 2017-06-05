@@ -5,10 +5,13 @@ require 'elasticsearch'
 require 'rest-client'
 require 'yaml'
 require 'json'
+require 'carmen'
+require 'action_view'
 require_relative '../../../lib/sources'
 require_relative '../../../lib/Search/search_src'
 require 'minitest/autorun'
 require 'minitest/pride'
+
 ENV['TURBO_MODE'] = "development"
 
 def read_attributes_from_file

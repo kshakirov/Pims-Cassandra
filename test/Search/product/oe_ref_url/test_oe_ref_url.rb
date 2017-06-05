@@ -6,8 +6,8 @@ class TestOeRefUrl < Minitest::Test
   end
 
 
-  def test_ti_oe_ref
-    product = @product.find_by_sku  54018
+  def test_ti_oe_ref_2
+    product = @product.find_by_sku  45452
     refute_nil product
     elastic_product = @product_transformer.run product
     refute_nil elastic_product

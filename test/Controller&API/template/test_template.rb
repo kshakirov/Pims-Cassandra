@@ -5,8 +5,9 @@ class TestTemplate < Minitest::Test
     @notification_api = TurboCassandra::API::Notification.new
     @admin_email_api = TurboCassandra::API::AdminEmail.new
   end
+
   def test_load
-    template_code = { 'name' => 'order'}
+    template_code = {'name' => 'order'}
     response = @template_controller.load template_code
     assert response.key? :file
   end
@@ -70,5 +71,7 @@ class TestTemplate < Minitest::Test
     response = @template_controller.save body.to_json
     assert response
   end
+
+
 
 end
