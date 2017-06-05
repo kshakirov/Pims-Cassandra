@@ -2,13 +2,20 @@ module TurboCassandra
   module TiInterchange
 
     private
+
+    def get_clean_part_number part_number
+      unless part_number.nil?
+        part_number.gsub('-', '').downcase
+      end
+    end
+
     def prepare_response product
       {
           ti_part: product['sku'],
           ti_sku: product['sku'],
           ti_url: "/#/part/sku",
           ti_part_number: product['part_number'],
-          ti_part_number_clean: product['part_number'].gsub('-', '').downcase
+          ti_part_number_clean: get_clean_part_number(product['part_number'])
       }
     end
 

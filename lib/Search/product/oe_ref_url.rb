@@ -7,7 +7,7 @@ module TurboCassandra
           part_number_clean: normalize_part_number(interchange['part_number']),
           product_url: '',
           manufacturer: interchange['manufacturer'],
-          sku: interchange['id']
+          sku: interchange['sku']
       }
     end
 
