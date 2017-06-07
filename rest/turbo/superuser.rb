@@ -8,12 +8,15 @@ class SuperUser < Sinatra::Base
   set :rabbit_queue,
       TurboCassandra::Controller::RabbitQueue.
           new(self.send(ENV['TURBO_MODE'])['queue_host'])
+  set :queue_name, self.send(ENV['TURBO_MODE'])['queue_name']
 
 
   configure do
     set :userController, TurboCassandra::Controller::User.new
     set :authNodeController, TurboCassandra::Controller::AuthenticationNode.new
-    set :messageLogController, TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection)
+    set :messageLogController,
+        TurboCassandra::Controller::MessageLog.new(settings.rabbit_queue.connection,
+        settings.queue_name)
   end
 
 
