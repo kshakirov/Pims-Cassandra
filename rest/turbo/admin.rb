@@ -94,6 +94,10 @@ class Admin < Sinatra::Base
     settings.customerController.get_account(params)
   end
 
+  get '/customer/email/:email' do
+    settings.customerController.get_account_by_email(params)
+  end
+
   get '/customer/:id/order/' do
     settings.orderController.find_all_by_customer(params[:id].to_i)
   end

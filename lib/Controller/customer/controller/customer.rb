@@ -75,6 +75,15 @@ module TurboCassandra
         customer.to_hash
       end
 
+      def get_account_by_email params
+        email = params['email']
+        customer = @customer.find_by_email email
+         raise "No Customer With Email #{email}" if customer.nil?
+        customer.to_hash
+      end
+
+
+
       def update_account data
         if is_email_unique? data
           @customer.update(data)
