@@ -8,7 +8,6 @@ module TurboCassandra
       include OrderAdminCreate
       include OrderProductCurrency
 
-      public
       def initialize
         @order_api = TurboCassandra::API::Order.new
         @customer_api = TurboCassandra::API::Customer.new
@@ -94,6 +93,32 @@ module TurboCassandra
         data
       end
 
+      def get_address_name  order,address_type
+        if  order[address_type].key? 'lastname'
+          "#{order[address_type]['firstname']} #{order[address_type]['lastname']}"
+        elsif order[address_type].key? 'name'
+          order[address_type]['name']
+        elsif order['data'].key? 'customer_name'
+          order['data']['customer_name']
+        end
+      end
+
+
+      def _all
+        orders = @order_api.all
+        orders.map do |order|
+          {
+              order_id: order['order_id'],
+              billing_name: get_address_name(order, 'billing_address'),
+              shipping_name: get_address_name(order, 'shipping_address'),
+              grand_total: order['grand_total'],
+              subtotal: order['subtotal'],
+              updated_at: order['updated_at']
+
+          }
+        end
+      end
+
       public
 
       def get_order_by_customer_id id
@@ -133,7 +158,7 @@ module TurboCassandra
       end
 
       def all
-        @order_api.all
+        _all
       end
 
       def all_shipments

@@ -24,8 +24,8 @@ class TestOrder < Minitest::Test
   end
 
   def test_also_bought
-    products  = @order_controler.get_also_bought_products('42784')
-    refute_nil products
+    #products  = @order_controler.get_also_bought_products('42784')
+    #refute_nil products
   end
 
   def test_order_product_insert
@@ -41,6 +41,11 @@ class TestOrder < Minitest::Test
   def test_get_also_bought_product
     products  = @order_api.get_also_bought_products 43782
     refute_nil products
+  end
+
+  def test_admin_all
+    orders  = @order_controler.all
+    refute_nil orders
   end
 
 
