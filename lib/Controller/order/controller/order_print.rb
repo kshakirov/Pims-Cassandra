@@ -45,19 +45,28 @@ module TurboCassandra
         ""
       end
 
+      def output_customer_name address_data
+        if address_data.key 'name' && address_data['name']
+          address_data['name']
+        else
+          address_data['lastname']
+        end
+
+      end
+
       def output_address address_data, pdf
-        country =  Country.coded(address_data['country_id'])
-        pdf.text address_data['lastname']
+        country = Country.coded(address_data['country_id'])
+        pdf.text  output_customer_name(address_data)
         pdf.text address_data['street'] + ', ' + address_data['city'].to_s
         pdf.move_down 1
-        pdf.text  get_region_name(country, address_data)  + ', '  + country.name.to_s + ', ' + address_data['postcode'].to_s
+        pdf.text get_region_name(country, address_data) + ', ' + country.name.to_s + ', ' + address_data['postcode'].to_s
         pdf.move_down 1
-        pdf.text  'T: ' +  address_data['telephone'].to_s
+        pdf.text 'T: ' + address_data['telephone'].to_s
       end
 
       def format_time order_time
         unless order_time.nil?
-         return order_time.strftime("%Y-%m-%d")
+          return order_time.strftime("%Y-%m-%d")
         end
         ""
       end

@@ -94,10 +94,10 @@ module TurboCassandra
       end
 
       def get_address_name  order,address_type
-        if  order[address_type].key? 'lastname'
-          "#{order[address_type]['firstname']} #{order[address_type]['lastname']}"
-        elsif order[address_type].key? 'name'
+        if  order[address_type].key? 'name'
           order[address_type]['name']
+        elsif order[address_type].key? 'lastname'
+          "#{order[address_type]['firstname']} #{order[address_type]['lastname']}"
         elsif order['data'].key? 'customer_name'
           order['data']['customer_name']
         end
