@@ -11,21 +11,28 @@ module TurboCassandra
       end
 
       def is_login_unique? login
-          user = @user_api.find_user_by_login login
-          if user.nil?
-            return true
-          end
-          raise "User With This Login already exists"
+        user = @user_api.find_user_by_login login
+        if user.nil?
+          return true
+        end
+        raise "User With This Login already exists"
 
       end
 
+      def is_email_correct email
+        unless @valid_email_regex.match(email).nil?
+          return true
+        end
+        raise "Email does not look good!"
+      end
+
       def send_email? user_hash
-          user_hash['send_data_2_user']
+        user_hash['send_data_2_user']
       end
 
       def is_updated_login_unique? user_hash
         user = @user_api.find_user_by_login user_hash['login']
-        if user.nil? or  user['id'].to_s  == user_hash['id']
+        if user.nil? or user['id'].to_s == user_hash['id']
           return true
         end
         raise "User With This Login already exists"
@@ -36,7 +43,7 @@ module TurboCassandra
       end
 
       def coerce_id user_hash
-        user_hash['id'] =  Cassandra::Uuid.new(user_hash['id'])
+        user_hash['id'] = Cassandra::Uuid.new(user_hash['id'])
       end
 
       public
@@ -44,6 +51,8 @@ module TurboCassandra
         @user_api = API::User.new
         @generator = Cassandra::Uuid::Generator.new
         @message_log_api = TurboCassandra::API::MessageLog.new
+        @valid_email_regex = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+
       end
 
       def get_users_list
@@ -62,7 +71,8 @@ module TurboCassandra
       end
 
       def create_user user_hash
-        if is_login_unique? user_hash['login']
+        if is_login_unique? user_hash['login'] and
+            is_email_correct user_hash['email']
           add_id(user_hash)
           process_pass(user_hash)
           @user_api.add_user user_hash
@@ -77,7 +87,8 @@ module TurboCassandra
       end
 
       def update_user user_hash
-        if is_updated_login_unique? user_hash
+        if is_updated_login_unique? user_hash and
+            is_email_correct(user_hash['email'])
           coerce_id(user_hash)
           process_pass(user_hash)
           @user_api.add_user user_hash
