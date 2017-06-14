@@ -60,7 +60,7 @@ module TurboCassandra
           if user['authentication_node'] == 'Internal'
             inner_authenticate(user, password)
           elsif user['authentication_node']
-            outer_authenticate login, password, user['authentication_node']
+            outer_authenticate login, password, user
           else
             result_fail
           end

@@ -19,19 +19,27 @@ module TurboCassandra
         }
       end
 
-      def create_token admin
-        JWT.encode get_payload(admin), @jwt_secret
+      def create_token user, ldap_response
+        JWT.encode get_payload(user, ldap_response), @jwt_secret
       end
 
-      def get_payload admin
+      def get_group user, ldap_response
+        if user['superuser']
+          'superuser'
+        else
+          ldap_response.first.primarygroupid.first.to_s
+        end
+      end
+
+      def get_payload user, ldap_response
         {
-            exp: Time.now.to_i + 60 * 60 * 6000,
+            exp: Time.now.to_i + 60 * 60 * 168,
             iat: Time.now.to_i,
             iss: @jwt_issuer,
             admin: {
-                id: admin.first.samaccountname.first.to_s,
-                group: admin.first.primarygroupid.first.to_s,
-                name: admin.first.displayname.first.to_s
+                id: ldap_response.first.samaccountname.first.to_s,
+                group: get_group(user, ldap_response),
+                name: ldap_response.first.displayname.first.to_s
             }
         }
       end
@@ -50,11 +58,11 @@ module TurboCassandra
         ad_user.authenticate password
       end
 
-      def outer_authenticate login, password, node_name
-        node = init_active_directory node_name
+      def outer_authenticate login, password, user
+        node = init_active_directory user['authentication_node']
         authorized = authenticate login, password, node
         if authorized
-          result_success(create_token(authorized))
+          result_success(create_token(user, authorized))
         else
           result_fail
         end
