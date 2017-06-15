@@ -23,8 +23,26 @@ module TurboCassandra
       end
     end
 
+    def self.excl_prim_ind_keys params
+      params.select{|a|  not self.primary_index.include? a and
+          not params[a].nil? }
+    end
+
+    def self.get_prim_ind_val params
+      pairs = params.select{|a|   self.primary_index.include? a  }
+      pairs.values
+    end
+
     def save
       self.class.insert @attributes
+    end
+
+    def update
+      self.class.update @attributes
+    end
+
+    def update_attributes hash
+      self.class.update_attributes hash, @attributes
     end
 
 
@@ -37,6 +55,19 @@ module TurboCassandra
       values = params.keys.map { |key| '?' }.join(',')
       real_args =params.values
       execute(insert_template(names, values), real_args)
+    end
+
+    def self.update params
+      attributes= excl_prim_ind_keys params
+      key_value_pairs  = attributes.keys.map { |key| "#{key}=?" }.join(',')
+      real_args =attributes.values + get_prim_ind_val(params)
+      execute(update_template(key_value_pairs), real_args)
+    end
+
+    def self.update_attributes hash, attributes
+      key_value_pairs = hash.keys.map { |key| "#{key}=?" }.join(',')
+      real_args =hash.values + get_prim_ind_val(attributes)
+      execute(update_template(key_value_pairs), real_args)
     end
 
     def self.aggregation_template func, aggregator
@@ -53,6 +84,10 @@ module TurboCassandra
 
     def self.insert_template names, values
       "INSERT into #{class_name} (#{names}) VALUES (#{values}) "
+    end
+
+    def self.update_template key_value_pairs
+      "UPDATE  #{class_name} SET #{key_value_pairs} WHERE  #{prep_primary_args}"
     end
 
     def self.delete_template

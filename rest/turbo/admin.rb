@@ -155,6 +155,10 @@ class Admin < Sinatra::Base
     settings.adminController.create_new_customer_by_admin(request.body.read)
   end
 
+  put '/customer/:id' do
+    settings.adminController.update_customer(params, request.body.read)
+  end
+
   post '/message/' do
     settings.messageLogController.log_task_complete(request.body.read)
   end

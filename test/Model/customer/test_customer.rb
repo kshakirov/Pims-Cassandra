@@ -17,12 +17,26 @@ class TestCustomer < Minitest::Test
             'firstname' =>  "Kirill", 'id' =>  628, 'lastname' =>  "Shakirov"
     }
     customer = TurboCassandra::Model::Customer.new hash
-    customer.update(hash)
+    customer.save
   end
 
   def test_new
        id  = @customer.new ({'email' => "kirill.shakirov4@gmail.com", 'password' => "test"})
         assert id
+  end
+
+
+  def test_update
+    customer  = TurboCassandra::Model::Customer.find 487
+    customer.firstname="Kim"
+    customer.update
+
+  end
+
+  def test_update_attribute
+    customer  = TurboCassandra::Model::Customer.find 487
+    customer.update_attributes firstname: 'Kirill'
+
   end
 
 

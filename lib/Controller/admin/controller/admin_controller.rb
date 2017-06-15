@@ -85,6 +85,12 @@ module TurboCassandra
         end
       end
 
+      def update_customer params, body
+        customer_data = JSON.parse body
+        customer_id = params['id'].to_i
+        @customer_api.update_attributes customer_id, customer_data
+      end
+
       def delete id
         @customer_api.delete(id)
       end

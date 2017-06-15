@@ -48,5 +48,15 @@ class TestAdmin < Minitest::Test
     assert res
   end
 
+  def test_update_attribute
+    params = {'id' => '487'}
+    body = {firstname: 'Karim'}
+    @admin_controller.update_customer params, body.to_json
+
+
+  end
+
+
+
 
 end

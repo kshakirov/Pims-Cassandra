@@ -11,6 +11,11 @@ module TurboCassandra
         customer.save
       end
 
+      def update_attributes customer_id, customer_data
+        customer = TurboCassandra::Model::Customer.find customer_id
+        customer.update_attributes customer_data
+      end
+
 
       def all
         TurboCassandra::Model::Customer.all
