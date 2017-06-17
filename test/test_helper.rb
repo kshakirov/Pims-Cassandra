@@ -20,6 +20,7 @@ require_relative '../lib/sources'
 ENV['TURBO_MODE'] = "development"
 
 
+
 def read_product_from_file
   YAML.load_file('../all_products.yml')
 end
