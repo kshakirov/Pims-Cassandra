@@ -21,6 +21,11 @@ module TurboCassandra
         group_prices = TurboCassandra::Model::GroupPrice.new hash
         group_prices.save
       end
+
+      def update_attributes sku, hashes
+        group_prices = TurboCassandra::Model::GroupPrice.find sku
+        group_prices.update_attributes hashes
+      end
     end
   end
 end

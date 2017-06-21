@@ -18,6 +18,7 @@ require_relative '../../lib/sources'
 require_relative 'product/api/product'
 require_relative 'invoice/api/invoice'
 require_relative 'price/api/price_rest'
+require_relative 'price/api/price_update'
 require_relative '../../tools/search/product/indexer_helper'
 
 
