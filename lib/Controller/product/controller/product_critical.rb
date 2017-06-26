@@ -3,7 +3,7 @@ module TurboCassandra
     module CriticalDims
       def get_set_attributes product
         attrs = @attribute.find_by_set_name(product['part_type'])
-        Hash[attrs.map { |a| [a['code'], a] }]
+        Hash[attrs.map {|a| [a['code'], a]}]
       end
 
       def build_tolerance tolerance_attribute, tolerance_value
@@ -15,10 +15,10 @@ module TurboCassandra
       end
 
       def get_tolerance key_value, attrs, product_critical
-        tolerance_attribute = attrs.values.select { |a| a['parent_id'] == key_value }
+        tolerance_attribute = attrs.values.find {|a| a['parent_id'] == key_value}
         unless tolerance_attribute.nil? or tolerance_attribute.empty?
-          tolerance_value = product_critical.select { |pc| pc ==key_value }
-          build_tolerance tolerance_attribute.first, tolerance_value.values
+          tolerance_value = product_critical.select {|pc| pc ==tolerance_attribute['code']}
+          build_tolerance tolerance_attribute, tolerance_value.values
         end
       end
 
@@ -29,6 +29,11 @@ module TurboCassandra
           return true
         end
         false
+      end
+
+      def is_tolerance? attr
+        attr['parent_id'].nil? ? false : true
+
       end
 
       def create_critical_item attr, value
@@ -43,22 +48,61 @@ module TurboCassandra
             "scale": attr['scale'],
             "unit": attr['unit'],
             "applicable": is_applicable?(value),
-            "tolerance": 0
+            "tolerance": 0,
+            "is_tolerance": is_tolerance?(attr),
+            "seq_num": attr['seq_num']
         }
+      end
+
+
+      def is_applicable_non_dec value
+        unless  value.nil?
+          if value.class.name =="String" and value == "-99"
+            return false
+          else
+            return true
+          end
+        end
+        false
+      end
+
+      def create_critical_item_non_dec attr, value
+        {
+            "label": attr['label'],
+            "value": value,
+            "critical": true,
+            "decimal": false,
+            "applicable": is_applicable_non_dec(value),
+            "unit": attr['unit'],
+            "is_tolerance": is_tolerance?(attr),
+            "seq_num": attr['seq_num']
+        }
+      end
+
+
+
+      def get_non_critical_value key, product
+        if product['critical_enum'].key? key
+          product['critical_enum'][key]
+        elsif product['critical_integer'].key? key
+          product['critical_integer'][key]
+        end
       end
 
 
       def add_critical_attributes product
         attrs = get_set_attributes(product)
-        attrs.keys.map { |key|
+        crit_attrs = attrs.keys.map {|key|
           if product['critical_decimal'].has_key? key
             p = create_critical_item(attrs[key], product['critical_decimal'][key])
             p['tolerance'] = get_tolerance(key, attrs, product['critical_decimal'])
             p
           else
-            create_critical_item(attrs[key], nil)
+            create_critical_item_non_dec(attrs[key], get_non_critical_value(key, product))
           end
         }
+        crit_attrs = crit_attrs.select {|a| not a[:is_tolerance]}
+        crit_attrs.sort_by {|a| a[:seq_num]}
       end
 
     end

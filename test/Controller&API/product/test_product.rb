@@ -18,7 +18,7 @@ class TestProduct < Minitest::Test
   end
 
   def test_controller_get_product
-    product = @product_controller.get_product 1
+    product = @product_controller.get_product 43748
     refute_nil product
   end
 
