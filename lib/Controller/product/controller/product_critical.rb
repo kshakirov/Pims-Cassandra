@@ -82,9 +82,11 @@ module TurboCassandra
 
 
       def get_non_critical_value key, product
-        if product['critical_enum'].key? key
+        if not product['critical_enum'].nil? and
+            product['critical_enum'].key? key
           product['critical_enum'][key]
-        elsif product['critical_integer'].key? key
+        elsif not product['critical_integer'].nil?  and
+            product['critical_integer'].key? key
           product['critical_integer'][key]
         end
       end
