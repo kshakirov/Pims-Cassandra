@@ -6,6 +6,7 @@ cql = %Q(CREATE TABLE  customer_logs
             date timestamp,
             id timeuuid,
             ip inet,
-            visitor_id uuid,
-            product bigint, Primary Key(customer_id, date, id, ip)))
+            visitor_id bigint,
+            product bigint, Primary Key(customer_id, date, id, ip)) WITH CLUSTERING ORDER BY (date DESC, id DESC, ip ASC)
+)
 execute_lazy cql, []
