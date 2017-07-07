@@ -15,7 +15,7 @@ module TurboCassandra
         payload = JSON.parse request.body.read
         {
             visitor_id: request.env['HTTP_X_VISITOR'].to_i,
-            ip: request.env['REMOTE_ADDR'],
+            ip: request.env['HTTP_X_REAL_IP'],
             product: payload['sku'].to_i,
         }
       end
