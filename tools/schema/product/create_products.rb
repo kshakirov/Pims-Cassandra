@@ -7,10 +7,11 @@ cql = %Q(CREATE TABLE  products
             updated_at timeuuid,
             name text,
             description text,
-            critical_boolean map<text,boolean>,
-            critical_decimal map<text,double>,
-            critical_integer map<text,int>,
-            critical_enum map<text,text>,
+            custom_boolean map<text,boolean>,
+            custom_decimal map<text,double>,
+            custom_integer map<text,int>,
+            custom_enum map<text,text>,
+            custom_text map<text,text>,
             PRIMARY KEY (sku))
         )
 execute_lazy cql,[]

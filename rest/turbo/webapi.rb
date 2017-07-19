@@ -1,3 +1,4 @@
+
 require_relative '../../lib/WebAPI/web_source'
 class WebAPI < Sinatra::Base
 
@@ -7,6 +8,7 @@ class WebAPI < Sinatra::Base
     set :attributeWebAPI, TurboCassandra::WebAPI::Attribute::Attribute.new
     set :attributeSetWebAPI, TurboCassandra::WebAPI::AttributeSet::AttributeSet.new
     set :attributeTypeWebAPI, TurboCassandra::WebAPI::AttributeType::AttributeType.new
+    set :productWebAPI, TurboCassandra::WebAPI::Product::Product.new
 
   end
 
@@ -58,6 +60,10 @@ class WebAPI < Sinatra::Base
 
   get '/products/attribute-sets/list' do
     settings.attributeSetWebAPI.list
+  end
+
+  get '/products' do
+      settings.productWebAPI.create request.body.response
   end
 
   after do

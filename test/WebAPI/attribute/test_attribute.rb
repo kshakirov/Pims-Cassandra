@@ -2,41 +2,41 @@ require_relative "../test_helper"
 class TestAttribute < Minitest::Test
 
   def setup
-    @attribute_web_api =TurboCassandra::WebAPI::Attribute::Attribute.new
+    @product_web_api =TurboCassandra::WebAPI::Attribute::Attribute.new
   end
 
   def test_create
     file_content = IO.read('test/WebAPI/attribute/options_attribute.json')
     data = JSON.parse file_content
-    response = @attribute_web_api.create data.to_json
+    response = @product_web_api.create data.to_json
     assert response
   end
 
   def test_delete
     params = {'attribute_code' => 'pimsOptions'}
-    response = @attribute_web_api.delete params
+    response = @product_web_api.delete params
     assert response
   end
 
   def test_get
     params = {'attribute_code' => 'pimsOptions'}
-    response = @attribute_web_api.get params
+    response = @product_web_api.get params
     assert response
   end
 
   def test_bool_2_i
-    result  = @attribute_web_api.bool_2_i true
+    result  = @product_web_api.bool_2_i true
     assert_equal 1, result
-    result  = @attribute_web_api.bool_2_i false
+    result  = @product_web_api.bool_2_i false
     assert_equal 0, result
-    result  = @attribute_web_api.bool_2_i nil
+    result  = @product_web_api.bool_2_i nil
     assert_equal 0, result
   end
 
   def test_add_option
     body =  IO.read('test/WebAPI/attribute/options.json')
     params = {'attribute_code' => 'pimsOptions' }
-    @attribute_web_api.add_option params, body
+    @product_web_api.add_option params, body
   end
 
 

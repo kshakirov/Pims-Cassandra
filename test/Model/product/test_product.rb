@@ -28,7 +28,7 @@ class TestCustomer < Minitest::Test
         created_at: @generator.now,
         name: "test_name",
         description: "test description",
-        critical_boolean: {'test' =>  Cassandra::Types::Boolean.new(1)}
+        custom_boolean: {'test' =>  Cassandra::Types::Boolean.new(1)}
     }
 
     product = TurboCassandra::Model::Product.new product_hash
