@@ -1,31 +1,6 @@
 module TurboCassandra
   module API
     class Product
-      private
-
-      def prepare_product_created_at product
-        {
-            manufacturer: product['manufacturer'],
-            part_type: product['part_type'],
-            created_at: product['created_at'],
-            part_number: product['part_number'],
-            sku: product['sku']
-        }
-      end
-
-      def prepare_prod_part_number product
-        {
-            part_number: product['part_number'],
-            sku: product['sku']
-        }
-      end
-
-      def prepare_product_created_2_del product
-        return product['manufacturer'], product['part_type'],
-            product['created_at']
-      end
-
-      public
 
       def initialize
         @generator = Cassandra::Uuid::Generator.new
@@ -37,13 +12,6 @@ module TurboCassandra
           product.to_hash
         rescue
           nil
-        end
-      end
-
-      def find_by_part_number part_number
-        part_number = TurboCassandra::Model::ProductPartNumber.find part_number
-        unless part_number.nil?
-          find_by_sku part_number.sku
         end
       end
 
@@ -71,10 +39,7 @@ module TurboCassandra
         product_hash['created_at'] =@generator.now
         product = TurboCassandra::Model::Product.new product_hash
         product.save
-        product_created_at = TurboCassandra::Model::ProductCreatedAtinsert.new(prepare_product_created_at(product_hash))
-        product_created_at.save
-        product_part_number = TurboCassandra::Model::ProductPartNumber.new(prepare_prod_part_number(product_hash))
-        product_part_number.save
+
       end
 
       def update product_hash
@@ -83,13 +48,7 @@ module TurboCassandra
       end
 
       def delete sku
-        product_2_delete = TurboCassandra::Model::Product.find(sku).to_hash
-        if product_2_delete
-          manufacturer, part_type, created_at = prepare_product_created_2_del(product_2_delete)
-          TurboCassandra::Model::ProductCreatedAt.delete manufacturer, part_type, created_at
-          TurboCassandra::Model::ProductPartNumber.delete product_2_delete['part_number']
           TurboCassandra::Model::Product.delete sku
-        end
       end
 
     end

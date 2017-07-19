@@ -1,0 +1,65 @@
+{
+  "product":{
+    "id": 12345,
+    "sku": "10090-White-XL",
+    "name": "10090-White-XL",
+    "attribute_set_id": 9,
+    "price": 119,
+    "status": 1,
+    "visibility": 1,
+    "type_id": "virtual",
+    "created_at": "2016-04-05 23:04:09",
+    "updated_at": "2016-04-05 23:04:09",
+    "product_links": [],
+    "options": [],
+    "tier_prices": [],
+    "custom_attributes": [
+      {
+        "attribute_code": "description",
+        "value": "<p>Precise Long-Sleeve Shirt in Black, Denim, or White.</p>"
+      },
+      {
+        "attribute_code": "meta_title",
+        "value": "Precise Long-Sleeve Shirt"
+      },
+      {
+        "attribute_code": "meta_keyword",
+        "value": "Precise Long-Sleeve Shirt"
+      },
+      {
+        "attribute_code": "meta_description",
+        "value": "Precise Long-Sleeve Shirt <p>Precise Long-Sleeve Shirt in Black, Denim, or White.</p>"
+      },
+      {
+        "attribute_code": "color",
+        "value": "11"
+      },
+      {
+        "attribute_code": "options_container",
+        "value": "container2"
+      },
+      {
+        "attribute_code": "required_options",
+        "value": "0"
+      },
+      {
+        "attribute_code": "has_options",
+        "value": "0"
+      },
+      {
+        "attribute_code": "url_key",
+        "value": "10090-white-xl"
+      },
+      {
+        "attribute_code": "msrp_display_actual_price_type",
+        "value": "0"
+      },
+      {
+        "attribute_code": "tax_class_id",
+        "value": "2"
+      },
+      {
+        "attribute_code": "size",
+        "value": "8"
+      }
+    ]

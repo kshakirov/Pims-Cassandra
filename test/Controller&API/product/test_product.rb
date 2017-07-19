@@ -1,3 +1,4 @@
+
 require_relative "../test_helper"
 
 class TestProduct < Minitest::Test
@@ -8,9 +9,9 @@ class TestProduct < Minitest::Test
   end
 
   def test_find_product
-    product = @product_api.find 1
+    product = @product_api.find 'Assembly'
     refute_nil product
-    assert_equal 1, product.sku
+    assert_equal 'test description', product.description
   end
 
   def test_where_skus
