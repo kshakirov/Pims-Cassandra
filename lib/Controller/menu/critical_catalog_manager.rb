@@ -56,7 +56,7 @@ module TurboCassandra
           @sorters = initialize_critical_sorters
           @filters = initialize_filters
           @attribute = TurboCassandra::API::Attribute.new
-          @part_types = get_part_types
+        #  @part_types = get_part_types
         end
 
 
