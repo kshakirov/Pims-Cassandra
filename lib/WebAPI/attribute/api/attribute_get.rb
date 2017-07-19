@@ -27,7 +27,7 @@ module TurboCassandra
         def _get attribute_code
           attribute = @attribute_api.find attribute_code
           if  not attribute.nil? and attribute.first
-            prepare_response(attribute.first)
+            prepare_response(attribute)
           else
 
           end

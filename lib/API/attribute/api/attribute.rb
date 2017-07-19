@@ -29,7 +29,7 @@ module TurboCassandra
       end
       def update_attribute code, option
         attribute = TurboCassandra::Model::Attribute.find code
-        attribute.options = option
+        attribute.options.push option
         attribute.save
       end
     end

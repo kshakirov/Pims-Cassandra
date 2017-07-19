@@ -28,7 +28,7 @@ module TurboCassandra
 
         def process_request attribute
           {
-              code: attribute['attribute_code'],
+              code: attribute['customAttributes'][0]['attributeCode'],
               filterable: bool_2_i(attribute['isFilterable'] ),
               is_filterable_in_search: bool_2_i(attribute['isFilterableInSearch']),
               is_visible_in_list: bool_2_i(attribute['isVisibleInGrid']),

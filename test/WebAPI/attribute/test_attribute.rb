@@ -6,7 +6,7 @@ class TestAttribute < Minitest::Test
   end
 
   def test_create
-    file_content = IO.read('options_attribute.json')
+    file_content = IO.read('test/WebAPI/attribute/options_attribute.json')
     data = JSON.parse file_content
     response = @attribute_web_api.create data.to_json
     assert response
@@ -34,7 +34,7 @@ class TestAttribute < Minitest::Test
   end
 
   def test_add_option
-    body =  IO.read('options.json')
+    body =  IO.read('test/WebAPI/attribute/options.json')
     params = {'attribute_code' => 'pimsOptions' }
     @attribute_web_api.add_option params, body
   end
