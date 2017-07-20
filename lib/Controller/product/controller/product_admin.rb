@@ -46,10 +46,7 @@ module TurboCassandra
       end
 
       def _admin_get_product sku
-        product = get_by_sku_or_part_nubmer sku
-        unless product.nil?
-          admin_prepare_product product
-        end
+          @product_api.find_by_sku  sku
       end
 
 

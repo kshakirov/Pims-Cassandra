@@ -44,9 +44,6 @@ namespace :db do
   end
   namespace :setup do
     task :base do
-      ruby "tools/schema/attribute/create_attributes.rb"
-      ruby "tools/schema/attribute/add_attribute_set_index.rb"
-      ruby "tools/schema/attribute_set/create_attribute_sets.rb"
       ruby "tools/schema/currency/create_currencies.rb"
       ruby "tools/schema/customer/create_customers.rb"
 
@@ -60,12 +57,11 @@ namespace :db do
       ruby "tools/schema/group_price/create_group_price.rb"
     end
 
-    task :pims_attribute do
+    task :attribute do
       ruby "tools/schema/attribute/create_attributes.rb"
-      ruby "tools/schema/attribute/add_attribute_set_index.rb"
     end
 
-    task :pims_attribute_set do
+    task :attribute_set do
       ruby "tools/schema/attribute_set/create_attribute_sets.rb"
       ruby "tools/schema/attribute_set/update_attribute_sets_1.rb"
     end

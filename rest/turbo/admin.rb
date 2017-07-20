@@ -185,7 +185,7 @@ class Admin < Sinatra::Base
   end
 
   post '/product/paginate/' do
-    settings.productCreatedAtController.where(request.body.read)
+    settings.productController.paginate_products(request.body.read)
   end
 
   get '/product/:id' do
