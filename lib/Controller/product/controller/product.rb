@@ -3,7 +3,6 @@ module TurboCassandra
     class Product
       attr_accessor :product_api, :group_price_api
       include TurboCassandra::Controller::CriticalDims
-      include TurboCassandra::Controller::TiPart
       include ProductAdminWithPrice
       include ProductAdmin
       include Pagination
