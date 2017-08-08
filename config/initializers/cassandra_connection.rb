@@ -10,7 +10,7 @@ class CassandraCoonnection
   end
 
   def self.get_mode
-    ENV['TURBO_MODE']
+    ENV['RACK_ENV']
   end
 
   def self.config config_data
@@ -24,7 +24,7 @@ class CassandraCoonnection
     if not mode.nil?
       config config[mode]
     else
-      puts "SET TURBO_MODE variable "
+      puts "SET RACK_ENV variable "
       exit 1
     end
   end
@@ -41,7 +41,7 @@ class CassandraCoonnection
     unless mode.nil?
       return config[mode]['keyspace']
     end
-    puts "SET TURBO_MODE variable "
+    puts "SET RACK_ENV variable "
     exit 1
   end
 end

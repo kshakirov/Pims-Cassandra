@@ -147,6 +147,7 @@ DEPENDENCIES
   prawn
   prawn-table
   puma
+  rack-test
   rest-client
   sinatra
   sinatra-contrib

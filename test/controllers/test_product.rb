@@ -1,16 +1,36 @@
 require_relative '../test_helper'
 
-class TestCustomer < Minitest::Test
+ENV['RACK_ENV'] = 'development'
+
+require 'sinatra/base'
+require_relative '../../config/initializers/sources'
+require_relative '../../app/controllers/application_controller'
+require_relative '../../app/controllers/product_controller'
+require 'test/unit'
+require 'rack/test'
+
+class ProductControllerTest < Test::Unit::TestCase
+  include Rack::Test::Methods
 
   def setup
-    @generator = Cassandra::Uuid::Generator.new
+    @rack_env = {
+        'HTTP_ACCEPT' => 'application/json',
+        'CONTENT_TYPE' => 'application/json'
+    }
+  end
+  def app
+    ProductController.new
+  end
+  def test_it_says_hello_world
+    params = {
+        paging_state: nil,
+        page_size: 10
+    }
+    post '/products/paginate/' , params.to_json, @rack_env
+    assert last_response.ok?
+    response = JSON.parse(last_response.body)
+    assert_equal  10, response['results'].size
   end
 
-  def test_find
-    params = { 'sku' => 'Assembly'}
-    product  = ProductController.show params
-    refute_nil product
-    assert_equal "test_name", product.name
-  end
 
 end
