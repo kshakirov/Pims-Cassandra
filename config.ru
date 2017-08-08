@@ -28,4 +28,4 @@ puts "RACK_ENV = #{ENV['RACK_ENV']}"
 #\ -w -p 4701
 
 Dir.glob('./app/{helpers,controllers}/*.rb').each { |file| require file }
-map('/') { run ProductController }
+map('/admin') { run ProductController }

@@ -1,12 +1,6 @@
 class ProductController < ApplicationController
+   include ProductUtils
 
-  def bin_to_hex(s)
-    s.each_byte.map { |b| b.to_i }
-  end
-
-  def hex_to_bin(s)
-    s.map { |x| x.chr }.join
-  end
 
   before do
     content_type :json
@@ -21,6 +15,7 @@ class ProductController < ApplicationController
 
   post  '/products/paginate/' do
     params = JSON.parse request.body.read
+    params['paging_state'] = get_paging_state(params)
     products = Product.paginate params
     products[:paging_state] = bin_to_hex(products[:paging_state])
     products
