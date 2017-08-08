@@ -6,6 +6,6 @@ require 'cassandra'
 require 'active_support/all'
 require 'action_view'
 require 'carmen'
-require_relative '../../lib/sources'
+require_relative '../../config/initializers/sources'
 
 ENV['TURBO_MODE'] = "test"

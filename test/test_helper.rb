@@ -16,7 +16,7 @@ require 'prawn'
 require 'prawn/table'
 require 'carmen'
 require 'carmen/country'
-require_relative '../lib/sources'
+require_relative '../config/initializers/sources'
 ENV['TURBO_MODE'] = "development"
 
 
