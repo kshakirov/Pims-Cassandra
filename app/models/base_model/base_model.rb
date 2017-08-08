@@ -127,13 +127,13 @@ require "active_support/all"
     end
 
     def self.execute cql, args
-      session = TurboCluster.get_session
+      session = CassandraCoonnection.get_session
       statement = session.prepare(cql)
       session.execute(statement, arguments: args, consistency: :one)
     end
 
     def self.execute_paginate cql, paging_state, page_size, args=[]
-      session = TurboCluster.get_session
+      session = CassandraCoonnection.get_session
       session.execute(cql, arguments: args, page_size: page_size, paging_state: paging_state)
     end
 
