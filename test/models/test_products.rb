@@ -1,6 +1,6 @@
 require_relative '../test_helper'
 
-class TestCustomer < Minitest::Test
+class TestProduct < Minitest::Test
 
   def setup
     @generator = Cassandra::Uuid::Generator.new
